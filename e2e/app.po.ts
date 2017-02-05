@@ -6,6 +6,6 @@ export class JlmPBPage {
   }
 
   getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+    return element(by.css('jlm-root h1')).getText();
   }
 }
