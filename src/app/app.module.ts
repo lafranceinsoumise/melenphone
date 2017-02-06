@@ -10,6 +10,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login-view.component';
+import 'hammerjs';
 
 @NgModule({
   declarations: [
