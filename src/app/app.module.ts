@@ -10,7 +10,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login-view.component';
-import 'hammerjs';
+import { DynamicComponentComponent } from './components/dynamic-component/dynamic-component.component';
+import { RiriComponent } from './components/widgets/riri/riri.component';
+import { FifiComponent } from './components/widgets/fifi/fifi.component';
+import { LoulouComponent } from './components/widgets/loulou/loulou.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,11 @@ import 'hammerjs';
     NavbarComponent,
     SidenavComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    DynamicComponentComponent,
+    RiriComponent,
+    FifiComponent,
+    LoulouComponent
   ],
   imports: [
     BrowserModule,
