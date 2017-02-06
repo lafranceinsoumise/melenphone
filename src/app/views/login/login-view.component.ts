@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
       <input md-input type="text">
     </div>
   `,
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login-view.component.scss']
 })
 export class LoginComponent implements OnInit {
 
