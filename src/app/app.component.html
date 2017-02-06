@@ -1,12 +1,12 @@
 <md-toolbar color="primary">
-  <button md-icon-button>
+  <button md-icon-button (click)="sidenav.open()">
     <md-icon>menu</md-icon>
   </button>
   <span>MélenchonPB</span>
 </md-toolbar>
 <md-sidenav-container>
-  <md-sidenav>
-    <jlm-navbar></jlm-navbar>
+  <md-sidenav #sidenav>
+    <jlm-sidenav></jlm-sidenav>
   </md-sidenav>
 
   <!-- primary content -->
