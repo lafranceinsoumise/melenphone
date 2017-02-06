@@ -1,4 +1,17 @@
-<h1>
-  {{title}}
-</h1>
-<router-outlet></router-outlet>
+<md-toolbar color="primary">
+  <button md-icon-button>
+    <md-icon>menu</md-icon>
+  </button>
+  <span>MélenchonPB</span>
+</md-toolbar>
+<md-sidenav-container>
+  <md-sidenav>
+    <jlm-navbar></jlm-navbar>
+  </md-sidenav>
+
+  <!-- primary content -->
+  <h1>
+    {{title}}
+  </h1>
+  <router-outlet></router-outlet>
+</md-sidenav-container>
