@@ -38,9 +38,9 @@ def campaign_info(request):
     return render(request, 'callcenter/campaign_info.html', locals())
 
 def is_trophy(request):
+    campaign = "5338"
     key = 'Token d97812bc859466a7b9826c67e944c3ca96fd4aa6'
-    campaign = "5321"
     headers = {'Authorization': key}
-    return render(request, 'callcenter/is_trophy.html', locals())
     url = 'https://api.callhub.io/v2/is-trophy/' + campaign + '/'
     r = requests.get(url, headers=headers)
+    return render(request, 'callcenter/is_trophy.html', locals())
