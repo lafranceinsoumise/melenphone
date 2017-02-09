@@ -21,7 +21,7 @@ def registerNew(request):
             password=form.cleaned_data['password1']
             ville=form.cleaned_data['ville']
             headers = {'Authorization': 'Token %s' % settings.API_KEY}
-            data = {'username':username, 'email':email}
+            data = {'username':username, 'email':email, 'team':'tout_le_monde'}
             r = requests.post('https://api.callhub.io/v1/agents/', data=data, headers=headers)
             if r.status_code == requests.codes.created: #Tout s'est bien passé
                 user,created = User.objects.get_or_create(username=username, email=email)
