@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { HomeComponent } from './views/home/home.component';
-import { LoginComponent } from './views/login/login-view.component';
 import { DynamicComponentComponent } from './components/dynamic-component/dynamic-component.component';
 import { RiriComponent } from './components/widgets/riri/riri.component';
 import { FifiComponent } from './components/widgets/fifi/fifi.component';
 import { LoulouComponent } from './components/widgets/loulou/loulou.component';
 import { PokechonHomeComponent } from './views/pokechon-home/pokechon-home.component';
 import { GaugeComponent } from './components/gauge/gauge.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { ConnectionComponent } from './views/connection/connection.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,10 @@ import { GaugeComponent } from './components/gauge/gauge.component';
     FifiComponent,
     LoulouComponent,
     PokechonHomeComponent,
-    GaugeComponent
+    GaugeComponent,
+    RegisterComponent,
+    LoginComponent,
+    ConnectionComponent
   ],
   imports: [
     BrowserModule,
