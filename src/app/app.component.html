@@ -5,7 +5,7 @@
   <span (click)="sidenav.toggle()">MélenchonPB</span>
 </md-toolbar>
 <md-sidenav-container>
-  <md-sidenav #sidenav>
+  <md-sidenav #sidenav [opened]="true" mode="side">
     <jlm-sidenav></jlm-sidenav>
   </md-sidenav>
   <main>

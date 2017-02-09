@@ -15,6 +15,7 @@ import { RiriComponent } from './components/widgets/riri/riri.component';
 import { FifiComponent } from './components/widgets/fifi/fifi.component';
 import { LoulouComponent } from './components/widgets/loulou/loulou.component';
 import { PokechonHomeComponent } from './views/pokechon-home/pokechon-home.component';
+import { GaugeComponent } from './components/gauge/gauge.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { PokechonHomeComponent } from './views/pokechon-home/pokechon-home.compo
     RiriComponent,
     FifiComponent,
     LoulouComponent,
-    PokechonHomeComponent
+    PokechonHomeComponent,
+    GaugeComponent
   ],
   imports: [
     BrowserModule,
