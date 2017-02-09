@@ -14,6 +14,7 @@ import { DynamicComponentComponent } from './components/dynamic-component/dynami
 import { RiriComponent } from './components/widgets/riri/riri.component';
 import { FifiComponent } from './components/widgets/fifi/fifi.component';
 import { LoulouComponent } from './components/widgets/loulou/loulou.component';
+import { PokechonHomeComponent } from './views/pokechon-home/pokechon-home.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LoulouComponent } from './components/widgets/loulou/loulou.component';
     DynamicComponentComponent,
     RiriComponent,
     FifiComponent,
-    LoulouComponent
+    LoulouComponent,
+    PokechonHomeComponent
   ],
   imports: [
     BrowserModule,

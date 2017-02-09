@@ -2,3 +2,8 @@
 
 @import '~@angular/material/core/theming/prebuilt/deeppurple-amber.scss';
 
+html, body, jlm-root, md-sidenav-container, main{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
