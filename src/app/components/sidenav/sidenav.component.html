@@ -1,3 +1,7 @@
-<p>
-  sidenav works!
-</p>
+<md-nav-list>
+  <md-list-item *ngFor="let link of links">
+    <a md-button [routerLink]="[link.path]">
+      {{ link.text }}
+    </a>
+  </md-list-item>
+</md-nav-list>

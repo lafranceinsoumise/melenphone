@@ -6,7 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit {
-
+  links = [
+    { path: '/', text: 'Carte' },
+    { path: '/pokechon', text: 'pokéchon' },
+    { path: '/tracking', text: 'mes stats' }
+  ];
   constructor() { }
 
   ngOnInit() {
