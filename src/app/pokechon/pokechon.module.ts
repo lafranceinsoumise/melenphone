@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CodexComponent } from './codex/codex.component';
+import { CodexComponent } from './views/codex/codex.component';
 
 const routes: Routes = [
-    { path: '/coucou' }
+    { path: '', component: CodexComponent }
 ];
 
 @NgModule({
     exports: [],
     imports: [
-        RouterModule.forRoot(routes)
+        RouterModule.forChild(routes)
     ],
     declarations: [CodexComponent],
     providers: [],

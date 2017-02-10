@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     children: [
       { path: '', component: HomeComponent },
-      { path: 'pokechon', component: PokechonHomeComponent }
+      { path: 'pokechon', loadChildren: './pokechon/pokechon.module#PokechonModule' }
     ]
   }
 ];
