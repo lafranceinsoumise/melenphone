@@ -8,6 +8,21 @@ import requests
 from django.conf import settings
 import json
 from .forms import *
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+@require_POST
+@csrf_exempt
+def noteWebhook(request):
+    jsondata = request.body
+    data = json.loads(jsondata)
+
+    #Verifier la date du dernier appel (au moins 1mn entre chaque appel ?)
+        #Ajouter une entrée dans la table Appel
+        #Verifier les achievements
+
+    return HttpResponse(status=200)
 
 def index(request):
     return render(request, 'callcenter/index.html', locals())
@@ -19,8 +34,9 @@ def registerNew(request):
             username=form.cleaned_data['username']
             email=form.cleaned_data['email']
             password=form.cleaned_data['password1']
-            ville=form.cleaned_data['ville']
-            headers = {'Authorization': 'Token %s' % settings.API_KEY}
+            city=form.cleaned_data['city']
+            token = 'Token ' + settings.CALLHUB_API_KHEY
+            headers = {'Authorization': token }
             data = {'username':username, 'email':email, 'team':'tout_le_monde'}
             r = requests.post('https://api.callhub.io/v1/agents/', data=data, headers=headers)
             if r.status_code == requests.codes.created: #Tout s'est bien passé
@@ -28,7 +44,7 @@ def registerNew(request):
                 if created:
                     user.set_password(password)
                     user.save()
-                    userExtend, created = UserExtend.objects.get_or_create(ville=ville, agentUsername=username, phi=0, user=user)
+                    userExtend, created = UserExtend.objects.get_or_create(city=city, agentUsername=username, phi=0, user=user)
                     if created:
                         userExtend.save()
                         return redirect('register_sucess')
@@ -52,7 +68,7 @@ def registerSucess(request):
 #View pour faire les tests
 def test(request):
     url = 'https://api.callhub.io/v1/agents/'
-    headers = {'Authorization': 'Token %s' % settings.API_KEY}
+    headers = {'Authorization': 'Token %s' % settings.CALLHUB_API_KHEY}
     agents = requests.get(url, headers=headers)
     #On verifie que le username n'existe pas deja
     test = json.loads(agents.text)['results'][0]

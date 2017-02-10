@@ -25,7 +25,7 @@ SECRET_KEY = 'y+=el7@#+9=+uc4@0$=2q3*wjk4$@o=64ly7oa2shl2u4-)orq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".ngrok.io","localhost"]
 
 
 # Application definition
@@ -120,5 +120,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#API KEY
-API_KEY = os.environ['API_KEY']
+from API import *

@@ -22,11 +22,16 @@ urlpatterns = [
     # TEST URL
     url(r'^test/', views.test, name="test"),
 
-
-    url(r'^admin/', admin.site.urls),
+    #URL AUTH
     url(r'^registerNew/', views.registerNew, name="register"),
     url(r'^registerSucess/', views.registerSucess, name="register_sucess"),
     url(r'^login/$', auth_views.login, name="login"),
 	url(r'^logout/$', auth_views.logout,{'next_page': '/'}, name="logout"),
+
+    #WEBHOOKS
+    url(r'^notewebhook/$', views.noteWebhook),
+
+
+    #AUTRES URLS
 	url(r'$', views.index, name="index"),
 ]

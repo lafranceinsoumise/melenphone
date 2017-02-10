@@ -7,7 +7,19 @@ class UserExtend(models.Model):
     user = models.OneToOneField(User,related_name="UserExtend")
     agentUsername = models.CharField(max_length=50)
     phi = models.IntegerField()
-    ville = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+
+    def get_achievements(self):
+        return self.achievements_aux.all()
 
 class Appel(models.Model):
     user = models.ForeignKey(User)
+
+class Achievement(models.Model):
+    name = models.CharField(max_length=50)
+    condition = models.CharField(max_length=300)
+    unlockers = models.ManyToManyField(UserExtend,through='AchievementUnlock', related_name="achievements_aux")
+
+class AchievementUnlock(models.Model):
+    userExtend = models.ForeignKey(UserExtend)
+    achievement = models.ForeignKey(Achievement)
