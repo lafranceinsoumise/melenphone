@@ -12,7 +12,8 @@ class registerNewForm(forms.Form):
     email=forms.EmailField(label="Email*")
     password1 = forms.CharField(widget=forms.PasswordInput(), label="Mot de passe*")
     password2 = forms.CharField(widget=forms.PasswordInput(), label ="Confirmation*")
-    city = forms.CharField(widget=forms.TextInput(),max_length=50)
+    country = forms.CharField(widget=forms.TextInput(),max_length=50, label ="Pays*")
+    city = forms.CharField(widget=forms.TextInput(),max_length=50, label ="Ville*")
 
     def clean_password2(self):
         password = self.cleaned_data.get('password1')

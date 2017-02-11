@@ -7,7 +7,8 @@ class UserExtend(models.Model):
     user = models.OneToOneField(User,related_name="UserExtend")
     agentUsername = models.CharField(max_length=50)
     phi = models.IntegerField()
-    city = models.CharField(max_length=50)
+    location_lat = models.CharField(max_length=20)
+    location_long = models.CharField(max_length=20)
 
     def get_achievements(self):
         return self.achievements_aux.all()

@@ -34,17 +34,38 @@ def registerNew(request):
             username=form.cleaned_data['username']
             email=form.cleaned_data['email']
             password=form.cleaned_data['password1']
+            country=form.cleaned_data['country']
             city=form.cleaned_data['city']
             token = 'Token ' + settings.CALLHUB_API_KHEY
             headers = {'Authorization': token }
             data = {'username':username, 'email':email, 'team':'tout_le_monde'}
             r = requests.post('https://api.callhub.io/v1/agents/', data=data, headers=headers)
             if r.status_code == requests.codes.created: #Tout s'est bien passé
+
+                #On recup la localisation via l'API Google maps.
+                adress = city + '+' + country
+                adress.replace(" ", "+")
+                url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+ adress + '&key=' + settings.GOOGLE_MAPS_API_KHEY
+                googleAPIRequest = requests.get(url)
+                if googleAPIRequest.status_code == 200: #Si on a une réponse de google
+                    googleAPIData = json.loads(googleAPIRequest.text)
+                    if googleAPIData['status'] == "OK": #Si google a un resultat, on le récupere
+                        location_lat = str(googleAPIData['results'][0]['geometry']['location']['lat'])
+                        location_long = str(googleAPIData['results'][0]['geometry']['location']['lng'])
+                        print location_lat
+                        print location_long
+                    else: #Si google n'a pas de résultats, on ne connait pas la localisation
+                        location_lat="None"
+                        location_long="None"
+                else: #Si on a pas une réponse de google, on ne connait pas la localisation
+                    location_lat="None"
+                    location_long="None"
+                #On crée le user dans la bdd
                 user,created = User.objects.get_or_create(username=username, email=email)
                 if created:
                     user.set_password(password)
                     user.save()
-                    userExtend, created = UserExtend.objects.get_or_create(city=city, agentUsername=username, phi=0, user=user)
+                    userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, phi=0, location_lat=location_lat, location_long=location_long, user=user)
                     if created:
                         userExtend.save()
                         return redirect('register_sucess')
@@ -67,55 +88,6 @@ def registerSucess(request):
 
 #View pour faire les tests
 def test(request):
-    url = 'https://api.callhub.io/v1/agents/'
-    headers = {'Authorization': 'Token %s' % settings.CALLHUB_API_KHEY}
-    agents = requests.get(url, headers=headers)
-    #On verifie que le username n'existe pas deja
-    test = json.loads(agents.text)['results'][0]
+    url = 'https://maps.googleapis.com/maps/api/geocode/json?address=york+US&key=' + settings.GOOGLE_MAPS_API_KHEY
+    r = requests.get(url)
     return render(request, 'callcenter/test.html', locals())
-
-""" TESTS API
-def agent_key(request):
-    data = {"username":"DarckouneAgentTest", "password":"jambon75"}
-    key = requests.post('https://api.callhub.io/v2/agent-key/', data=data)
-    print "Agent Key", key.json()
-    return render(request, 'callcenter/test.html', locals())
-
-def agent_status(request):
-    key = "Token d97812bc859466a7b9826c67e944c3ca96fd4aa6"
-    url = "https://api.callhub.io/v2/agent-status/"
-    headers = {"Authorization": key}
-    r = requests.get(url, headers=headers)
-    print r.text
-    return render(request, 'callcenter/agent_status.html', locals())
-
-def set_webhook(request):
-    key = 'Token ' # API KEY
-    url = "https://api.callhub.io/v1/webhooks/"
-    headers = {"Authorization": key}
-    data = {'event':'cc.notes', 'target':'http://requestb.in/1bas5go1'}
-    r = requests.post(url, data=data, headers=headers)
-    return render(request, 'callcenter/test.html', locals())
-
-def get_webhook(request):
-    key = 'Token ' #API KEY
-    headers = {'Authorization': key}
-    url = 'https://api.callhub.io/v1/webhooks/'
-    r = requests.get(url, headers=headers)
-    return render(request, 'callcenter/webhooks.html', locals())
-
-def campaign_info(request):
-    key = 'Token d97812bc859466a7b9826c67e944c3ca96fd4aa6'
-    headers = {'Authorization': key}
-    url = 'https://api.callhub.io/v2/campaign-info/?id=[5335]'
-    r = requests.get(url, headers=headers)
-    return render(request, 'callcenter/campaign_info.html', locals())
-
-def is_trophy(request):
-    campaign = "5338"
-    key = 'Token d97812bc859466a7b9826c67e944c3ca96fd4aa6'
-    headers = {'Authorization': key}
-    url = 'https://api.callhub.io/v2/is-trophy/' + campaign + '/'
-    r = requests.get(url, headers=headers)
-    return render(request, 'callcenter/is_trophy.html', locals())
-"""
