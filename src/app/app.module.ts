@@ -18,6 +18,7 @@ import { GaugeComponent } from './components/gauge/gauge.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ConnectionComponent } from './views/connection/connection.component';
+import { MapComponentComponent } from './components/map-component/map-component.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ConnectionComponent } from './views/connection/connection.component';
     GaugeComponent,
     RegisterComponent,
     LoginComponent,
-    ConnectionComponent
+    ConnectionComponent,
+    MapComponentComponent
   ],
   imports: [
     BrowserModule,
