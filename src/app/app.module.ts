@@ -18,7 +18,7 @@ import { GaugeComponent } from './components/gauge/gauge.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ConnectionComponent } from './views/connection/connection.component';
-import { MapComponentComponent } from './components/map-component/map-component.component';
+import { CallMapComponent } from './components/call-map/call-map.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { MapComponentComponent } from './components/map-component/map-component.
     RegisterComponent,
     LoginComponent,
     ConnectionComponent,
-    MapComponentComponent
+    CallMapComponent
   ],
   imports: [
     BrowserModule,
