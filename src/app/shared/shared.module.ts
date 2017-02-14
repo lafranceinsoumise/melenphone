@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 
 import { OverlayComponent } from './overlay.component';
+import { FullscreenDirective } from './fullscreen.directive';
 
 @NgModule({
     imports: [],
     exports: [
-        OverlayComponent
+        OverlayComponent,
+        FullscreenDirective
     ],
     declarations: [
-        OverlayComponent
+        OverlayComponent,
+        FullscreenDirective
     ]
 })
 export class SharedModule {}
