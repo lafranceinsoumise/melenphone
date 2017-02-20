@@ -13,10 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls import url, include
+from django.conf.urls.static import static
 from django.contrib import admin
-from callcenter import views
 from django.contrib.auth import views as auth_views
+from callcenter import views
+from callcenter.views import SampleView, AngularApp, NgTemplateView
+
+ngurls = [
+    url(r'^$', SampleView.as_view(), name='sample'),
+    url(r'^ng/$', NgTemplateView.as_view(), name='ngTemplate'),
+]
 
 urlpatterns = [
     # TEST URL
@@ -31,7 +39,10 @@ urlpatterns = [
     #WEBHOOKS
     url(r'^notewebhook/$', views.noteWebhook),
 
+    url(r'^admin/', admin.site.urls),
+    url(r'^sample/', include(ngurls)),
+    url(r'^(?!ng/).*$', AngularApp.as_view(), name="angular_app"),
 
     #AUTRES URLS
-	url(r'$', views.index, name="index"),
-]
+	# url(r'$', views.index, name="index"),
+] + static(settings.ANGULAR_URL, document_root=settings.ANGULAR_ROOT)

@@ -9,6 +9,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.views.generic import View, TemplateView
 
 #Python imports
 import requests
@@ -19,6 +20,24 @@ from callcenter.models import *
 from callcenter.map import *
 from .forms import *
 
+
+class AngularApp(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AngularApp, self).get_context_data(**kwargs)
+        context['ANGULAR_URL'] = settings.ANGULAR_URL
+        return context
+
+class SampleView(View):
+    """View to render django template to angular"""
+    def get(self, request):
+        return render("OK!")
+
+class NgTemplateView(View):
+    """View to render django template to angular"""
+    def get(self, request):
+        return render(request, 'template.html', {"django_variable": "This is django context variable"})
 
 @require_POST
 @csrf_exempt #Sinon la requete est bloquée car lancée depuis un autre site (donc qui n'a pas le cookie csrf)
