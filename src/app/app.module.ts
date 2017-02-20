@@ -52,7 +52,7 @@ import { FullscreenService } from './shared/fullscreen.service';
   ],
   providers: [
     FullscreenService,
-    {provide: APP_BASE_HREF, useValue: '/ng/'}
+    {provide: APP_BASE_HREF, useValue: '/ng'}
   ],
   bootstrap: [AppComponent]
 })
