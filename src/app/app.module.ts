@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
@@ -50,7 +51,8 @@ import { FullscreenService } from './shared/fullscreen.service';
     SharedModule
   ],
   providers: [
-    FullscreenService
+    FullscreenService,
+    {provide: APP_BASE_HREF, useValue: '/ng/'}
   ],
   bootstrap: [AppComponent]
 })
