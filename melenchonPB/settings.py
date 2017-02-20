@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -122,6 +122,6 @@ STATIC_URL = '/static/'
 
 ANGULAR_URL = '/ng/'
 
-ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist')
+ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
 
 from API import *

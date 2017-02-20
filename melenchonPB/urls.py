@@ -41,8 +41,8 @@ urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
     url(r'^sample/', include(ngurls)),
-    url(r'^(?!ng/).*$', AngularApp.as_view(), name="angular_app"),
+    url(r'^(?!ng/?).*$', AngularApp.as_view(), name="angular_app"),
 
     #AUTRES URLS
-	# url(r'$', views.index, name="index"),
+	url(r'^ng\/$', AngularApp.as_view(), name="angular_app"),
 ] + static(settings.ANGULAR_URL, document_root=settings.ANGULAR_ROOT)
