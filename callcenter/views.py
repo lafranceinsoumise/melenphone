@@ -45,10 +45,34 @@ def noteWebhook(request):
     jsondata = request.body
     data = json.loads(jsondata)
 
-    #Verifier la date du dernier appel (au moins 1mn entre chaque appel ?)
-        #Ajouter une entrée dans la table Appel
-        #Verifier les achievements
+    #Latitude et longitude de l'appelant
+    callerAgentUsername = data['data']['agent']['username']
+    if User.objects.filter(username=callerAgentUsername).exists(): #Si l'appeleur est dans la bdd
+        caller = User.objects.filter(username=callerAgentUsername)[0]
 
+        if caller.UserExtend.location_lat is None: #Si le mec n'a jamais appellé et qu'on ne connait pas sa pos
+            setupLocationUser(caller)
+
+        if caller.UserExtend.location_lat != "None": #Si on connait sa pos
+            callerLat = caller.UserExtend.location_lat
+            callerLng = caller.UserExtend.location_long
+        else: #Si on connait pas la pos
+            callerLat, callerLng = randomLocation() #On random
+    else: #Si on connait pas le user
+        callerLat, callerLng = randomLocation() #On random
+
+    #Latitude et longitude de l'appellé
+    calledNumber = data['data']['contact']
+    firstNumbers = calledNumber[:5]
+    if NumbersLocation.objects.filter(code=firstNumbers).exists():
+        calledPlace = NumbersLocation.objects.filter(code=firstNumbers)[0]
+        calledLat = calledPlace.location_lat
+        calledLng = calledPlace.location_long
+    else:
+        calledLat, calledLng = randomLocation()
+
+    print ("Appelant : Lat : " + callerLat + " Lng : " + callerLng)
+    print ("Cible : Lat : " + calledLat + " Lng : " + calledLng)
     return HttpResponse(status=200)
 
 def index(request):
@@ -65,36 +89,22 @@ def registerNew(request):
             password=form.cleaned_data['password1']
             country=form.cleaned_data['country']
             city=form.cleaned_data['city']
+
+            address = city + '+' + country
+            address.replace(" ", "+")
+
             token = 'Token ' + settings.CALLHUB_API_KHEY
             headers = {'Authorization': token }
             data = {'username':username, 'email':email, 'team':'tout_le_monde'}
             r = requests.post('https://api.callhub.io/v1/agents/', data=data, headers=headers) #On fait la requete sur l'API de github
             if r.status_code == requests.codes.created: #Si tout s'est bien passé
-                #On recup la localisation via l'API Google maps.
-                adress = city + '+' + country
-                adress.replace(" ", "+")
-                url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+ adress + '&key=' + settings.GOOGLE_MAPS_API_KHEY
-                googleAPIRequest = requests.get(url) #On fait la requete sur l'API de Google maps
-                if googleAPIRequest.status_code == 200: #Si on a une réponse de google
-                    googleAPIData = json.loads(googleAPIRequest.text)
-                    if googleAPIData['status'] == "OK": #Si google a un resultat, on le récupere
-                        location_lat = str(googleAPIData['results'][0]['geometry']['location']['lat'])
-                        location_long = str(googleAPIData['results'][0]['geometry']['location']['lng'])
-                        print location_lat
-                        print location_long
-                    else: #Si google n'a pas de résultats, on ne connait pas la localisation
-                        location_lat="None"
-                        location_long="None"
-                else: #Si on a pas une réponse de google, on ne connait pas la localisation
-                    location_lat="None"
-                    location_long="None"
                 #On crée le user dans la bdd
                 user,created = User.objects.get_or_create(username=username, email=email) #On tente de créer le user
                 if created:
                     user.set_password(password)
                     user.save()
                     #On crée alors la partie userextend
-                    userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, phi=0, location_lat=location_lat, location_long=location_long, user=user)
+                    userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, phi=0, address=address, user=user)
                     if created:
                         userExtend.save()
                         return redirect('register_sucess')

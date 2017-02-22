@@ -7,8 +7,9 @@ class UserExtend(models.Model):
     user = models.OneToOneField(User,related_name="UserExtend")
     agentUsername = models.CharField(max_length=50)
     phi = models.IntegerField()
-    location_lat = models.CharField(max_length=20)
-    location_long = models.CharField(max_length=20)
+    address = models.CharField(max_length=100)
+    location_lat = models.CharField(max_length=20, blank=True, null=True)
+    location_long = models.CharField(max_length=20, blank=True, null=True)
 
     def get_achievements(self):
         return self.achievements_aux.all()
@@ -24,3 +25,14 @@ class Achievement(models.Model):
 class AchievementUnlock(models.Model):
     userExtend = models.ForeignKey(UserExtend)
     achievement = models.ForeignKey(Achievement)
+
+class NumbersLocation(models.Model):
+    code = models.CharField(max_length=6)
+    pays = models.CharField(max_length=2)
+    zone = models.CharField(max_length=1)
+    indicatif = models.CharField(max_length=2)
+    location_lat = models.CharField(max_length=20)
+    location_long = models.CharField(max_length=20)
+
+    def get_location(self):
+        return self.location_lat, self.location_long
