@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
-from callcenter.models import *
+
+#Django imports
 from django.conf import settings
+
+#Project import
+from callcenter.models import *
 
 #Python imports
 import numpy as np
@@ -74,3 +78,26 @@ def randomLocation():
     randomIndex = randint(0,count-1)
     randomPlace = NumbersLocation.objects.all()[randomIndex]
     return randomPlace.location_lat, randomPlace.location_long
+
+def getCallerLocation(username):
+    if UserExtend.objects.filter(agentUsername=username).exists(): #Si l'appeleur est dans la bdd
+        caller = UserExtend.objects.filter(agentUsername=username)[0].user
+        if caller.UserExtend.location_lat is None: #Si le mec n'a jamais appellé et qu'on ne connait pas sa pos
+            setupLocationUser(caller)
+        if caller.UserExtend.location_lat != "None": #Si on connait sa pos
+            callerLat = caller.UserExtend.location_lat
+            callerLng = caller.UserExtend.location_long
+        else: #Si on connait pas la pos
+            callerLat, callerLng = randomLocation() #On random
+    else: #Si on connait pas le user
+        callerLat, callerLng = randomLocation() #On random
+    return callerLat, callerLng
+
+def getCalledLocation(number):
+    firstNumbers = number[:5]
+    if NumbersLocation.objects.filter(code=firstNumbers).exists():
+        calledPlace = NumbersLocation.objects.filter(code=firstNumbers)[0]
+        calledLat = calledPlace.location_lat
+        calledLng = calledPlace.location_long
+    else:
+        calledLat, calledLng = randomLocation()

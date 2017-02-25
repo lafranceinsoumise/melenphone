@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views.generic import View, TemplateView
+from django.utils import timezone
 
 #Python imports
 import requests
@@ -18,6 +19,7 @@ import json
 #Project imports
 from callcenter.models import *
 from callcenter.map import *
+from callcenter.phi import *
 from .forms import *
 
 
@@ -47,29 +49,21 @@ def noteWebhook(request):
 
     #Latitude et longitude de l'appelant
     callerAgentUsername = data['data']['agent']['username']
-    if User.objects.filter(username=callerAgentUsername).exists(): #Si l'appeleur est dans la bdd
-        caller = User.objects.filter(username=callerAgentUsername)[0]
-
-        if caller.UserExtend.location_lat is None: #Si le mec n'a jamais appellé et qu'on ne connait pas sa pos
-            setupLocationUser(caller)
-
-        if caller.UserExtend.location_lat != "None": #Si on connait sa pos
-            callerLat = caller.UserExtend.location_lat
-            callerLng = caller.UserExtend.location_long
-        else: #Si on connait pas la pos
-            callerLat, callerLng = randomLocation() #On random
-    else: #Si on connait pas le user
-        callerLat, callerLng = randomLocation() #On random
+    callerLat, callerLng = getCallerLocation(callerAgentUsername)
 
     #Latitude et longitude de l'appellé
     calledNumber = data['data']['contact']
-    firstNumbers = calledNumber[:5]
-    if NumbersLocation.objects.filter(code=firstNumbers).exists():
-        calledPlace = NumbersLocation.objects.filter(code=firstNumbers)[0]
-        calledLat = calledPlace.location_lat
-        calledLng = calledPlace.location_long
-    else:
-        calledLat, calledLng = randomLocation()
+    calledLat, calledLng = getCalledLocation(calledNumber)
+
+    #On crédite les phis que gagne le user
+    EarnPhi(callerAgentUsername)
+
+    #On ajoute l'appel à la bdd
+    if UserExtend.objects.filter(agentUsername=callerAgentUsername).exists(): #Si le user est inscrit sur le site
+        userToSave = UserExtend.objects.filter(agentUsername=callerAgentUsername)[0].user
+        Appel.objects.create(user=userToSave) #On enregistre l'appel et son id
+    else: #Si on ne connait pas le user
+        Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
 
     print ("Appelant : Lat : " + callerLat + " Lng : " + callerLng)
     print ("Cible : Lat : " + calledLat + " Lng : " + calledLng)
@@ -104,7 +98,9 @@ def registerNew(request):
                     user.set_password(password)
                     user.save()
                     #On crée alors la partie userextend
-                    userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, phi=0, address=address, user=user)
+                    date = timezone.now()
+                    date.replace(year = date.year-1)
+                    userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, address=address, first_call_of_the_day = date, user=user, phi=0, phi_multiplier=1.0)
                     if created:
                         userExtend.save()
                         return redirect('register_sucess')

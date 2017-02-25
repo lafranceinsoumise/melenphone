@@ -11,7 +11,7 @@
 
 <div class="menu">
   <ul>
-    <li><a href="{% url 'index' %}">Index</a></li>
+    <li><a href="{% url 'angular_app' %}">Index</a></li>
 	   {% if user.is_active == False %}
       <li><a href="{% url 'login' %}">Connexion</a></li>
       <li><a href="{% url 'register' %}">S'enregistrer</a></li>
