@@ -8,8 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class SidenavComponent implements OnInit {
   links = [
     { path: '/', text: 'Carte' },
-    { path: '/pokechon', text: 'pokéchon' },
-    { path: '/tracking', text: 'mes stats' }
+    { path: '/pokechon', text: 'pokéchon' }
   ];
   constructor() { }
 
