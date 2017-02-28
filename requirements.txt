@@ -1,0 +1,6 @@
+channels
+daphne
+Django==1.10.5
+Jinja2
+numpy
+requests
