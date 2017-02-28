@@ -12,6 +12,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import View, TemplateView
 from django.utils import timezone
 
+
 #Python imports
 import requests
 import json
@@ -20,6 +21,7 @@ import json
 from callcenter.models import *
 from callcenter.map import *
 from callcenter.phi import *
+from callcenter.consumers import *
 from .forms import *
 
 
@@ -65,8 +67,12 @@ def noteWebhook(request):
     else: #Si on ne connait pas le user
         Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
 
-    print ("Appelant : Lat : " + callerLat + " Lng : " + callerLng)
-    print ("Cible : Lat : " + calledLat + " Lng : " + calledLng)
+    #On envoie les positions au websocket pour l'animation
+    websocketMessage = json.dumps({
+        'caller':{'lat':callerLat, 'lng':callerLng},
+        'called':{'lat':calledLat, 'lng':calledLng}
+    })
+    send_message("Super message !")
     return HttpResponse(status=200)
 
 def index(request):

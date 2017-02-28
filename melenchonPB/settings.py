@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'callcenter',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,13 @@ ANGULAR_URL = '/ng/'
 ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
 
 from API import *
+
+#channels
+# In settings.py
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "callcenter.routing.channel_routing",
+    },
+}
