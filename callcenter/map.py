@@ -97,11 +97,17 @@ def getCallerLocation(username):
 def getCalledLocation(number):
     countryCode = phonenumbers.parse("+" + number, None).country_code
     if countryCode == 33: #Si on est en france, on cherche plus précisement
-        if NumbersLocation.objects.filter(pays=33, zone=number[2:3], indicatif=number[3:5]).exists():
+        if NumbersLocation.objects.filter(pays="33", zone=number[2:3], indicatif=number[3:5]).exists():
             calledPlace = NumbersLocation.objects.filter(pays=33, zone=number[2:3], indicatif=number[3:5])[0]
             calledLat = calledPlace.location_lat
             calledLng = calledPlace.location_long
-    firstNumbers = number[:5]
-    if NumbersLocation.objects.filter(code=firstNumbers).exists():
-        pass
+        else:
+            calledLat, calledLng = randomLocation()
+    else:
+        if NumbersLocation.objects.filter(pays=str(countryCode)).exists():
+            calledPlace = NumbersLocation.objects.filter(pays=str(countryCode))[0]
+            calledLat = calledPlace.location_lat
+            calledLng = calledPlace.location_long
+        else:
+            calledLat, calledLng = randomLocation()
     return calledLat, calledLng

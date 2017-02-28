@@ -72,7 +72,7 @@ def noteWebhook(request):
         'caller':{'lat':callerLat, 'lng':callerLng},
         'target':{'lat':calledLat, 'lng':calledLng}
     })
-    send_message("Super message !")
+    send_message(websocketMessage)
     return HttpResponse(status=200)
 
 def index(request):
