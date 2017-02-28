@@ -33,7 +33,7 @@ class AchievementUnlock(models.Model):
 
 class NumbersLocation(models.Model):
     code = models.CharField(max_length=6)
-    pays = models.CharField(max_length=2)
+    pays = models.CharField(max_length=3)
     zone = models.CharField(max_length=1)
     indicatif = models.CharField(max_length=2)
     location_lat = models.CharField(max_length=20)
