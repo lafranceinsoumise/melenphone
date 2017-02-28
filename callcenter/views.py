@@ -70,7 +70,7 @@ def noteWebhook(request):
     #On envoie les positions au websocket pour l'animation
     websocketMessage = json.dumps({
         'caller':{'lat':callerLat, 'lng':callerLng},
-        'called':{'lat':calledLat, 'lng':calledLng}
+        'target':{'lat':calledLat, 'lng':calledLng}
     })
     send_message("Super message !")
     return HttpResponse(status=200)
