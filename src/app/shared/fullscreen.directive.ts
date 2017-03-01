@@ -7,7 +7,7 @@ import { FullscreenService } from './fullscreen.service';
   exportAs: 'fullscreen'
 })
 export class FullscreenDirective {
-  elementIsFullscreen: boolean = false;
+  elementIsFullscreen = false;
 
   constructor(private elRef: ElementRef, private fs: FullscreenService) { }
 
@@ -30,7 +30,17 @@ export class FullscreenDirective {
   }
 
   requestFullscreen() {
-    this.elRef.nativeElement.webkitRequestFullscreen();
+    if ('requestFullscreen' in this.elRef.nativeElement) {
+      this.elRef.nativeElement.requestFullscreen();
+    } else if ('mozRequestFullScreen' in this.elRef.nativeElement) {
+      this.elRef.nativeElement.mozRequestFullScreen();
+    } else if ('msRequestFullscreen' in this.elRef.nativeElement) {
+      this.elRef.nativeElement.msRequestFullscreen();
+    } else if ('webkitRequestFullscreen' in this.elRef.nativeElement) {
+      this.elRef.nativeElement.webkitRequestFullscreen();
+    } else {
+      console.error('your navigator does not support fullscreen mode');
+    }
   }
 
   exitFullscreen() {
