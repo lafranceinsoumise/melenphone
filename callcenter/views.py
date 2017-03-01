@@ -138,3 +138,11 @@ def test(request):
     (X,Y) = getSVGPos(location_lat, location_long)
     test = "X : " + str(X) + " Y : " + str(Y)
     return render(request, 'callcenter/test.html', locals())
+
+#### REST API
+
+@require_POST
+@csrf_exempt
+def api_test_socket(request):
+    send_message(request.body)
+    return HttpResponse(200)
