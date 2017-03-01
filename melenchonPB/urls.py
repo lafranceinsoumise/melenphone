@@ -38,12 +38,13 @@ urlpatterns = [
 
     #WEBHOOKS
     url(r'^notewebhook/$', views.noteWebhook),
+
+    #API
     url(r'^api/test_websocket/$', views.api_test_socket),
 
+    #AUTRES URLS
     url(r'^admin/', admin.site.urls),
     url(r'^sample/', include(ngurls)),
     url(r'^(?!ng/?).*$', AngularApp.as_view(), name="angular_app"),
-
-    #AUTRES URLS
 	url(r'^ng\/$', AngularApp.as_view(), name="angular_app"),
 ] + static(settings.ANGULAR_URL, document_root=settings.ANGULAR_ROOT)
