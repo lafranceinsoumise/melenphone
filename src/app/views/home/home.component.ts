@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RiriComponent, FifiComponent, LoulouComponent } from '../../components/widgets';
+import { CoordinatesConverterService } from '../../shared/coordinates-converter.service';
 
 @Component({
   selector: 'jlm-home',
@@ -9,9 +10,10 @@ import { RiriComponent, FifiComponent, LoulouComponent } from '../../components/
 export class HomeComponent implements OnInit {
   lilDucks: {component: any, inputs: Object}[] = [];
 
-  constructor() { }
+  constructor(private coordsConverter: CoordinatesConverterService) { }
 
   ngOnInit() {
+    console.log(this.coordsConverter.getSvgLocation(48.577725, 7.738060));
   }
 
   createRiriComponent() {

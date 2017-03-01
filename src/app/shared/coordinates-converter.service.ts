@@ -1,44 +1,55 @@
 import { Injectable } from '@angular/core';
 
+type Area = [number, number, number, number];
+
 @Injectable()
 export class CoordinatesConverterService {
+  svgData = [];
 
   constructor() { }
-  
-  findSVGCase(AreaData, lat, lng){
-    for(i = 0; i<AreaData.length; i++){
-        if ((AreaData[i][0] > lat) && (AreaData[i][1] < lat) && (AreaData[i][2] < lng) && (AreaData[i][3]) > lng){
-            return (i);
-        }
 
+  findSvgCase(areaData: Area[], lat: number, lng: number): number {
+    for (const coords of areaData) {
+      if ((coords[0] > lat) && (coords[1] < lat) && (coords[2] < lng) && (coords[3]) > lng) {
+          return areaData.indexOf(coords);
+      }
     }
-    return (AreaData.length - 1)
+    return (areaData.length - 1);
   }
 
-  getSVGLocation(lat,lng){
-    SVGData = [[0.001123,0.701235,0.177445,0.687332], //Region 0 FRANCE METROPOLITAINE
-                    ];
+  getSvgLocation(lat, lng): [number, number] {
+    const svgAreas: Area[] = [
+        //Region 0 FRANCE METROPOLITAINE
+        [0.001123, 0.701235, 0.177445, 0.687332], //  [Ymin, Ymax , Xmin , Xmax ]
+      ];
 
-    AreaData = [[51.088954,42.333188,-4.796524,8.203037], //Region 0 FRANCE METROPOLITAINE
-                    ];
+    const gpsAreas: Area[] = [
+        //Region 0 FRANCE METROPOLITAINE
+        [51.088954, 42.333188, -4.796524, 8.203037], // [lat_nord, lat_sud ,lng_ouest ,lng_est]
+      ];
 
-    region = findSVGCase(AreaData, lat, lng);
+    const regionIndex = this.findSvgCase(gpsAreas, lat, lng);
+    const regionSvg = svgAreas[regionIndex];
+    const regionGps = gpsAreas[regionIndex];
 
     // Calcul de la position sur le svg
     //Transformation des degres en gradiants
-    AreaData[region][0] = AreaData[region][0]*3.1415/180
-    AreaData[region][1] = AreaData[region][1]*3.1415/180
-    lat = lat*3.1415/180
+    regionGps[0] = regionGps[0] * Math.PI / 180;
+    regionGps[1] = regionGps[1] * Math.PI / 180;
+    lat = lat * Math.PI / 180;
 
-    AreaData[region][0] = Math.log(Math.tan(AreaData[region][0]) + (1/Math.cos(AreaData[region][0])))
-    AreaData[region][1] = Math.log(Math.tan(AreaData[region][1]) + (1/Math.cos(AreaData[region][1])))
-    lat = Math.log(Math.tan(lat) + (1/Math.cos(lat)))
+    regionGps[0] = Math.log( Math.tan(regionGps[0]) + (1 / Math.cos(regionGps[0])) );
+    regionGps[1] = Math.log( Math.tan(regionGps[1]) + (1 / Math.cos(regionGps[1])) );
+    lat = Math.log( Math.tan(lat) + (1 / Math.cos(lat)) );
 
     // Y = Ymin + ((lat_nord - lat)/(lat_nord - lat_sud))*(Ymax-Ymin)
-    YSVG = SVGData[region][0] + (((AreaData[region][0] - lat) / (AreaData[region][0] - AreaData[region][1])) * (SVGData[region][1] - SVGData[region][0]));
+    const YSVG = regionSvg[0] + (
+        ((gpsAreas[regionIndex][0] - lat) / (gpsAreas[regionIndex][0] - gpsAreas[regionIndex][1]))
+        * (regionSvg[1] - regionSvg[0])
+      );
 
     // X = Xmin + ((lng - lng_ouest)/(lng_est - lng_ouest))*(Xmax-Xmin)
-    XSVG = SVGData[region][2] + (((lng - AreaData[region][2]) / (AreaData[region][3] - AreaData[region][2])) * (SVGData[region][3] - SVGData[region][2]))
+    const XSVG = regionSvg[2] + (((lng - regionGps[2]) / (regionGps[3] - regionGps[2])) * (regionSvg[3] - regionSvg[2]))
 
     return([XSVG, YSVG]);
   }
