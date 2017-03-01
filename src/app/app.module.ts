@@ -12,13 +12,15 @@ import { HomeComponent } from './views/home/home.component';
 import { ConnectionComponent } from './views/connection/connection.component';
 import { PokechonHomeComponent } from './views/pokechon-home/pokechon-home.component';
 
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { DynamicComponentComponent } from './components/dynamic-component/dynamic-component.component';
-import { GaugeComponent } from './components/gauge/gauge.component';
-import { RegisterComponent } from './components/register/register.component';
-import { LoginComponent } from './components/login/login.component';
-import { CallMapComponent } from './components/call-map/call-map.component';
+import {
+  NavbarComponent,
+  SidenavComponent,
+  DynamicComponentComponent,
+  GaugeComponent,
+  RegisterComponent,
+  LoginComponent,
+  CallMapComponent
+} from './components';
 
 import { FullscreenService, CoordinatesConverterService, SocketConnectionService } from './shared';
 import { AnimatedCallComponent } from './components/animated-call/animated-call.component';
