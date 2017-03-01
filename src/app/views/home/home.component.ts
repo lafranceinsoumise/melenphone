@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RiriComponent, FifiComponent, LoulouComponent } from '../../components/widgets';
-import { CoordinatesConverterService } from '../../shared/coordinates-converter.service';
+import { CoordinatesConverterService, SocketConnectionService } from '../../shared';
 
 @Component({
   selector: 'jlm-home',
@@ -10,37 +9,12 @@ import { CoordinatesConverterService } from '../../shared/coordinates-converter.
 export class HomeComponent implements OnInit {
   lilDucks: {component: any, inputs: Object}[] = [];
 
-  constructor(private coordsConverter: CoordinatesConverterService) { }
+  constructor(private coordsConverter: CoordinatesConverterService, private wsc: SocketConnectionService) { }
 
   ngOnInit() {
     console.log(this.coordsConverter.getSvgLocation(48.577725, 7.738060));
-  }
 
-  createRiriComponent() {
-    this.lilDucks.push({
-      component: RiriComponent,
-      inputs: {
-        showNum: 9
-      }
-    });
-  }
-
-  createFifiComponent() {
-    this.lilDucks.push({
-      component: FifiComponent,
-      inputs: {
-        showNum: 10
-      }
-    });
-  }
-
-  createLoulouComponent() {
-    this.lilDucks.push({
-      component: LoulouComponent,
-      inputs: {
-        showNum: 11
-      }
-    });
+    this.wsc.room.addEventListener('message', (event) => console.log(event), false);
   }
 
 }
