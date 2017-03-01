@@ -12,7 +12,6 @@ from django.views.decorators.http import require_POST
 from django.views.generic import View, TemplateView
 from django.utils import timezone
 
-
 #Python imports
 import requests
 import json
@@ -144,5 +143,6 @@ def test(request):
 @require_POST
 @csrf_exempt
 def api_test_socket(request):
-    send_message(request.body)
-    return HttpResponse(200)
+    if request.method == 'POST':
+        send_message(request.body)
+        return HttpResponse(200)
