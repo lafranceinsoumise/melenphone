@@ -1,13 +1,65 @@
 [jlmFullscreen] {
-    &:-webkit-full-screen, &:-moz-full-screen, &:fullscreen, &:-ms-fullscreen {
+    &:-webkit-full-screen {
+        display: flex;
         background-color: white;
-        width: 100%;
-        height: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        jlm-call-map {
+            flex: 1;
+            margin: auto;
+        }
+    }
+    &:-moz-full-screen {
+        display: flex;
+        background-color: white;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        jlm-call-map {
+            flex: 1;
+            margin: auto;
+        }
+    }
+    &:-ms-full-screen {
+        display: flex;
+        background-color: white;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        jlm-call-map {
+            flex: 1;
+            margin: auto;
+        }
+    }
+    &:fullscreen {
+        display: flex;
+        background-color: white;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        jlm-call-map {
+            flex: 1;
+            margin: auto;
+        }
     }
 }
 
 [jlmFullscreen] .controls {
     position: absolute;
+    background-color: white;
     top: 0;
     left: 0;
     right: 0;
