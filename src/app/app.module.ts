@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from './shared';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -22,7 +22,9 @@ import { LoginComponent } from './components/login/login.component';
 import { ConnectionComponent } from './views/connection/connection.component';
 import { CallMapComponent } from './components/call-map/call-map.component';
 
-import { FullscreenService } from './shared/fullscreen.service';
+import { FullscreenService } from './shared';
+import { CoordinatesConverterService } from './shared';
+import { AnimatedCallComponent } from './components/animated-call/animated-call.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { FullscreenService } from './shared/fullscreen.service';
     RegisterComponent,
     LoginComponent,
     ConnectionComponent,
-    CallMapComponent
+    CallMapComponent,
+    AnimatedCallComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +55,8 @@ import { FullscreenService } from './shared/fullscreen.service';
   ],
   providers: [
     FullscreenService,
-    {provide: APP_BASE_HREF, useValue: '/ng'}
+    {provide: APP_BASE_HREF, useValue: '/ng'},
+    CoordinatesConverterService
   ],
   bootstrap: [AppComponent]
 })
