@@ -204,3 +204,17 @@
 33582	33	5	82	Ariège, Aveyron, Haute-Garonne, Gers, Lot, Hautes-Pyrénées, Tarn, Tarn-et-Garonne	42.967178	1.606296	Foix	Ariège
 33586	33	5	86	Charente, Charente-Maritime, Deux-Sèvres, Vienne	45.651435	0.152548	Angoulème	Charente
 33587	33	5	87	Corrèze, Creuse, Haute-Vienne	45.826440	1.260360	Limoges	Haute-Vienne
+590	590	None	None	Guadeloupe, Saint-Barthélemy2, Saint-Martin2	16.240998	-61.533525	Point-à-pitre	Guadeloupe
+594	594	None	None	Guyane	4.938112	-52.335027	Cayenne	Guyane
+596	596	None	None	Martinique	14.617338	-61.082493	Fort-de-France	Martinique
+262	262	None	None	Réunion et Mayotte	48.931065	2.352349	Saint-Denis	Réunion
+689	689	None	None	Polynésie Française (Moorea, Tahiti)	-17.537527	-149.565864	Papeete	Polynésie Française
+1	1	None	None	États-Unis, Canada, Caraïbes (en partie), Bermudes (Chicago)	41.886263	-87.623443		
+2	2	None	None	Afrique (Abidjan)	5.326495	-4.017257	x	
+3	3	None	None	Europe (Madrid)	40.424594	-3.692322		
+4	4	None	None	Europe (Berlin)	52.517139	13.379320		
+5	5	None	None	Mexique, Amérique centrale et méridionale, Antilles (Rio)	-22.910088	-43.171660		
+6	6	None	None	Asie du Sud-Est, Pacifique Sud et Océanie (Sydney)	-33.870812	151.205910		
+7	7	None	None	Russie et Kazakhstan (Moscou)	55.732211	37.613674		
+8	8	None	None	Asie de l'Est, Asie du Sud-Est continentale (sauf Birmanie et Thaïlande) (Beijing)	39.952967	116.468527		
+9	9	None	None	Asie centrale et du Sud, Proche et Moyen-Orient (Beyrouth)	33.877247	35.508318		
