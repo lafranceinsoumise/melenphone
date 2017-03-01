@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver, Input, ReflectiveInjector } from '@angular/core';
-import { RiriComponent, FifiComponent, LoulouComponent } from '../widgets';
 
 @Component({
   selector: 'jlm-dynamic-component',
-  entryComponents: [ RiriComponent, FifiComponent, LoulouComponent ],
+  entryComponents: [],
   template: `<div #dynamicComponentContainer></div>`,
   styleUrls: ['./dynamic-component.component.scss']
 })
