@@ -14,7 +14,6 @@ def ws_message(message):
 
 # Connected to websocket.disconnect
 def ws_disconnect(message):
-    print("qqn se deconnecte")
     Group("all-clients").discard(message.reply_channel)
 
 def send_message(message):
