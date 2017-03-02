@@ -121,7 +121,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ANGULAR_URL = '/ng/'
+ANGULAR_URL = '/ng'
 
 ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
 
