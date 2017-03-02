@@ -1,4 +1,5 @@
 <button md-raised-button color="accent" (click)="fullscreenController.toggle(true)">Plein écran</button>
+<button md-raised-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
 <div jlmFullscreen #fullscreenController="fullscreen">
     <jlm-call-map>
         <div class="controls" *ngIf="fullscreenController.isFullscreen" >
