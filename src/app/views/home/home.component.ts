@@ -1,36 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { CoordinatesConverterService, SocketConnectionService } from '../../shared';
 import 'rxjs/add/operator/toPromise';
+import { WsCallNotification } from '../../core';
 
 @Component({
   selector: 'jlm-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  lilDucks: {component: any, inputs: Object}[] = [];
+export class HomeComponent {
 
   constructor(
     private coordsConverter: CoordinatesConverterService,
     private wsc: SocketConnectionService,
     private http: Http) { }
 
-  ngOnInit() {
-    this.wsc.room.addEventListener('message', (event) => console.log(event));
-    this.wsc.room.addEventListener('open', (event) => console.log(event));
-    this.wsc.room.addEventListener('error', (event) => console.log(event));
-    this.wsc.room.addEventListener('close', (event) => console.log(event)); 
-  }
-
   makeBackendRequest() {
-    const sentObject = {
-      name: 'Robert',
-      lastName: 'Baratheon',
-      gps: {
-        lat: ' 48.866667',
-        lng: '2.33'
-      }
+    const sentObject: WsCallNotification = {
+      caller: {
+        gps: {
+          // Paris
+          lat: 48.866667,
+          lng: 2.33
+        }
+      },
+      callee: {
+        gps: {
+          // Bordeaux
+          lat: 44.833328,
+          lng: -0.56667
+        }
+      },
     };
     return this.http.post('/api/test_websocket/', sentObject)
       .toPromise()
