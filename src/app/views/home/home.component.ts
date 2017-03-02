@@ -17,23 +17,10 @@ export class HomeComponent implements OnInit {
     private http: Http) { }
 
   ngOnInit() {
-    console.log(this.coordsConverter.getSvgLocation(48.577725, 7.738060));
-
-    this.wsc.room.addEventListener('message', (event) => {
-      console.log(event);
-    });
-
-    this.wsc.room.addEventListener('open', (event) => {
-      console.log(event);
-    });
-
-    this.wsc.room.addEventListener('error', (event) => {
-      console.log(event);
-    });
-
-    this.wsc.room.addEventListener('close', (event) => {
-      console.log(event);
-    });
+    this.wsc.room.addEventListener('message', (event) => console.log(event));
+    this.wsc.room.addEventListener('open', (event) => console.log(event));
+    this.wsc.room.addEventListener('error', (event) => console.log(event));
+    this.wsc.room.addEventListener('close', (event) => console.log(event)); 
   }
 
   makeBackendRequest() {
@@ -41,15 +28,17 @@ export class HomeComponent implements OnInit {
       name: 'Robert',
       lastName: 'Baratheon',
       gps: {
-        lat: '55',
-        lng: '40'
+        lat: ' 48.866667',
+        lng: '2.33'
       }
     };
-    this.http.post('/api/test_websocket/', sentObject)
+    return this.http.post('/api/test_websocket/', sentObject)
       .toPromise()
       .then((res: Response) => {
-        console.log('[POST] api/test_websocket/ ', res.status);
-        res.json();
+        if (res.status !== 200) {
+          throw new Error(`erreur de communication avec le serveur : ${res.status}`);
+        }
+        return res.json();
       })
       .catch(error => console.error(error));
   }

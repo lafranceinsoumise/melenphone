@@ -10,7 +10,6 @@ export class SocketConnectionService {
   constructor() {
     this.scheme = (window.location.protocol === 'https:') ? 'wss' : 'ws';
     const wsUrl = `${this.scheme}://${window.location.hostname}:${8000}`;
-    console.log('url ws : ', wsUrl);
     this.room = new WebSocket(wsUrl);
   }
 

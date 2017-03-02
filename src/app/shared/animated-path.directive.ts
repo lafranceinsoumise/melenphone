@@ -11,7 +11,6 @@ export class AnimatedPathDirective implements OnInit {
   constructor(private renderer: Renderer) { }
 
   ngOnInit() {
-    console.log(this.jlmAnimatedPath);
   }
 
 }
