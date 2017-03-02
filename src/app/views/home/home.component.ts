@@ -14,7 +14,21 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     console.log(this.coordsConverter.getSvgLocation(48.577725, 7.738060));
 
-    this.wsc.room.addEventListener('message', (event) => console.log(event), false);
+    this.wsc.room.addEventListener('message', (event) => {
+      console.log(event);
+    });
+
+    this.wsc.room.addEventListener('open', (event) => {
+      console.log(event);
+    });
+
+    this.wsc.room.addEventListener('error', (event) => {
+      console.log(event);
+    });
+
+    this.wsc.room.addEventListener('close', (event) => {
+      console.log(event);
+    });
   }
 
 }
