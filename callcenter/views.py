@@ -66,6 +66,9 @@ def noteWebhook(request):
     else: #Si on ne connait pas le user
         Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
 
+    #On met à jour les achievements
+    updateAchievements(callerAgentUsername)
+
     #On envoie les positions au websocket pour l'animation
     websocketMessage = json.dumps({
         'caller':{'lat':callerLat, 'lng':callerLng},
