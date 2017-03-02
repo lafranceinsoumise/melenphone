@@ -8,9 +8,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './views/home/home.component';
-import { ConnectionComponent } from './views/connection/connection.component';
-import { PokechonHomeComponent } from './views/pokechon-home/pokechon-home.component';
+
+import {
+  HomeComponent,
+  ConnectionComponent,
+  PokechonHomeComponent  } from './views';
 
 import {
   NavbarComponent,
@@ -19,11 +21,14 @@ import {
   GaugeComponent,
   RegisterComponent,
   LoginComponent,
-  CallMapComponent
+  CallMapComponent,
+  AnimatedCallComponent
 } from './components';
 
-import { FullscreenService, CoordinatesConverterService, SocketConnectionService } from './shared';
-import { AnimatedCallComponent } from './components/animated-call/animated-call.component';
+import {
+  FullscreenService,
+  CoordinatesConverterService,
+  SocketConnectionService } from './shared';
 
 @NgModule({
   declarations: [
