@@ -35,7 +35,7 @@ class AngularApp(TemplateView):
 class SampleView(View):
     """View to render django template to angular"""
     def get(self, request):
-        return render("OK!")
+        return HttpResponse("OK!")
 
 class NgTemplateView(View):
     """View to render django template to angular"""
