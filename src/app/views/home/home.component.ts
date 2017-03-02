@@ -20,9 +20,9 @@ export class HomeComponent {
     const sentObject: WsCallNotification = {
       caller: {
         gps: {
-          // Paris
-          lat: 48.866667,
-          lng: 2.33
+          // Ajaccio
+          lat: 41.919322,
+          lng: 8.738221
         }
       },
       callee: {

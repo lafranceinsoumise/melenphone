@@ -19,8 +19,9 @@ export class CoordinatesConverterService {
 
   getSvgLocation(lat: number, lng: number): [number, number] {
     const svgAreas: Area[] = [
-        //Region 0 FRANCE METROPOLITAINE
-        [0.011718, 0.701822, 0.287701, 0.682284], //  [Ymin, Ymax , Xmin , Xmax ]
+          //  [Ymin, Ymax , Xmin , Xmax ]
+          [0.0117, 0.7018, 0.2877, 0.6822], //Region 0 FRANCE METROPOLITAINE
+          [0.6518, 0.7712, 0.6921, 0.7235] //Region 1 CORSE
       ];
 
     //[lat_nord, lat_sud, lng_ouest, lng_est]
