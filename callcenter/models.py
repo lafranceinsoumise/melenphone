@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
 
 
 class UserExtend(models.Model):
@@ -15,6 +18,9 @@ class UserExtend(models.Model):
     location_lat = models.CharField(max_length=20, blank=True, null=True)
     location_long = models.CharField(max_length=20, blank=True, null=True)
 
+    def __str__(self):
+        return self.agentUsername
+
     def get_achievements(self):
         return self.achievements_aux.all()
 
@@ -23,9 +29,14 @@ class Appel(models.Model):
     date = models.DateTimeField(auto_now=True, blank=True)
 
 class Achievement(models.Model):
+    codeName = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     condition = models.CharField(max_length=300)
+    phi = models.IntegerField(default=0)
     unlockers = models.ManyToManyField(UserExtend,through='AchievementUnlock', related_name="achievements_aux")
+
+    def __str__(self):
+        return self.codeName
 
 class AchievementUnlock(models.Model):
     userExtend = models.ForeignKey(UserExtend)
