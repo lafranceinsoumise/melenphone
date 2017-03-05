@@ -2,16 +2,20 @@
     display: block;
 }
 
-path {
-    fill: rgba(0,0,0,.0) !important;
-    stroke: #0098B6 !important;
-    stroke-width: 1!important;
+path.department {
+    stroke: #0098B6;
+    stroke-width: 1;
+    fill: transparent;
 }
 
-.territory{
-    fill:#0098B6;
+#France path.department {
+    stroke-width: .8;
 }
 
-.lake{
+.territory path.department {
+}
+// form, map, rankings
+
+.lake {
     fill:white;
 }
