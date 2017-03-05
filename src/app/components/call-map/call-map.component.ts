@@ -9,7 +9,7 @@ import { WsCallNotification } from '../../core';
   styleUrls: ['./call-map.component.scss']
 })
 export class CallMapComponent implements OnInit {
-  @ViewChild('mypath', {read: ViewContainerRef}) mypath: ViewContainerRef;
+  // @ViewChild('mypath', {read: ViewContainerRef}) mypath: ViewContainerRef;
   @ViewChild('svgDocument') svgRef: ElementRef;
   length = 0;
   notifications: WsCallNotification[] = [];
