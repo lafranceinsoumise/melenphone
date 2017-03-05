@@ -4,7 +4,6 @@ type Area = [number, number, number, number];
 
 @Injectable()
 export class CoordinatesConverterService {
-  svgData = [];
 
   constructor() { }
 
@@ -17,7 +16,7 @@ export class CoordinatesConverterService {
     return (areaData.length - 1);
   }
 
-  getSvgLocation(lat: number, lng: number): [number, number] {
+  getSvgLocation(lat: number, lng: number): {x: number, y: number} {
     const svgAreas: Area[] = [
           //  [Ymin, Ymax , Xmin , Xmax ]
           [0.0117, 0.7018, 0.2877, 0.6822], //Region 0 FRANCE METROPOLITAINE
@@ -56,8 +55,8 @@ export class CoordinatesConverterService {
           [  83.639115,  -55.496531, -168.121280,  190.384578],  //Region 13 LE MONDE
       ];
 
-    if(lng < -168.121280){
-      lng = 360 + lng
+    if (lng < -168.121280) {
+      lng += 360;
     }
     const regionIndex = this.findSvgCase(gpsAreas, lat, lng);
     const regionSvg = svgAreas[regionIndex];
@@ -85,6 +84,6 @@ export class CoordinatesConverterService {
         * (regionSvg[3] - regionSvg[2])
       );
 
-    return([XSVG, YSVG]);
+    return({x: XSVG, y: YSVG});
   }
 }
