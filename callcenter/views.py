@@ -23,6 +23,10 @@ from callcenter.phi import *
 from callcenter.consumers import *
 from .forms import *
 
+#JWT auth
+from jwt_auth.compat import json
+from jwt_auth.mixins import JSONWebTokenAuthMixin
+
 
 class AngularApp(TemplateView):
     template_name = 'index.html'
@@ -149,3 +153,15 @@ def api_test_socket(request):
     if request.method == 'POST':
         send_message(request.body)
         return HttpResponse(200)
+
+class api_user_infos(JSONWebTokenAuthMixin, View):
+    def get(self, request):
+        user = request.user
+
+        username = user.username
+        phi = user.UserExtend.phi
+        phi_multiplier = user.UserExtend.phi_multiplier
+
+        data = json.dumps({'username': username,'phi': str(phi), 'phi_multiplier':str(phi_multiplier)})
+
+        return HttpResponse(data)

@@ -20,6 +20,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from callcenter import views
 from callcenter.views import SampleView, AngularApp, NgTemplateView
+from callcenter.views import api_user_infos
+from jwt_auth.views import obtain_jwt_token
 
 ngurls = [
     url(r'^$', SampleView.as_view(), name='sample'),
@@ -29,6 +31,7 @@ ngurls = [
 urlpatterns = [
     # TEST URL
     url(r'^test/', views.test, name="test"),
+    url(r'^api-token-auth/', obtain_jwt_token),
 
     #URL AUTH
     url(r'^registerNew/', views.registerNew, name="register"),
@@ -41,6 +44,7 @@ urlpatterns = [
 
     #API
     url(r'^api/test_websocket/$', views.api_test_socket),
+    url(r'^api/user_infos/$', api_user_infos.as_view()),
 
     #AUTRES URLS
     url(r'^admin/', admin.site.urls),
@@ -49,4 +53,4 @@ urlpatterns = [
     url(r'^ng/pokechon$', AngularApp.as_view(), name="angular_app"),
 	url(r'^ng/$', AngularApp.as_view(), name="angular_app"),
 ] + static(settings.ANGULAR_URL, document_root=settings.ANGULAR_ROOT) + [
-] 
+]
