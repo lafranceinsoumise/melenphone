@@ -6,7 +6,7 @@
     fill:#0098B6;
 }
 .st1{
-    fill:#FFFFFF;
+    // fill:#FFFFFF;
 }
 .st2{
     fill:#333333;
@@ -24,7 +24,14 @@
     font-size:21.1765px;
 }
 .st7{
-    fill:#0098B6;stroke:#FFFFFF;stroke-width:0.5;
+    fill:#0098B6;
+    stroke:#FFFFFF;
+    stroke-width:0.5;
+}
+path {
+    fill: transparent !important;
+    stroke: #0098B6 !important;
+    stroke-width: 1!important;
 }
 
 .mydir {
