@@ -2,40 +2,16 @@
     display: block;
 }
 
-.st0{
-    fill:#0098B6;
-}
-.st1{
-    // fill:#FFFFFF;
-}
-.st2{
-    fill:#333333;
-}
-.st3{
-    font-family:'MyriadPro-Regular';
-}
-.st4{
-    font-size:18px;
-}
-.st5{
-    font-size:20px;
-}
-.st6{
-    font-size:21.1765px;
-}
-.st7{
-    fill:#0098B6;
-    stroke:#FFFFFF;
-    stroke-width:0.5;
-}
 path {
-    fill: transparent !important;
+    fill: rgba(0,0,0,.0) !important;
     stroke: #0098B6 !important;
     stroke-width: 1!important;
 }
 
-.mydir {
-    fill: transparent;
-    stroke:black;
-    stroke-width: 1;
+.territory{
+    fill:#0098B6;
+}
+
+.lake{
+    fill:white;
 }
