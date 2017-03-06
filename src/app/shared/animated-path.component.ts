@@ -9,6 +9,7 @@ import {
   ViewRef,
   AnimationStyles,
   AfterViewInit,
+  AfterViewChecked,
   AnimationKeyframe
 } from '@angular/core';
 import { animate, AnimationStyleMetadata, AnimationKeyframesSequenceMetadata } from '@angular/animations';
@@ -18,13 +19,13 @@ import { animate, AnimationStyleMetadata, AnimationKeyframesSequenceMetadata } f
   styles: [`
     :host {
       transform-origin: center;
+      display; none;
     }
     :host.transition-start {
-      transform: scale(.8);
+      // transform: scale(.8);
     }
     :host.transition-end {
-      stroke-dashoffset: 0;
-      transform: scale(1);
+      // transform: scale(1);
     }
   `],
   template: '',
@@ -36,7 +37,10 @@ export class AnimatedPathComponent implements AfterViewInit {
   @HostBinding('attr.d')
   jlmAnimatedPath: string;
 
-  @HostBinding('style.stroke-dasharray') strokeDasharray: number;
+  @Input() transitionDuration = '5s';
+
+  @HostBinding('style.display') display = 'none';
+  @HostBinding('style.stroke-dasharray') strokeDasharray: string;
   @HostBinding('style.stroke-dashoffset') strokeDashoffset: string;
   @HostBinding('style.transition') transition: string;
   @HostBinding('class.transition-start') transitionStart = false;
@@ -46,22 +50,22 @@ export class AnimatedPathComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.length = this.host.nativeElement.getTotalLength();
-    this.playAnimation();
+    setTimeout(() => this.playAnimation());
   }
 
-  @HostListener('click', [])
   playAnimation() {
-    this.strokeDasharray = this.length;
-    this.strokeDashoffset = `${-this.length}`;
+    this.display = 'inline';
+    this.strokeDasharray = `${this.length}`;
+    this.strokeDashoffset = `${this.length}`;
     this.transition = '';
     this.transitionStart = true;
     this.transitionEnd = false;
 
     setTimeout(() => {
-      this.transition = 'stroke-dashoffset 5s linear, transform 5s linear';
+      this.strokeDashoffset = '0';
+      this.transition = `stroke-dashoffset ${this.transitionDuration} linear, transform ${this.transitionDuration} linear`;
       this.transitionStart = false;
       this.transitionEnd = true;
-      this.strokeDashoffset = '0';
     });
   }
 

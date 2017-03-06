@@ -10,12 +10,12 @@ import { WsCallNotification } from '../../core';
 @Component({
   selector: 'g[jlmAnimatedCall]',
   template: `
-    <svg:path [attr.d]="getPathDescription(jlmAnimatedCall, 'curve')"/>
-    <svg:circle class="caller" [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
+    <svg:path *ngIf="pathInstructions" [jlmAnimatedPath]="pathInstructions" [transitionDuration]="'1s'"/>
+    <svg:circle class="caller"
         [attr.cx]="jlmAnimatedCall.caller.svg.x"
         [attr.cy]="jlmAnimatedCall.caller.svg.y"
         r="2em"/>
-    <svg:circle class="callee" [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
+    <svg:circle class="callee"
         [attr.cx]="jlmAnimatedCall.callee.svg.x"
         [attr.cy]="jlmAnimatedCall.callee.svg.y"
         r="2em"/>
@@ -25,17 +25,18 @@ import { WsCallNotification } from '../../core';
       fill: transparent;
       stroke: firebrick;
       stroke-width: 6px;
-      stroke-dasharray: 14px 10px;
+      // stroke-dasharray: 14px 10px;
       stroke-linecap: round;
     }
 
     circle {
       fill: rgba(0,0,0,.2);
       animation: zoomIn 1s;
+      transform-origin: center;
     }
 
     circle.callee {
-      animation: zoomIn 1s .2s;
+      animation: zoomIn 1s 1s;
       animation-fill-mode: both;
     }
 
@@ -54,12 +55,14 @@ import { WsCallNotification } from '../../core';
 })
 export class AnimatedCallComponent implements OnInit {
 
+  pathInstructions: string;
+
   @Input()
   jlmAnimatedCall: WsCallNotification;
 
   constructor() { }
 
-  getPathDescription(desc: WsCallNotification, pathType: 'line' | 'curve') {
+  getPathInstructions(desc: WsCallNotification, pathType: 'line' | 'curve') {
     const callerSvg = desc.caller.svg;
     const calleeSvg = desc.callee.svg;
     const delta = {
@@ -83,19 +86,17 @@ export class AnimatedCallComponent implements OnInit {
       const [step0x, step0y] = [x1, y1];
       const [vec1x, vec1y] = [vecX / 2 + deviationX, vecY / 2 + deviationY];
 
-
-      return `
+      const curvePath = `
         M ${step0x} ${step0y}
         Q ${step0x + vec1x} ${step0y + vec1y} ${x2} ${y2} 
       `;
+
+      return curvePath;
     }
   }
 
-  getTransformOrigin(center: {x: number, y: number}) {
-    return `${ center.x }px ${ center.y }px`;
-  }
-
   ngOnInit() {
+    this.pathInstructions = this.getPathInstructions(this.jlmAnimatedCall, 'curve');
   }
 
 }
