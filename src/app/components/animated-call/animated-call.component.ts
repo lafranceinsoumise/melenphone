@@ -10,13 +10,15 @@ import { WsCallNotification } from '../../core';
 @Component({
   selector: 'g[jlmAnimatedCall]',
   template: `
-    <!--<svg:line *ngIf="callDescription"
-        [attr.x1]="callDescription.caller.svg.x"
-        [attr.y1]="callDescription.caller.svg.y"
-        [attr.x2]="callDescription.callee.svg.x"
-        [attr.y2]="callDescription.callee.svg.y"
-        />-->
-    <svg:path [attr.d]="getPathDescription(callDescription, 'curve')"/>
+    <svg:path [attr.d]="getPathDescription(jlmAnimatedCall, 'curve')"/>
+    <svg:circle class="caller" [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
+        [attr.cx]="jlmAnimatedCall.caller.svg.x"
+        [attr.cy]="jlmAnimatedCall.caller.svg.y"
+        r="2em"/>
+    <svg:circle class="callee" [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
+        [attr.cx]="jlmAnimatedCall.callee.svg.x"
+        [attr.cy]="jlmAnimatedCall.callee.svg.y"
+        r="2em"/>
   `,
   styles: [`
     line, path {
@@ -26,12 +28,34 @@ import { WsCallNotification } from '../../core';
       stroke-dasharray: 14px 10px;
       stroke-linecap: round;
     }
+
+    circle {
+      fill: rgba(0,0,0,.2);
+      animation: zoomIn 1s;
+    }
+
+    circle.callee {
+      animation: zoomIn 1s .2s;
+      animation-fill-mode: both;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0);
+      }
+      80% {
+        transform: scale(1.2);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
   `]
 })
 export class AnimatedCallComponent implements OnInit {
 
   @Input()
-  callDescription: WsCallNotification;
+  jlmAnimatedCall: WsCallNotification;
 
   constructor() { }
 
@@ -65,6 +89,10 @@ export class AnimatedCallComponent implements OnInit {
         Q ${step0x + vec1x} ${step0y + vec1y} ${x2} ${y2} 
       `;
     }
+  }
+
+  getTransformOrigin(center: {x: number, y: number}) {
+    return `${ center.x }px ${ center.y }px`;
   }
 
   ngOnInit() {
