@@ -28,8 +28,6 @@ from callcenter.consumers import *
 from .forms import *
 
 #JWT auth
-from jwt_auth.compat import json
-from jwt_auth.mixins import JSONWebTokenAuthMixin
 
 
 class AngularApp(TemplateView):
@@ -156,5 +154,33 @@ class api_user_infos(APIView):
         phi_multiplier = user.UserExtend.phi_multiplier
 
         data = json.dumps({'username': username,'phi': str(phi), 'phi_multiplier':str(phi_multiplier)})
+
+        return HttpResponse(data)
+
+class api_user_achievements(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self, request):
+        user = request.user
+        unlockedAchievements = user.UserExtend.get_achievements()
+
+        data = {}
+
+        dataUnlockedAchievements = []
+        idList = []
+        for achievement in unlockedAchievements:
+            dataUnlockedAchievements.append({'name':achievement.name, 'condition':achievement.condition})
+            idList.append(achievement.id)
+
+
+        lockedAchievements = Achievement.objects.all().exclude(id__in=idList)
+
+        dataLockedAchievements = []
+        for achievement in lockedAchievements:
+            dataLockedAchievements.append({'name':achievement.name, 'condition':achievement.condition})
+
+        data['unlocked'] = dataUnlockedAchievements
+        data['locked'] = dataLockedAchievements
+
+        data = json.dumps(data)
 
         return HttpResponse(data)

@@ -19,9 +19,9 @@ class registerNewForm(forms.Form):
         password = self.cleaned_data.get('password1')
         passwordconfirm = self.cleaned_data.get('password2')
         if password and passwordconfirm:
-			if password != passwordconfirm:
-				raise forms.ValidationError("Les mots de passe ne correspondent pas !")
-			return passwordconfirm
+            if (password != passwordconfirm):
+                raise forms.ValidationError("Les mots de passe ne correspondent pas !")
+            return passwordconfirm
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

@@ -23,8 +23,8 @@ def setupLocationUser(user):
         if googleAPIData['status'] == "OK": #Si google a un resultat, on le récupere
             location_lat = str(googleAPIData['results'][0]['geometry']['location']['lat'])
             location_long = str(googleAPIData['results'][0]['geometry']['location']['lng'])
-            print location_lat
-            print location_long
+            print (location_lat)
+            print (location_long)
         else: #Si google n'a pas de résultats, on ne connait pas la localisation
             location_lat="None"
             location_long="None"

@@ -40,9 +40,9 @@ def leet(user, calls):
 
 def callCount(user, calls):
     count = calls.count
-    if count = 1:
+    if count == 1:
         unlockAchievement("count_insoumis", user)
-    if count = 10:
+    if count == 10:
         unlockAchievement("count_insoumis_qualite", user)
-    if count = 50:
+    if count == 50:
         unlockAchievement("count_conseiller_issou", user)

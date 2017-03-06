@@ -126,7 +126,7 @@ ANGULAR_URL = '/ng'
 
 ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
 
-from API import *
+from melenchonPB.API import *
 
 #channels
 # In settings.py

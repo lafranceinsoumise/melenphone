@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from callcenter import views
 from callcenter.views import SampleView, AngularApp, NgTemplateView
-from callcenter.views import api_user_infos
+from callcenter.views import api_user_infos, api_user_achievements
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -46,7 +46,8 @@ urlpatterns = [
         #API - NO TOKEN REQUIRED
     url(r'^api/test_websocket/$', views.api_test_socket.as_view()),
         #API - TOKEN REQUIRED
-    url(r'^api/user_infos/$', api_user_infos.as_view()),
+    url(r'^api/user/infos/$', api_user_infos.as_view()),
+    url(r'^api/user/achievements/$', api_user_achievements.as_view()),
 
     #AUTRES URLS
     url(r'^admin/', admin.site.urls),
