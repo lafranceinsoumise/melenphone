@@ -41,8 +41,8 @@ urlpatterns = [
 
     #API
         #TOKEN
-    url(r'^api/token_auth/', obtain_jwt_token),
-    url(r'^api/token_refresh/', refresh_jwt_token),
+    url(r'^api/token/auth/', obtain_jwt_token),
+    url(r'^api/token/refresh/', refresh_jwt_token),
         #API - NO TOKEN REQUIRED
     url(r'^api/test_websocket/$', views.api_test_socket.as_view()),
         #API - TOKEN REQUIRED
