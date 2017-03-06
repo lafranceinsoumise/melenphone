@@ -2,19 +2,19 @@ import { NgModule } from '@angular/core';
 
 import { OverlayComponent } from './overlay.component';
 import { FullscreenDirective } from './fullscreen.directive';
-import { AnimatedPathDirective } from './animated-path.directive';
+import { AnimatedPathComponent } from './animated-path.component';
 
 @NgModule({
     imports: [],
     exports: [
         OverlayComponent,
         FullscreenDirective,
-        AnimatedPathDirective
+        AnimatedPathComponent
     ],
     declarations: [
         OverlayComponent,
         FullscreenDirective,
-        AnimatedPathDirective
+        AnimatedPathComponent
     ]
 })
 export class SharedModule {}

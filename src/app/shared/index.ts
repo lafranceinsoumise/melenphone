@@ -1,4 +1,4 @@
-export * from './animated-path.directive';
+export * from './animated-path.component';
 export * from './coordinates-converter.service';
 export * from './fullscreen.directive';
 export * from './fullscreen.service';
