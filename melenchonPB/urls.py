@@ -21,7 +21,8 @@ from django.contrib.auth import views as auth_views
 from callcenter import views
 from callcenter.views import SampleView, AngularApp, NgTemplateView
 from callcenter.views import api_user_infos
-from jwt_auth.views import obtain_jwt_token
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+from rest_framework.urlpatterns import format_suffix_patterns
 
 ngurls = [
     url(r'^$', SampleView.as_view(), name='sample'),
@@ -29,10 +30,6 @@ ngurls = [
 ]
 
 urlpatterns = [
-    # TEST URL
-    url(r'^test/', views.test, name="test"),
-    url(r'^api-token-auth/', obtain_jwt_token),
-
     #URL AUTH
     url(r'^registerNew/', views.registerNew, name="register"),
     url(r'^registerSucess/', views.registerSucess, name="register_sucess"),
@@ -43,12 +40,19 @@ urlpatterns = [
     url(r'^notewebhook/$', views.noteWebhook),
 
     #API
-    url(r'^api/test_websocket/$', views.api_test_socket),
+        #TOKEN
+    url(r'^api/token_auth/', obtain_jwt_token),
+    url(r'^api/token_refresh/', refresh_jwt_token),
+        #API - NO TOKEN REQUIRED
+    url(r'^api/test_websocket/$', views.api_test_socket.as_view()),
+        #API - TOKEN REQUIRED
     url(r'^api/user_infos/$', api_user_infos.as_view()),
 
     #AUTRES URLS
     url(r'^admin/', admin.site.urls),
     url(r'^sample/', include(ngurls)),
+
+    #ANGULAR
     url(r'^(?!ng/).*$', AngularApp.as_view(), name="angular_app"),
     url(r'^ng/pokechon$', AngularApp.as_view(), name="angular_app"),
 	url(r'^ng/$', AngularApp.as_view(), name="angular_app"),

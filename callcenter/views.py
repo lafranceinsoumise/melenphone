@@ -11,6 +11,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views.generic import View, TemplateView
 from django.utils import timezone
+from rest_framework.views import APIView
+from rest_framework import permissions
+from rest_framework_jwt import views
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 #Python imports
 import requests
@@ -133,28 +137,17 @@ def registerNew(request):
 def registerSucess(request):
     return render(request, 'callcenter/register_success.html', locals())
 
-#View pour faire les tests
-def test(request):
-    url = 'https://maps.googleapis.com/maps/api/geocode/json?address=Paris+France&key=' + settings.GOOGLE_MAPS_API_KHEY
-    r = requests.get(url)
-    googleAPIRequest = requests.get(url)
-    googleAPIData = json.loads(googleAPIRequest.text)
-    location_lat = (googleAPIData['results'][0]['geometry']['location']['lat'])
-    location_long = (googleAPIData['results'][0]['geometry']['location']['lng'])
-    (X,Y) = getSVGPos(location_lat, location_long)
-    test = "X : " + str(X) + " Y : " + str(Y)
-    return render(request, 'callcenter/test.html', locals())
-
 #### REST API
 
-@require_POST
-@csrf_exempt
-def api_test_socket(request):
-    if request.method == 'POST':
+
+class api_test_socket(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
         send_message(request.body)
         return HttpResponse(200)
 
-class api_user_infos(JSONWebTokenAuthMixin, View):
+class api_user_infos(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
         user = request.user
 
