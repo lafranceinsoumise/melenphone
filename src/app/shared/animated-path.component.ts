@@ -1,9 +1,10 @@
-import { 
+import {
   Component,
   Renderer,
   OnInit,
   Input,
   HostBinding,
+  HostListener,
   ElementRef,
   ViewRef,
   AnimationStyles,
@@ -16,8 +17,14 @@ import { animate, AnimationStyleMetadata, AnimationKeyframesSequenceMetadata } f
   selector: 'path[jlmAnimatedPath]',
   styles: [`
     :host {
-      transition: stroke-dashoffset 2s;
+      transform-origin: center;
+    }
+    :host.transition-start {
+      transform: scale(.8);
+    }
+    :host.transition-end {
       stroke-dashoffset: 0;
+      transform: scale(1);
     }
   `],
   template: '',
@@ -29,34 +36,33 @@ export class AnimatedPathComponent implements AfterViewInit {
   @HostBinding('attr.d')
   jlmAnimatedPath: string;
 
-  @HostBinding('style.stroke-dasharray')
-  strokeDasharray: number;
+  @HostBinding('style.stroke-dasharray') strokeDasharray: number;
+  @HostBinding('style.stroke-dashoffset') strokeDashoffset: string;
+  @HostBinding('style.transition') transition: string;
+  @HostBinding('class.transition-start') transitionStart = false;
+  @HostBinding('class.transition-end') transitionEnd = false;
 
-  @HostBinding('style.stroke-dashoffset')
-  strokeDashOffset: string;
-
-  constructor(private renderer: Renderer, private host: ElementRef) { }
+  constructor(private renderer: Renderer, private host: ElementRef) {}
 
   ngAfterViewInit() {
-    this.strokeDasharray = this.host.nativeElement.getTotalLength();
-    this.strokeDashOffset = `${-this.strokeDasharray}`;
-    this.play();
+    this.length = this.host.nativeElement.getTotalLength();
+    this.playAnimation();
   }
 
-  play() {
-    setTimeout(() => this.strokeDashOffset = '0', 1000);
-    // const startingStyles = {
-    //   styles: [{'stroke': 'red'}]
-    // };
-    // const keyframes: AnimationKeyframe[] = [
-    //   {
-    //     offset: 1,
-    //     styles: {
-    //       styles: [{'stroke': 'purple'}]
-    //     }
-    //   }
-    // ];
-    // this.renderer.animate(this.host, startingStyles, keyframes, 5, 0, 'ease-in-out');
+  @HostListener('click', [])
+  playAnimation() {
+    this.strokeDasharray = this.length;
+    this.strokeDashoffset = `${-this.length}`;
+    this.transition = '';
+    this.transitionStart = true;
+    this.transitionEnd = false;
+
+    setTimeout(() => {
+      this.transition = 'stroke-dashoffset 5s linear, transform 5s linear';
+      this.transitionStart = false;
+      this.transitionEnd = true;
+      this.strokeDashoffset = '0';
+    });
   }
 
 }
