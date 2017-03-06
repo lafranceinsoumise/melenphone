@@ -136,3 +136,7 @@ CHANNEL_LAYERS = {
         "ROUTING": "callcenter.routing.channel_routing",
     },
 }
+
+#jwt_auth
+
+JWT_ALLOW_REFRESH = True

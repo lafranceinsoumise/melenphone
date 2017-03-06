@@ -31,7 +31,6 @@ ngurls = [
 urlpatterns = [
     # TEST URL
     url(r'^test/', views.test, name="test"),
-    url(r'^api-token-auth/', obtain_jwt_token),
 
     #URL AUTH
     url(r'^registerNew/', views.registerNew, name="register"),
@@ -43,6 +42,7 @@ urlpatterns = [
     url(r'^notewebhook/$', views.noteWebhook),
 
     #API
+    url(r'^api/token_auth/', obtain_jwt_token),
     url(r'^api/test_websocket/$', views.api_test_socket),
     url(r'^api/user_infos/$', api_user_infos.as_view()),
 
