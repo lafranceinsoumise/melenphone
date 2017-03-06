@@ -7,7 +7,8 @@ channels==1.0.3
 constantly==15.1.0
 daphne==1.0.3
 Django==1.10.5
-django-jwt-auth==0.0.2
+djangorestframework==3.5.4
+djangorestframework-jwt==1.9.0
 incremental==16.10.1
 Jinja2==2.9.5
 MarkupSafe==0.23
