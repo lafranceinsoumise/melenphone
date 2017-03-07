@@ -12,10 +12,12 @@ import { WsCallNotification } from '../../core';
   template: `
     <svg:path *ngIf="pathInstructions" [jlmAnimatedPath]="pathInstructions" [transitionDuration]="'1s'"/>
     <svg:circle class="caller"
+        [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
         [attr.cx]="jlmAnimatedCall.caller.svg.x"
         [attr.cy]="jlmAnimatedCall.caller.svg.y"
         r="2em"/>
     <svg:circle class="callee"
+        [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
         [attr.cx]="jlmAnimatedCall.callee.svg.x"
         [attr.cy]="jlmAnimatedCall.callee.svg.y"
         r="2em"/>
@@ -93,6 +95,10 @@ export class AnimatedCallComponent implements OnInit {
 
       return curvePath;
     }
+  }
+
+  getTransformOrigin(center: {x: number, y: number}) {
+    return `${ center.x }px ${ center.y }px`;
   }
 
   ngOnInit() {
