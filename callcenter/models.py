@@ -17,6 +17,9 @@ class UserExtend(models.Model):
     address = models.CharField(max_length=100,blank=True, null=True)
     location_lat = models.CharField(max_length=20, blank=True, null=True)
     location_long = models.CharField(max_length=20, blank=True, null=True)
+    daily_leaderboard = models.IntegerField(default=0)
+    weekly_leaderboard = models.IntegerField(default=0)
+    alltime_leaderboard = models.IntegerField(default=0)
 
     def __str__(self):
         return self.agentUsername
@@ -25,7 +28,7 @@ class UserExtend(models.Model):
         return self.achievements_aux.all()
 
 class Appel(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True)
+    user = models.ForeignKey(User,null=True, blank=True)
     date = models.DateTimeField(auto_now=True, blank=True)
 
 class Achievement(models.Model):
