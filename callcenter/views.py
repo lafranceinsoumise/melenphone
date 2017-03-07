@@ -15,6 +15,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework_jwt import views
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from django.http import Http404
 
 #Python imports
 import requests
@@ -218,29 +219,37 @@ class api_leaderboard(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request, ranking):
         users = UserExtend.objects.all()
+
+        #URL "alltime" -> On récupère le leaderboard alltime
         if ranking == "alltime":
             users = users.filter(alltime_leaderboard__gte=1).order_by('alltime_leaderboard')
+            usersTab = []
+            for user in users:
+                username = user.user.username
+                calls = user.alltime_leaderboard_calls
+                usersTab.append({'username':username, 'calls':str(calls)})
+
+        #URL "weekly" -> On récupère le leaderboard weekly
         elif ranking == "weekly":
             users = users.filter(weekly_leaderboard__gte=1).order_by('weekly_leaderboard')
+            usersTab = []
+            for user in users:
+                username = user.user.username
+                calls = user.weekly_leaderboard_calls
+                usersTab.append({'username':username, 'calls':str(calls)})
+
+        #URL "daily" -> On récupère le leaderboard daily
         elif ranking == "daily":
             users = users.filter(daily_leaderboard__gte=1).order_by('daily_leaderboard')
-        else:
-            return HttpResponse(404)
-
-        usersTab = []
-
-        for user in users:
-            username = user.user.username
-            if ranking == "alltime":
-                calls = user.alltime_leaderboard_calls
-            elif ranking == "weekly":
-                calls = user.weekly_leaderboard_calls
-            elif ranking == "daily":
+            usersTab = []
+            for user in users:
+                username = user.user.username
                 calls = user.daily_leaderboard_calls
-            else:
-                return HttpResponse(404)
+                usersTab.append({'username':username, 'calls':str(calls)})
 
-            usersTab.append({'username':username, 'calls':str(calls)})
+        #Ne correspond à aucun leaderboard -> 404
+        else:
+            raise Http404
 
         data = {'leaderboard':usersTab}
 
