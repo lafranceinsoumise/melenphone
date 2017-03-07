@@ -15,7 +15,9 @@ def updateAchievements(agentUsername):
         calls = Appel.objects.filter(user=user).order_by('-date')
         #Appeler les autres fonctions de validation
         functions = [   leet,
-                        callCount
+                        callCount,
+                        dailyCalls,
+                        earlyAdopters
                     ]
         for f in functions:
             f(user, calls)
@@ -38,8 +40,13 @@ def leet(user, calls):
     if lastCall.minute == 37 and lastCall.hour == 13:
         unlockAchievement("leet", user)
 
-def dailycalls(user, calls):
-    dailyCalls = calls.filter(date__gte=timezone.now() - datetime.timedelta(days=9)).count
+def earlyAdopters(user, calls):
+    callersCount = calls.values('user').distinct().count()
+    if callersCount < 100:
+        unlockAchievement("early_y_etais", user)
+
+def dailyCalls(user, calls):
+    dailyCalls = calls.filter(date__gte=timezone.now() - datetime.timedelta(days=1)).count()
     if dailyCalls == 30:
         unlockAchievement("daily_a_fond", user)
     if dailyCalls == 50:
@@ -49,7 +56,7 @@ def dailycalls(user, calls):
 
 
 def callCount(user, calls):
-    count = calls.count
+    count = calls.count()
     if count == 1:
         unlockAchievement("count_insoumis_1", user)
     if count == 5:

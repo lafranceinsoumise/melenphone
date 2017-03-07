@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+
 #Django imports
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Count
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 #Python imports
+import datetime
 
 #Project import
 from callcenter.models import Appel, UserExtend
@@ -23,5 +27,21 @@ class Command(BaseCommand):
             userExtend.alltime_leaderboard = index + 1
             userExtend.save()
 
+
         #Mise à jour du weekly_leaderboard
-        
+        leaders = Appel.objects.filter(date__gte=timezone.now() - datetime.timedelta(days=7)).values('user').annotate(Count('user')).order_by('-user__count')
+
+        for index, leader in enumerate(leaders):
+            userID = leader['user']
+            userExtend = User.objects.filter(id=userID)[0].UserExtend
+            userExtend.weekly_leaderboard = index + 1
+            userExtend.save()
+
+        #Mise à jour du daily_leaderboard
+        leaders = Appel.objects.filter(date__gte=timezone.now() - datetime.timedelta(days=1)).values('user').annotate(Count('user')).order_by('-user__count')
+
+        for index, leader in enumerate(leaders):
+            userID = leader['user']
+            userExtend = User.objects.filter(id=userID)[0].UserExtend
+            userExtend.daily_leaderboard = index + 1
+            userExtend.save()

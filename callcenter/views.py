@@ -144,16 +144,44 @@ class api_test_socket(APIView):
         send_message(request.body)
         return HttpResponse(200)
 
+class api_test_simulatecall(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+
+        callerLat, callerLng = randomLocation()
+        calledLat, calledLng = randomLocation()
+
+        websocketMessage = json.dumps({
+            'caller':{'lat':callerLat, 'lng':callerLng},
+            'target':{'lat':calledLat, 'lng':calledLng}
+        })
+
+        send_message(websocketMessage)
+
+        return HttpResponse(200)
+
 class api_user_infos(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
         user = request.user
 
         username = user.username
-        phi = user.UserExtend.phi
-        phi_multiplier = user.UserExtend.phi_multiplier
 
-        data = json.dumps({'username': username,'phi': str(phi), 'phi_multiplier':str(phi_multiplier)})
+        userExtend = user.UserExtend
+        phi = userExtend.phi
+        phi_multiplier = userExtend.phi_multiplier
+        alltime_leaderboard = userExtend.alltime_leaderboard
+        weekly_leaderboard = userExtend.weekly_leaderboard
+        daily_leaderboard = userExtend.daily_leaderboard
+
+
+        data = json.dumps({     'username': username,
+                                'phi': str(phi),
+                                'phi_multiplier':str(phi_multiplier),
+                                'leaderboard':{     'alltime':str(alltime_leaderboard),
+                                                    'weekly':str(weekly_leaderboard),
+                                                    'daily':str(daily_leaderboard)}
+                        })
 
         return HttpResponse(data)
 
@@ -165,13 +193,14 @@ class api_user_achievements(APIView):
 
         data = {}
 
+        #Recuperation des achivements débloqués
         dataUnlockedAchievements = []
         idList = []
         for achievement in unlockedAchievements:
             dataUnlockedAchievements.append({'name':achievement.name, 'condition':achievement.condition})
             idList.append(achievement.id)
 
-
+        #Recuperation des achivements restants
         lockedAchievements = Achievement.objects.all().exclude(id__in=idList)
 
         dataLockedAchievements = []
@@ -184,3 +213,6 @@ class api_user_achievements(APIView):
         data = json.dumps(data)
 
         return HttpResponse(data)
+
+class api_leaderboard(APIView):
+    permission_classes = (permissions.AllowAny,)
