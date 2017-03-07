@@ -21,10 +21,15 @@ def setupLocationUser(user):
     if googleAPIRequest.status_code == 200: #Si on a une réponse de google
         googleAPIData = json.loads(googleAPIRequest.text)
         if googleAPIData['status'] == "OK": #Si google a un resultat, on le récupere
-            location_lat = str(googleAPIData['results'][0]['geometry']['location']['lat'])
-            location_long = str(googleAPIData['results'][0]['geometry']['location']['lng'])
-            print (location_lat)
-            print (location_long)
+            if estBelge(googleAPIData):
+                location_lat = "51.229353"
+                location_long = "4.401428"
+            elif estSuisse(googleAPIData):
+                location_lat = "47.208101"
+                location_long = "8.968452"
+            else:
+                location_lat = str(googleAPIData['results'][0]['geometry']['location']['lat'])
+                location_long = str(googleAPIData['results'][0]['geometry']['location']['lng'])
         else: #Si google n'a pas de résultats, on ne connait pas la localisation
             location_lat="None"
             location_long="None"
@@ -72,3 +77,19 @@ def getCalledLocation(number):
         else:
             calledLat, calledLng = randomLocation()
     return calledLat, calledLng
+
+def estBelge(data):
+    compo = data['results'][0]['address_components']
+    for cmp in compo:
+        if cmp['types'][0] == "country":
+            if cmp['short_name'] == "BE":
+                return True
+    return False
+
+def estSuisse(data):
+     compo = data['results'][0]['address_components']
+     for cmp in compo:
+         if cmp['types'][0] == "country":
+             if cmp['short_name'] == "CH":
+                 return True
+     return False
