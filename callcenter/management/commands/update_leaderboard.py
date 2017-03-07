@@ -31,7 +31,7 @@ class Command(BaseCommand):
             userExtend.save()
 
         #On débloque le succes "Avoir été n°1 du classement" au premier de la liste
-        leader = User.objects.filter(id=leaders[0]['user'])[0].UserExtend
+        leader = User.objects.filter(id=leaders[0]['user'])[0]
         unlockAchievement("leaderboard_alltime", leader)
 
         #Mise à jour du weekly_leaderboard
@@ -46,7 +46,7 @@ class Command(BaseCommand):
             userExtend.save()
 
         #On débloque le succes "Avoir été n°1 du classement" au premier de la liste
-        leader = User.objects.filter(id=leaders[0]['user'])[0].UserExtend
+        leader = User.objects.filter(id=leaders[0]['user'])[0]
         unlockAchievement("leaderboard_weekly", leader)
 
         #Mise à jour du daily_leaderboard
@@ -61,5 +61,5 @@ class Command(BaseCommand):
             userExtend.save()
 
         #On débloque le succes "Avoir été n°1 du classement" au premier de la liste
-        leader = User.objects.filter(id=leaders[0]['user'])[0].UserExtend
+        leader = User.objects.filter(id=leaders[0]['user'])[0]
         unlockAchievement("leaderboard_daily", leader)
