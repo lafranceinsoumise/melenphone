@@ -216,3 +216,34 @@ class api_user_achievements(APIView):
 
 class api_leaderboard(APIView):
     permission_classes = (permissions.AllowAny,)
+    def get(self, request, ranking):
+        users = UserExtend.objects.all()
+        if ranking == "alltime":
+            users = users.filter(alltime_leaderboard__gte=1).order_by('alltime_leaderboard')
+        elif ranking == "weekly":
+            users = users.filter(weekly_leaderboard__gte=1).order_by('weekly_leaderboard')
+        elif ranking == "daily":
+            users = users.filter(daily_leaderboard__gte=1).order_by('daily_leaderboard')
+        else:
+            return HttpResponse(404)
+
+        usersTab = []
+
+        for user in users:
+            username = user.user.username
+            if ranking == "alltime":
+                calls = user.alltime_leaderboard_calls
+            elif ranking == "weekly":
+                calls = user.weekly_leaderboard_calls
+            elif ranking == "daily":
+                calls = user.daily_leaderboard_calls
+            else:
+                return HttpResponse(404)
+
+            usersTab.append({'username':username, 'calls':str(calls)})
+
+        data = {'leaderboard':usersTab}
+
+        data = json.dumps(data)
+
+        return HttpResponse(data)

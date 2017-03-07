@@ -18,8 +18,11 @@ class UserExtend(models.Model):
     location_lat = models.CharField(max_length=20, blank=True, null=True)
     location_long = models.CharField(max_length=20, blank=True, null=True)
     daily_leaderboard = models.IntegerField(default=0)
+    daily_leaderboard_calls = models.IntegerField(default=0)
     weekly_leaderboard = models.IntegerField(default=0)
+    weekly_leaderboard_calls = models.IntegerField(default=0)
     alltime_leaderboard = models.IntegerField(default=0)
+    alltime_leaderboard_calls = models.IntegerField(default=0)
 
     def __str__(self):
         return self.agentUsername

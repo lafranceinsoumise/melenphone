@@ -23,8 +23,10 @@ class Command(BaseCommand):
 
         for index, leader in enumerate(leaders):
             userID = leader['user']
+            calls = leader['user__count']
             userExtend = User.objects.filter(id=userID)[0].UserExtend
             userExtend.alltime_leaderboard = index + 1
+            userExtend.alltime_leaderboard_calls = calls
             userExtend.save()
 
 
@@ -33,8 +35,10 @@ class Command(BaseCommand):
 
         for index, leader in enumerate(leaders):
             userID = leader['user']
+            calls = leader['user__count']
             userExtend = User.objects.filter(id=userID)[0].UserExtend
             userExtend.weekly_leaderboard = index + 1
+            userExtend.weekly_leaderboard_calls = calls
             userExtend.save()
 
         #Mise à jour du daily_leaderboard
@@ -42,6 +46,8 @@ class Command(BaseCommand):
 
         for index, leader in enumerate(leaders):
             userID = leader['user']
+            calls = leader['user__count']
             userExtend = User.objects.filter(id=userID)[0].UserExtend
             userExtend.daily_leaderboard = index + 1
+            userExtend.daily_leaderboard_calls = calls
             userExtend.save()
