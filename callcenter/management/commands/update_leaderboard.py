@@ -11,6 +11,7 @@ import datetime
 
 #Project import
 from callcenter.models import Appel, UserExtend
+from callcenter.achievements import unlockAchievement
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -29,6 +30,9 @@ class Command(BaseCommand):
             userExtend.alltime_leaderboard_calls = calls
             userExtend.save()
 
+        #On débloque le succes "Avoir été n°1 du classement" au premier de la liste
+        leader = User.objects.filter(id=leaders[0]['user'])[0].UserExtend
+        unlockAchievement("leaderboard_alltime", leader)
 
         #Mise à jour du weekly_leaderboard
         leaders = Appel.objects.filter(date__gte=timezone.now() - datetime.timedelta(days=7)).values('user').annotate(Count('user')).order_by('-user__count')
@@ -41,6 +45,10 @@ class Command(BaseCommand):
             userExtend.weekly_leaderboard_calls = calls
             userExtend.save()
 
+        #On débloque le succes "Avoir été n°1 du classement" au premier de la liste
+        leader = User.objects.filter(id=leaders[0]['user'])[0].UserExtend
+        unlockAchievement("leaderboard_weekly", leader)
+
         #Mise à jour du daily_leaderboard
         leaders = Appel.objects.filter(date__gte=timezone.now() - datetime.timedelta(days=1)).values('user').annotate(Count('user')).order_by('-user__count')
 
@@ -51,3 +59,7 @@ class Command(BaseCommand):
             userExtend.daily_leaderboard = index + 1
             userExtend.daily_leaderboard_calls = calls
             userExtend.save()
+
+        #On débloque le succes "Avoir été n°1 du classement" au premier de la liste
+        leader = User.objects.filter(id=leaders[0]['user'])[0].UserExtend
+        unlockAchievement("leaderboard_daily", leader)
