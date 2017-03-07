@@ -33,8 +33,6 @@ urlpatterns = [
     #URL AUTH
     url(r'^registerNew/', views.registerNew, name="register"),
     url(r'^registerSucess/', views.registerSucess, name="register_sucess"),
-    url(r'^login/$', auth_views.login, name="login"),
-	url(r'^logout/$', auth_views.logout,{'next_page': '/'}, name="logout"),
 
     #WEBHOOKS
     url(r'^notewebhook/$', views.noteWebhook),
