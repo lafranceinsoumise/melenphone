@@ -281,3 +281,14 @@ class api_leaderboard(APIView):
         data = json.dumps(data)
 
         return HttpResponse(data)
+
+class api_basic_information(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request):
+
+        dcalls = PrecomputeData.objects.filter(code="dcalls")[0].integer_value
+
+        data = {'dailycalls': dcalls}
+        data = json.dumps(data)
+
+        return HttpResponse(data)
