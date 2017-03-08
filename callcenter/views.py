@@ -157,13 +157,15 @@ def noteWebhook(request):
 
 #################### REST API ################################
 
-
+# /api/test_websocket/
 class api_test_socket(APIView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
         send_message(request.body)
         return HttpResponse(200)
 
+
+# /api/simulate_call/
 class api_test_simulatecall(APIView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
@@ -181,11 +183,11 @@ class api_test_simulatecall(APIView):
                                                 }
         })
 
-
         send_message(websocketMessage)
-
         return HttpResponse(200)
 
+
+# /api/user/infos/
 class api_user_infos(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
@@ -211,6 +213,8 @@ class api_user_infos(APIView):
 
         return HttpResponse(data)
 
+
+# /api/user/achievements/
 class api_user_achievements(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
@@ -235,11 +239,12 @@ class api_user_achievements(APIView):
 
         data['unlocked'] = dataUnlockedAchievements
         data['locked'] = dataLockedAchievements
-
         data = json.dumps(data)
 
         return HttpResponse(data)
 
+
+# /api/leaderboard/X/ avec X = alltime ou weekly ou daily
 class api_leaderboard(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request, ranking):
@@ -277,11 +282,12 @@ class api_leaderboard(APIView):
             raise Http404
 
         data = {'leaderboard':usersTab}
-
         data = json.dumps(data)
 
         return HttpResponse(data)
 
+
+# /api/basic_information/
 class api_basic_information(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request):
