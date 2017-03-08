@@ -22,6 +22,7 @@ import requests
 import json
 
 #Project imports
+from callcenter.achievements import *
 from callcenter.models import *
 from callcenter.map import *
 from callcenter.phi import *
@@ -30,7 +31,7 @@ from .forms import *
 
 #JWT auth
 
-
+#ANGULAR APP
 class AngularApp(TemplateView):
     template_name = 'index.html'
 
@@ -44,10 +45,6 @@ class SampleView(View):
     def get(self, request):
         return HttpResponse("OK!")
 
-class NgTemplateView(View):
-    """View to render django template to angular"""
-    def get(self, request):
-        return render(request, 'template.html', {"django_variable": "This is django context variable"})
 
 @require_POST
 @csrf_exempt #Sinon la requete est bloquée car lancée depuis un autre site (donc qui n'a pas le cookie csrf)
@@ -63,25 +60,42 @@ def noteWebhook(request):
     calledNumber = data['data']['contact']
     calledLat, calledLng = getCalledLocation(calledNumber)
 
-    #On crédite les phis que gagne le user
-    EarnPhi(callerAgentUsername)
+    user = UserExtend.objects.filter(agentUsername=callerAgentUsername)[0].user
 
-    #On ajoute l'appel à la bdd
-    if UserExtend.objects.filter(agentUsername=callerAgentUsername).exists(): #Si le user est inscrit sur le site
-        userToSave = UserExtend.objects.filter(agentUsername=callerAgentUsername)[0].user
-        Appel.objects.create(user=userToSave) #On enregistre l'appel et son id
-    else: #Si on ne connait pas le user
-        Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
+    #On va vérifier que le suser ne spam pas les appels !
+    calls = Appel.objects.filter(user=user)
+    #On vérifie qu'il n'a pas passé un appel trop récement
+    if len(calls) == 0: #Si le user n'a jamais appelé
+        authorization = True
+        lastCall = None
+    else:
+        calls = calls.order_by('-date')
+        lastCall = calls[0].date
+        if (timezone.now() - lastCall).seconds > 60:
+            authorization = True
+        else:
+            authorization = False #Si le dernier appel est trop récent (<60s), on s'arrête
 
-    #On met à jour les achievements
-    updateAchievements(callerAgentUsername)
+    if authorization: #Si le dernier appel n'est pas trop recent
+        #On crédite les phis que gagne le user
+        EarnPhi(callerAgentUsername, lastCall)
 
-    #On envoie les positions au websocket pour l'animation
-    websocketMessage = json.dumps({
-        'caller':{'lat':callerLat, 'lng':callerLng},
-        'target':{'lat':calledLat, 'lng':calledLng}
-    })
-    send_message(websocketMessage)
+        #On ajoute l'appel à la bdd
+        if UserExtend.objects.filter(agentUsername=callerAgentUsername).exists(): #Si le user est inscrit sur le site
+            userToSave = UserExtend.objects.filter(agentUsername=callerAgentUsername)[0].user
+            Appel.objects.create(user=userToSave) #On enregistre l'appel et son id
+        else: #Si on ne connait pas le user
+            Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
+
+        #On met à jour les achievements
+        updateAchievements(callerAgentUsername)
+
+        #On envoie les positions au websocket pour l'animation
+        websocketMessage = json.dumps({
+            'caller':{'lat':callerLat, 'lng':callerLng},
+            'target':{'lat':calledLat, 'lng':calledLng}
+        })
+        send_message(websocketMessage)
     return HttpResponse(status=200)
 
 def index(request):

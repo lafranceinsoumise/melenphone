@@ -19,15 +19,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from callcenter import views
-from callcenter.views import SampleView, AngularApp, NgTemplateView
+from callcenter.views import AngularApp
 from callcenter.views import api_user_infos, api_user_achievements, api_test_simulatecall, api_leaderboard
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from rest_framework.urlpatterns import format_suffix_patterns
 
-ngurls = [
-    url(r'^$', SampleView.as_view(), name='sample'),
-    url(r'^ng/$', NgTemplateView.as_view(), name='ngTemplate'),
-]
 
 urlpatterns = [
     #URL AUTH
@@ -51,7 +47,6 @@ urlpatterns = [
 
     #AUTRES URLS
     url(r'^admin/', admin.site.urls),
-    url(r'^sample/', include(ngurls)),
 
     #ANGULAR
     url(r'^(?!ng/).*$', AngularApp.as_view(), name="angular_app"),
