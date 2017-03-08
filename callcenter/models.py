@@ -58,3 +58,11 @@ class NumbersLocation(models.Model):
 
     def get_location(self):
         return self.location_lat, self.location_long
+
+class PrecomputeData(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    text_value = models.TextField(null=True)
+    integer_value = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.code

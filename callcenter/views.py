@@ -133,13 +133,23 @@ def noteWebhook(request):
         else: #Si on ne connait pas le user
             Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
 
+        #On ajoute l'appel au décompte du jour
+        dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
+        dcalls.integer_value += 1
+        dcalls.save()
+
+
         #On met à jour les achievements
         updateAchievements(callerAgentUsername)
 
         #On envoie les positions au websocket pour l'animation
-        websocketMessage = json.dumps({
-            'caller':{'lat':callerLat, 'lng':callerLng},
-            'target':{'lat':calledLat, 'lng':calledLng}
+        websocketMessage = json.dumps({ 'call': {
+                                                'caller': {'lat':callerLat, 'lng':callerLng},
+                                                'target': {'lat':calledLat, 'lng':calledLng}
+                                                },
+                                        'updated_data': {
+                                                'dailycalls':dcalls
+                                                }
         })
         send_message(websocketMessage)
     return HttpResponse(status=200)
@@ -160,11 +170,17 @@ class api_test_simulatecall(APIView):
 
         callerLat, callerLng = randomLocation()
         calledLat, calledLng = randomLocation()
+        dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
 
-        websocketMessage = json.dumps({
-            'caller':{'lat':callerLat, 'lng':callerLng},
-            'target':{'lat':calledLat, 'lng':calledLng}
+        websocketMessage = json.dumps({ 'call': {
+                                                'caller': {'lat':callerLat, 'lng':callerLng},
+                                                'target': {'lat':calledLat, 'lng':calledLng}
+                                                },
+                                        'updated_data': {
+                                                'dailycalls':dcalls
+                                                }
         })
+
 
         send_message(websocketMessage)
 
