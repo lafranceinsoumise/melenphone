@@ -40,6 +40,7 @@ class AngularApp(TemplateView):
         context['ANGULAR_URL'] = settings.ANGULAR_URL
         return context
 
+#################### DJANGO VIEWS ################################
 
 # View pour l'enregistrement d'un nouveau membre et création de son agent callhub
 def registerNew(request):
@@ -71,7 +72,7 @@ def registerNew(request):
                     userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, address=address, first_call_of_the_day = date, user=user, phi=0, phi_multiplier=1.0)
                     if created:
                         userExtend.save()
-                        return redirect('register_sucess')
+                        return redirect('angular_app')
                     else: #Si y'a un problème, on supprime le User créé juste avant
                         user.delete()
                         form.add_error(None, "Une erreur est survenue.")
