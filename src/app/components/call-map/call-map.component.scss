@@ -15,3 +15,12 @@ path.department {
 .lake {
     fill:white;
 }
+
+g.call {
+    transition: opacity 1s;
+    opacity: 1;
+
+    &.remove-start {
+        opacity: 0;
+    }
+}

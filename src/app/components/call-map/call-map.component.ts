@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef, ViewRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ViewContainerRef, ViewRef, ViewChild, ElementRef } from '@angular/core';
 
 import { SocketConnectionService, CoordinatesConverterService } from '../../shared';
 import { WsCallNotification, CallNoteDescription } from '../../core';
@@ -10,7 +10,9 @@ import { WsCallNotification, CallNoteDescription } from '../../core';
 })
 export class CallMapComponent implements OnInit {
   @ViewChild('svgDocument') svgRef: ElementRef;
-  notifications: WsCallNotification[] = [];
+  notifications: { call: WsCallNotification, options: any}[] = [];
+
+  @Input() timeout = 3000;
 
   constructor(
     private scs: SocketConnectionService,
@@ -46,7 +48,14 @@ export class CallMapComponent implements OnInit {
     const {width: mapWidth, height: mapHeight} = this.getSvgDimensions();
     call.caller.svg = {x: callerSvgCoords.x * mapWidth, y: callerSvgCoords.y * mapHeight};
     call.callee.svg = {x: calleeSvgCoords.x * mapWidth, y: calleeSvgCoords.y * mapHeight};
-    this.notifications.push(call);
+    const notifRef = {call, options: {removeStart: false}};
+    this.notifications.push(notifRef);
+
+    setTimeout(
+      () => {
+        notifRef.options.removeStart = true;
+        setTimeout(() => this.notifications.splice(this.notifications.indexOf(notifRef), 1), 1100);
+      }, this.timeout);
   }
 
 }

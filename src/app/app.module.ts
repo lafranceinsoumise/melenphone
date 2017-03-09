@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -64,7 +64,11 @@ import {
     CoordinatesConverterService,
     SocketConnectionService,
     AuthenticationService,
-    UserService
+    UserService,
+    {
+      provide: XSRFStrategy,
+      useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')
+    }
   ],
   bootstrap: [AppComponent]
 })

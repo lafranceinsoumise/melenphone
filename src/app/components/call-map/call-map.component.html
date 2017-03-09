@@ -2724,6 +2724,9 @@
 	<text transform="matrix(1 0 0 1 97.4839 345.9824)" class="territory-name">Saint-Martin</text>
 </g>
 <g>
-	<g *ngFor="let notif of notifications" [jlmAnimatedCall]="notif"></g>
+	<g *ngFor="let notif of notifications"
+			class="call"
+			[jlmAnimatedCall]="notif.call" 
+			[class.remove-start]="notif.options.removeStart"></g>
 </g>
 </svg>

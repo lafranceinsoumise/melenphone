@@ -10,24 +10,25 @@ import { WsCallNotification } from '../../core';
 @Component({
   selector: 'g[jlmAnimatedCall]',
   template: `
-    <svg:path *ngIf="pathInstructions" [jlmAnimatedPath]="pathInstructions" [transitionDuration]="'1s'"/>
-    <svg:circle class="caller"
-        [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
-        [attr.cx]="jlmAnimatedCall.caller.svg.x"
-        [attr.cy]="jlmAnimatedCall.caller.svg.y"
-        r="2em"/>
-    <svg:circle class="callee"
-        [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
-        [attr.cx]="jlmAnimatedCall.callee.svg.x"
-        [attr.cy]="jlmAnimatedCall.callee.svg.y"
-        r="2em"/>
+    <svg:g>
+      <svg:path *ngIf="pathInstructions" [jlmAnimatedPath]="pathInstructions" [transitionDuration]="'1s'"/>
+      <svg:circle class="caller"
+          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
+          [attr.cx]="jlmAnimatedCall.caller.svg.x"
+          [attr.cy]="jlmAnimatedCall.caller.svg.y"
+          r="1.6em"/>
+      <svg:circle class="callee"
+          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
+          [attr.cx]="jlmAnimatedCall.callee.svg.x"
+          [attr.cy]="jlmAnimatedCall.callee.svg.y"
+          r="1.6em"/>
+    </g>
   `,
   styles: [`
     line, path {
       fill: transparent;
       stroke: firebrick;
-      stroke-width: 6px;
-      // stroke-dasharray: 14px 10px;
+      stroke-width: 4px;
       stroke-linecap: round;
     }
 
