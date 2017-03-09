@@ -67,7 +67,10 @@ export function xsrfStrategyFactory() {
   ],
   providers: [
     FullscreenService,
-    {provide: APP_BASE_HREF, useValue: '/ng'},
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/ng'
+    },
     CoordinatesConverterService,
     SocketConnectionService,
     AuthenticationService,

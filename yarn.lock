@@ -105,7 +105,7 @@
   version "4.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/@angular/http/-/http-4.0.0-rc.2.tgz#145ecd17f483b97e7750bb9e00b60e48ff82b67a"
 
-"@angular/material@^2.0.0-beta.1":
+"@angular/material@^2.0.0-beta.2":
   version "2.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-2.0.0-beta.2.tgz#65ee8733990347b7518b7f42113e02e069dc109b"
 

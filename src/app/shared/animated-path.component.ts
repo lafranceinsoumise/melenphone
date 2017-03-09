@@ -1,6 +1,5 @@
 import {
   Component,
-  Renderer,
   OnInit,
   Input,
   HostBinding,
@@ -45,7 +44,7 @@ export class AnimatedPathComponent implements AfterViewInit {
   @HostBinding('class.transition-start') transitionStart = false;
   @HostBinding('class.transition-end') transitionEnd = false;
 
-  constructor(private renderer: Renderer, private host: ElementRef) {}
+  constructor(private host: ElementRef) {}
 
   ngAfterViewInit() {
     this.length = this.host.nativeElement.getTotalLength();

@@ -27,12 +27,12 @@ export class RegistrationComponent implements OnInit {
 
   reset(): void {
     this.formInfo = {
-      username: null,
-      email: null,
-      password: null,
-      passwordConfirmation: null,
-      country: null,
-      city: null
+      username: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+      country: '',
+      city: ''
     };
   }
 
