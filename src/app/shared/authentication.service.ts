@@ -13,9 +13,6 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        const headers = new Headers({
-            'Content-Type': 'application/json'
-        })
         return this.http.post('/api/token/auth', {username, password})
             .toPromise()
             .then((res: Response) => {

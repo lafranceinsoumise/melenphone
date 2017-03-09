@@ -33,7 +33,7 @@ export class HomeComponent {
         }
       },
     };
-    this.http.post('/api/test_websocket/', sentObject)
+    this.http.post('/api/simulate_call/', sentObject)
       .toPromise()
       .then((res: Response) => {
         if (res.status !== 200) {

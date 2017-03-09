@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef, ViewRef, ViewChild, ElementRef } from '@angular/core';
 
 import { SocketConnectionService, CoordinatesConverterService } from '../../shared';
-import { WsCallNotification } from '../../core';
+import { WsCallNotification, CallNoteDescription } from '../../core';
 
 @Component({
   selector: 'jlm-call-map',
@@ -26,7 +26,21 @@ export class CallMapComponent implements OnInit {
   }
 
   onCallNotification(event: MessageEvent) {
-    const call: WsCallNotification = JSON.parse(event.data);
+    const rawNotification = JSON.parse(event.data) as CallNoteDescription;
+    const call: WsCallNotification = {
+      caller: {
+        gps: {
+            lat: +rawNotification.call.caller.lat,
+            lng: +rawNotification.call.caller.lng
+        }
+      },
+      callee: {
+          gps: {
+            lat: +rawNotification.call.target.lat,
+            lng: +rawNotification.call.target.lng
+          }
+      }
+    };
     const callerSvgCoords = this.coordsCvrtr.getSvgLocation(call.caller.gps.lat, call.caller.gps.lng);
     const calleeSvgCoords = this.coordsCvrtr.getSvgLocation(call.callee.gps.lat, call.callee.gps.lng);
     const {width: mapWidth, height: mapHeight} = this.getSvgDimensions();

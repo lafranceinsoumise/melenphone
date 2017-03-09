@@ -20,3 +20,19 @@ export interface WsCallNotification {
         };
     };
 }
+
+export interface CallNoteDescription {
+    call: {
+        caller: {
+            lat: string;
+            lng: string;
+        };
+        target: {
+            lat: string;
+            lng: string;
+        };
+        updatedData: {
+            dailyCalls: number;
+        }
+    };
+}
