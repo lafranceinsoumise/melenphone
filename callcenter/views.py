@@ -147,8 +147,8 @@ def noteWebhook(request):
                                                 'caller': {'lat':callerLat, 'lng':callerLng},
                                                 'target': {'lat':calledLat, 'lng':calledLng}
                                                 },
-                                        'updated_data': {
-                                                'dailycalls':dcalls
+                                        'updatedData': {
+                                                'dailyCalls':dcalls
                                                 }
         })
         send_message(websocketMessage)
@@ -178,8 +178,8 @@ class api_test_simulatecall(APIView):
                                                 'caller': {'lat':callerLat, 'lng':callerLng},
                                                 'target': {'lat':calledLat, 'lng':calledLng}
                                                 },
-                                        'updated_data': {
-                                                'dailycalls':dcalls
+                                        'updatedData': {
+                                                'dailyCalls':dcalls
                                                 }
         })
 
@@ -205,7 +205,7 @@ class api_user_infos(APIView):
 
         data = json.dumps({     'username': username,
                                 'phi': str(phi),
-                                'phi_multiplier':str(phi_multiplier),
+                                'phiMultiplier':str(phi_multiplier),
                                 'leaderboard':{     'alltime':str(alltime_leaderboard),
                                                     'weekly':str(weekly_leaderboard),
                                                     'daily':str(daily_leaderboard)}
@@ -294,7 +294,9 @@ class api_basic_information(APIView):
 
         dcalls = PrecomputeData.objects.filter(code="dcalls")[0].integer_value
 
-        data = {'dailycalls': dcalls}
+        data = {'dailyCalls': dcalls}
         data = json.dumps(data)
 
         return HttpResponse(data)
+
+class api_user(APIView):
