@@ -12,15 +12,15 @@ export class AuthenticationService {
         this.token = currentUser && currentUser.token;
     }
 
-    login(userName: string, password: string) {
-        return this.http.post('/api/token/auth', JSON.stringify({}))
+    login(username: string, password: string) {
+        return this.http.post('/api/token/auth', `username=${username}&password=${password}`)
             .toPromise()
             .then((res: Response) => {
                 const jsonObj = res.json();
                 const token = jsonObj && jsonObj.token;
                 if (token) {
                     this.token = token;
-                    localStorage.setItem('currentUser', JSON.stringify({userName, token}));
+                    localStorage.setItem('currentUser', JSON.stringify({username, token}));
                     return true;
                 } else {
                     return false;

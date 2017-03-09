@@ -17,7 +17,7 @@ export class UserService {
         const headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
         const options = new RequestOptions({headers});
 
-        return this.http.get('/api/users', options)
+        return this.http.get('/api/user', options)
             .toPromise()
             .then((res: Response) => res.json() as User[]);
     }
