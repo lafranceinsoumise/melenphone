@@ -9,7 +9,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django.views.generic import View, TemplateView
+from django.views.generic import TemplateView
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -46,92 +46,93 @@ class AngularApp(TemplateView):
 
 #################### WEBHOOKS ################################
 
-@require_POST
-@csrf_exempt #Sinon la requete est bloquée car lancée depuis un autre site (donc qui n'a pas le cookie csrf)
-def noteWebhook(request):
+# /api/simulate_call/
+class webhook_note(APIView):
+    permission_classes = (permissions.AllowAny,)
 
-    MIN_DELAY = 60
+    def post(self, request):
+        MIN_DELAY = 60
 
-    jsondata = request.body
-    data = json.loads(jsondata)
+        jsondata = request.body
+        data = json.loads(jsondata)
 
-    #Latitude et longitude de l'appelant
-    callerAgentUsername = data['data']['agent']['username']
-    callerLat, callerLng = getCallerLocation(callerAgentUsername)
+        #Latitude et longitude de l'appelant
+        callerAgentUsername = data['data']['agent']['username']
+        callerLat, callerLng = getCallerLocation(callerAgentUsername)
 
-    #Latitude et longitude de l'appellé
-    calledNumber = data['data']['contact']
-    calledLat, calledLng = getCalledLocation(calledNumber)
+        #Latitude et longitude de l'appellé
+        calledNumber = data['data']['contact']
+        calledLat, calledLng = getCalledLocation(calledNumber)
 
-    if UserExtend.objects.filter(agentUsername=callerAgentUsername).exists(): #Si on connait l'agent callhub existe
-        user = UserExtend.objects.filter(agentUsername=callerAgentUsername)[0].user #On le récupère
+        if UserExtend.objects.filter(agentUsername=callerAgentUsername).exists(): #Si on connait l'agent callhub existe
+            user = UserExtend.objects.filter(agentUsername=callerAgentUsername)[0].user #On le récupère
 
-        calls = Appel.objects.filter(user=user)
-        #On vérifie qu'il n'a pas passé un appel trop récement
-        if len(calls) == 0: #Si le user n'a jamais appelé
-            authorization = True
-            lastCall = None
-        else:
-            calls = calls.order_by('-date')
-            lastCall = calls[0].date
-            if (timezone.now() - lastCall).seconds > MIN_DELAY:
+            calls = Appel.objects.filter(user=user)
+            #On vérifie qu'il n'a pas passé un appel trop récement
+            if len(calls) == 0: #Si le user n'a jamais appelé
                 authorization = True
+                lastCall = None
             else:
-                authorization = False #Si le dernier appel est trop récent (<60s), on s'arrête
+                calls = calls.order_by('-date')
+                lastCall = calls[0].date
+                if (timezone.now() - lastCall).seconds > MIN_DELAY:
+                    authorization = True
+                else:
+                    authorization = False #Si le dernier appel est trop récent (<60s), on s'arrête
 
-        if authorization: #Si le dernier appel n'est pas trop recent
-            #On crédite les phis que gagne le user
-            EarnPhi(callerAgentUsername, lastCall)
+            if authorization: #Si le dernier appel n'est pas trop recent
+                #On crédite les phis que gagne le user
+                EarnPhi(callerAgentUsername, lastCall)
 
-            #On enregistre l'appel avec le user associé
-            Appel.objects.create(user=user)
+                #On enregistre l'appel avec le user associé
+                Appel.objects.create(user=user)
 
-            #On ajoute l'appel au décompte du jour
+                #On ajoute l'appel au décompte du jour
+                dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
+                dcalls.integer_value += 1
+                dcalls.save()
+
+
+                #On met à jour les achievements
+                updateAchievements(user)
+
+                #On envoie les positions au websocket pour l'animation
+                websocketMessage = json.dumps({ 'call': {
+                                                        'caller': {
+                                                            'lat':callerLat,
+                                                            'lng':callerLng,
+                                                            'id':user.id,
+                                                            'username':user.username},
+                                                        'target': {
+                                                            'lat':calledLat,
+                                                            'lng':calledLng}
+                                                        },
+                                                'updatedData': {
+                                                        'dailyCalls':dcalls.integer_value
+                                                        }
+                })
+                send_message(websocketMessage)
+
+        #Si on ne connait pas l'agent callhub
+        else:
+            Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
+
+            #On ajoute 1 au compteur des appels du jour
             dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
             dcalls.integer_value += 1
             dcalls.save()
 
-
-            #On met à jour les achievements
-            updateAchievements(user)
-
             #On envoie les positions au websocket pour l'animation
             websocketMessage = json.dumps({ 'call': {
-                                                    'caller': {
-                                                        'lat':callerLat,
-                                                        'lng':callerLng,
-                                                        'id':user.id,
-                                                        'username':user.username},
-                                                    'target': {
-                                                        'lat':calledLat,
-                                                        'lng':calledLng}
+                                                    'caller': {'lat':callerLat, 'lng':callerLng, 'id':0, 'username':callerAgentUsername},
+                                                    'target': {'lat':calledLat, 'lng':calledLng}
                                                     },
                                             'updatedData': {
                                                     'dailyCalls':dcalls.integer_value
                                                     }
             })
             send_message(websocketMessage)
-
-    #Si on ne connait pas l'agent callhub
-    else:
-        Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
-
-        #On ajoute 1 au compteur des appels du jour
-        dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
-        dcalls.integer_value += 1
-        dcalls.save()
-
-        #On envoie les positions au websocket pour l'animation
-        websocketMessage = json.dumps({ 'call': {
-                                                'caller': {'lat':callerLat, 'lng':callerLng, 'id':0, 'username':callerAgentUsername},
-                                                'target': {'lat':calledLat, 'lng':calledLng}
-                                                },
-                                        'updatedData': {
-                                                'dailyCalls':dcalls.integer_value
-                                                }
-        })
-        send_message(websocketMessage)
-    return HttpResponse(status=200)
+        return HttpResponse(status=200)
 
 
 #################### REST API ################################

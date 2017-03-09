@@ -18,9 +18,9 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from callcenter.views import noteWebhook
 from callcenter.views import AngularApp
 from callcenter.views import api_user_infos, api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information, api_user, api_test_socket
+from callcenter.views import webhook_note
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -28,7 +28,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
 
     #WEBHOOKS
-    url(r'^notewebhook$', noteWebhook),
+    url(r'^webhook/note', webhook_note.as_view()),
 
     #API
         #TOKEN
