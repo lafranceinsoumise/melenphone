@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -13,7 +13,10 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post('/api/token/auth', `username=${username}&password=${password}`)
+        const headers = new Headers({
+            'Content-Type': 'application/json'
+        })
+        return this.http.post('/api/token/auth', {username, password})
             .toPromise()
             .then((res: Response) => {
                 const jsonObj = res.json();
