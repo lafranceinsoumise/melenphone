@@ -17,23 +17,7 @@ export class HomeComponent {
     private http: Http) { }
 
   makeBackendRequest() {
-    const sentObject: WsCallNotification = {
-      caller: {
-        gps: {
-          // Est de la russie
-          lat: 66.921802,
-          lng: -177.480682
-        }
-      },
-      callee: {
-        gps: {
-          // Bordeaux
-          lat: 44.833328,
-          lng: -0.56667
-        }
-      },
-    };
-    this.http.post('/api/simulate_call/', sentObject)
+    this.http.post('/api/simulate_call', '')
       .toPromise()
       .then((res: Response) => {
         if (res.status !== 200) {
