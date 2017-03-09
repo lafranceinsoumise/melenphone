@@ -34,6 +34,10 @@ import {
   AuthenticationService,
   UserService } from './shared';
 
+export function xsrfStrategyFactory() {
+  return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,7 +71,7 @@ import {
     UserService,
     {
       provide: XSRFStrategy,
-      useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')
+      useFactory: xsrfStrategyFactory
     }
   ],
   bootstrap: [AppComponent]
