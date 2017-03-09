@@ -102,7 +102,7 @@ def noteWebhook(request):
                                                 'target': {'lat':calledLat, 'lng':calledLng}
                                                 },
                                         'updatedData': {
-                                                'dailyCalls':dcalls
+                                                'dailyCalls':dcalls.integer_value
                                                 }
         })
         send_message(websocketMessage)
