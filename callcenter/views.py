@@ -44,56 +44,6 @@ class AngularApp(TemplateView):
         context['ANGULAR_URL'] = settings.ANGULAR_URL
         return context
 
-#################### DJANGO VIEWS ################################
-
-# View pour l'enregistrement d'un nouveau membre et création de son agent callhub
-def registerNew(request):
-    if request.method == 'POST':
-        form = registerNewForm(request.POST)
-        if form.is_valid():
-            username=form.cleaned_data['username']
-            email=form.cleaned_data['email']
-            password=form.cleaned_data['password1']
-            country=form.cleaned_data['country']
-            city=form.cleaned_data['city']
-
-            address = city + '+' + country
-            address.replace(" ", "+")
-
-            token = 'Token ' + settings.CALLHUB_API_KHEY
-            headers = {'Authorization': token }
-            data = {'username':username, 'email':email, 'team':'tout_le_monde'}
-            r = requests.post('https://api.callhub.io/v1/agents/', data=data, headers=headers) #On fait la requete sur l'API de github
-            if r.status_code == requests.codes.created: #Si tout s'est bien passé
-                #On crée le user dans la bdd
-                user,created = User.objects.get_or_create(username=username, email=email) #On tente de créer le user
-                if created:
-                    user.set_password(password)
-                    user.save()
-                    #On crée alors la partie userextend
-                    date = timezone.now()
-                    date.replace(year = date.year-1)
-                    userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, address=address, first_call_of_the_day = date, user=user, phi=0, phi_multiplier=1.0)
-                    if created:
-                        userExtend.save()
-                        return redirect('angular_app')
-                    else: #Si y'a un problème, on supprime le User créé juste avant
-                        user.delete()
-                        form.add_error(None, "Une erreur est survenue.")
-                else:
-                    form.add_error(None, "Une erreur est survenue.")
-            elif r.status_code == 400: #Bad request : le username existe déjà !
-                form.add_error('username', "Ce nom d'utilisateur est déjà utilisé sur Callhub !")
-            else: #Autre erreur de callhub
-                form.add_error(None, "Callhub ne répond pas, veuillez réessayer plus tard.")
-    else:
-        form=registerNewForm()
-    return render(request, 'callcenter/register.html', locals())
-
-#View de transition après enregistrement d'un nouvel utilisateur
-def registerSucess(request):
-    return render(request, 'callcenter/register_success.html', locals())
-
 #################### WEBHOOKS ################################
 
 @require_POST

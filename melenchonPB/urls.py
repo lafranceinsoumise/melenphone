@@ -18,7 +18,6 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from callcenter import views
 from callcenter.views import AngularApp
 from callcenter.views import api_user_infos, api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information, api_user
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
@@ -26,9 +25,6 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 
 urlpatterns = [
-    #URL AUTH
-    url(r'^registerNew/', views.registerNew, name="register"),
-    url(r'^registerSucess/', views.registerSucess, name="register_sucess"),
 
     #WEBHOOKS
     url(r'^notewebhook$', views.noteWebhook),
