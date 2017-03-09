@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../shared/authentication.service';
 
 interface Credentials {
-  userName: string;
+  username: string;
   password: string;
 }
 
@@ -15,7 +15,7 @@ interface Credentials {
 })
 export class LoginComponent implements OnInit {
   credentials: Credentials = {
-    userName: '',
+    username: '',
     password: ''
   };
   loading = false;
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loading = true;
-    this.auth.login(this.credentials.userName, this.credentials.password)
+    this.auth.login(this.credentials.username, this.credentials.password)
       .then((result) => {
         this.loading = false;
         if (result === true) {
