@@ -61,7 +61,7 @@ export function xsrfStrategyFactory() {
     BrowserModule,
     FormsModule,
     HttpModule,
-    MaterialModule.forRoot(),
+    MaterialModule,
     AppRoutingModule,
     SharedModule
   ],

@@ -12,7 +12,6 @@ import {
   AfterViewChecked,
   AnimationKeyframe
 } from '@angular/core';
-import { animate, AnimationStyleMetadata, AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 @Component({
   selector: 'path[jlmAnimatedPath]',

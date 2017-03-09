@@ -15,8 +15,8 @@ interface Credentials {
 })
 export class LoginComponent implements OnInit {
   credentials: Credentials = {
-    username: '',
-    password: ''
+    username: null,
+    password: null
   };
   loading = false;
   error = '';
