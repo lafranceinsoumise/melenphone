@@ -53,6 +53,6 @@ urlpatterns = [
     url(r'^(?!ng/).*$', AngularApp.as_view(), name="angular_app"),
     url(r'^ng/pokechon$', AngularApp.as_view(), name="angular_app"),
     url(r'^ng/login$', AngularApp.as_view(), name="angular_app"),
-    url(r'^ng/registration$', AngularApp.as_view(), name="angular_app"),
+    url(r'^ng/register$', AngularApp.as_view(), name="angular_app"),
 	url(r'^ng/$', AngularApp.as_view(), name="angular_app"),
 ] + static(settings.ANGULAR_URL, document_root=settings.ANGULAR_ROOT)
