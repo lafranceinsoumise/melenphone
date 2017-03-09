@@ -9,7 +9,8 @@ export class SidenavComponent {
   links = [
     { path: '/', text: 'Carte' },
     { path: '/pokechon', text: 'pokéchon' },
-    { path: '/login', text: 'connexion' }
+    { path: '/login', text: 'connexion' },
+    { path: '/register', text: `s'inscrire` }
   ];
   constructor() { }
 

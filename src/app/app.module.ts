@@ -14,14 +14,16 @@ import { AppComponent } from './app.component';
 import {
   HomeComponent,
   ConnectionComponent,
-  PokechonHomeComponent  } from './views';
+  PokechonHomeComponent,
+  RegisterComponent
+} from './views';
 
 import {
   NavbarComponent,
   SidenavComponent,
   DynamicComponentComponent,
   GaugeComponent,
-  RegisterComponent,
+  RegistrationComponent,
   LoginComponent,
   CallMapComponent,
   AnimatedCallComponent
@@ -51,7 +53,8 @@ export function xsrfStrategyFactory() {
     RegisterComponent,
     ConnectionComponent,
     CallMapComponent,
-    AnimatedCallComponent
+    AnimatedCallComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserAnimationsModule,

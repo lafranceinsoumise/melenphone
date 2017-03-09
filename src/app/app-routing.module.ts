@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions, PreloadAllModules } from '@angular/router';
 
-import { HomeComponent, PokechonHomeComponent, ConnectionComponent } from './views';
+import {
+  HomeComponent,
+  PokechonHomeComponent,
+  ConnectionComponent,
+  RegisterComponent
+} from './views';
 
 import { AuthGuarg } from './_guards';
 
@@ -11,7 +16,8 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'pokechon', loadChildren: './pokechon/pokechon.module#PokechonModule' },
-      { path: 'login', component: ConnectionComponent }
+      { path: 'login', component: ConnectionComponent },
+      { path: 'register', component: RegisterComponent }
     ]
   }
 ];

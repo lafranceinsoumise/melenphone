@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'jlm-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  template: `
+    <jlm-registration></jlm-registration>
+  `,
+  styles: []
 })
 export class RegisterComponent implements OnInit {
 
