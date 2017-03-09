@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from callcenter import views
 from callcenter.views import AngularApp
-from callcenter.views import api_user_infos, api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information
+from callcenter.views import api_user_infos, api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information, api_user
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^api/user/achievements$', api_user_achievements.as_view()),
 
     #REST_FRAMEWORK
+    url(r'^api/user/$', api_user.as_view()),
 
     #AUTRES URLS
     url(r'^admin/', admin.site.urls),

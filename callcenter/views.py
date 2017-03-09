@@ -16,6 +16,10 @@ from rest_framework import permissions
 from rest_framework_jwt import views
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.http import Http404
+from django.http import HttpResponseForbidden
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
 
 #Python imports
 import requests
@@ -193,6 +197,7 @@ class api_user_infos(APIView):
     def get(self, request):
         user = request.user
 
+        userID = user.id
         username = user.username
 
         userExtend = user.UserExtend
@@ -203,7 +208,8 @@ class api_user_infos(APIView):
         daily_leaderboard = userExtend.daily_leaderboard
 
 
-        data = json.dumps({     'username': username,
+        data = json.dumps({     'id': userID,
+                                'username': username,
                                 'phi': str(phi),
                                 'phiMultiplier':str(phi_multiplier),
                                 'leaderboard':{     'alltime':str(alltime_leaderboard),
@@ -298,3 +304,103 @@ class api_basic_information(APIView):
         data = json.dumps(data)
 
         return HttpResponse(data)
+
+class api_user(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    #Pas de restrictions
+    def post(self, request):
+        data = json.loads(request.body)
+
+        username=data['username']
+        email=data['email']
+        password=data['password']
+        country=data['country']
+        city=data['city']
+
+        #Erreur user existant
+        if User.objects.filter(username=username).exists():
+            error = {
+                        'errors': [{
+                            'type':  'UserAlreadyExists',
+                            'message': "Ce nom d'utilisateur est déjà utilisé."
+                        }]
+                    }
+            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
+
+        try:
+            validate_email(email)
+        except ValidationError:
+            error = {
+                        'errors': [{
+                            'type':  'InvalidEmail',
+                            'message': "Cette adresse mail est invalide."
+                        }]
+                    }
+            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
+
+        #Erreur email existant
+        if User.objects.filter(email=email).exists():
+            error = {
+                        'errors': [{
+                            'type':  'EmailAlreadyExists',
+                            'message': "Cette adresse mail est déjà utilisée."
+                        }]
+                    }
+            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
+
+        address = city + '+' + country
+        address.replace(" ", "+")
+
+        token = 'Token ' + settings.CALLHUB_API_KHEY
+        headers = {'Authorization': token }
+        callhubData = {'username':username, 'email':email, 'team':'tout_le_monde'}
+
+        r = requests.post('https://api.callhub.io/v1/agents/', data=callhubData, headers=headers) #On fait la requete sur l'API de github
+        if r.status_code == requests.codes.created: #Si tout s'est bien passé
+            #On crée le user dans la bdd
+            user,created = User.objects.get_or_create(username=username, email=email) #On tente de créer le user
+            if created:
+                user.set_password(password)
+                user.save()
+                #On crée alors la partie userextend
+                date = timezone.now()
+                date.replace(year = date.year-1)
+                userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, address=address, first_call_of_the_day = date, user=user, phi=0, phi_multiplier=1.0)
+                if created:
+                    userExtend.save()
+                    return HttpResponse(status=201)
+                else: #Si y'a un problème, on supprime le User créé juste avant
+                    user.delete()
+                    form.add_error(None, "Une erreur est survenue.")
+            else:
+                error = {
+                            'errors': [{
+                                'type':  'UnknownError',
+                                'message': "Une erreur est survenue."
+                            }]
+                        }
+                return HttpResponse(json.dumps(error), content_type='application/json',status=400)
+        elif r.status_code == 400: #Bad request : le username existe déjà !
+            error = {
+                        'errors': [{
+                            'type':  'CallhubRegistrationError',
+                            'message': "Ce nom d'utilisateur est déjà utilisé sur Callhub."
+                        }]
+                    }
+            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
+        else: #Autre erreur de callhub
+            error = {
+                        'errors': [{
+                            'type':  'CallhubNotResponding',
+                            'message': "Callhub ne répond pas... Réessayez plus tard."
+                        }]
+                    }
+            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
+
+    #Login requis
+    def get(self, request):
+        if request.user.is_authenticated == False:
+            return HttpResponseForbidden()
+
+        return HttpResponse(200)
