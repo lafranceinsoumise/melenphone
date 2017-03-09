@@ -9,18 +9,17 @@ from callcenter.models import *
 import datetime
 
 #Fonction principale
-def updateAchievements(agentUsername):
-    if UserExtend.objects.filter(agentUsername=agentUsername).exists(): #On check si le user existe
-        user = UserExtend.objects.filter(agentUsername=agentUsername)[0].user
-        calls = Appel.objects.filter(user=user).order_by('-date')
-        #Appeler les autres fonctions de validation
-        functions = [   leet,
-                        callCount,
-                        dailyCalls,
-                        earlyAdopters
-                    ]
-        for f in functions:
-            f(user, calls)
+def updateAchievements(user):
+    calls = Appel.objects.filter(user=user).order_by('-date')
+    
+    #Appeler les autres fonctions de validation
+    functions = [   leet,
+                    callCount,
+                    dailyCalls,
+                    earlyAdopters
+                ]
+    for f in functions:
+        f(user, calls)
 
 def unlockAchievement(codeName, user):
     if Achievement.objects.filter(codeName=codeName).exists():

@@ -11,7 +11,6 @@ from callcenter.models import *
 
 BASE_PHI = 10
 
-MIN_DELAY = 60
 MULTIPLIER_RESET = 3600
 
 PHI_FIRST_CALL = 50
