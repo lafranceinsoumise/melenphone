@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'jlm-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent {
   links = [
     { path: '/', text: 'Carte' },
-    { path: '/pokechon', text: 'pokéchon' }
+    { path: '/pokechon', text: 'pokéchon' },
+    { path: '/login', text: 'connexion' }
   ];
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

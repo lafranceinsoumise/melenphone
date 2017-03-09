@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared';
 
@@ -29,7 +30,9 @@ import {
 import {
   FullscreenService,
   CoordinatesConverterService,
-  SocketConnectionService } from './shared';
+  SocketConnectionService,
+  AuthenticationService,
+  UserService } from './shared';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,6 @@ import {
     PokechonHomeComponent,
     GaugeComponent,
     RegisterComponent,
-    LoginComponent,
     ConnectionComponent,
     CallMapComponent,
     AnimatedCallComponent
@@ -60,7 +62,9 @@ import {
     FullscreenService,
     {provide: APP_BASE_HREF, useValue: '/ng'},
     CoordinatesConverterService,
-    SocketConnectionService
+    SocketConnectionService,
+    AuthenticationService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })
