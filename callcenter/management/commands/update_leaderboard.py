@@ -25,10 +25,12 @@ class Command(BaseCommand):
         for index, leader in enumerate(leaders):
             userID = leader['user']
             calls = leader['user__count']
-            userExtend = User.objects.filter(id=userID)[0].UserExtend
-            userExtend.alltime_leaderboard = index + 1
-            userExtend.alltime_leaderboard_calls = calls
-            userExtend.save()
+            user = User.objects.filter(id=userID)
+            if user.exists():
+                userExtend = user[0].UserExtend
+                userExtend.alltime_leaderboard = index + 1
+                userExtend.alltime_leaderboard_calls = calls
+                userExtend.save()
 
         #On débloque le succes "Avoir été n°1 du classement" au premier de la liste
         leader = User.objects.filter(id=leaders[0]['user'])[0]
@@ -40,10 +42,12 @@ class Command(BaseCommand):
         for index, leader in enumerate(leaders):
             userID = leader['user']
             calls = leader['user__count']
-            userExtend = User.objects.filter(id=userID)[0].UserExtend
-            userExtend.weekly_leaderboard = index + 1
-            userExtend.weekly_leaderboard_calls = calls
-            userExtend.save()
+            user = User.objects.filter(id=userID)
+            if user.exists():
+                userExtend = user[0].UserExtend
+                userExtend.weekly_leaderboard = index + 1
+                userExtend.weekly_leaderboard_calls = calls
+                userExtend.save()
 
         #On débloque le succes "Avoir été n°1 du classement hebdo" au premier de la liste
         leader = User.objects.filter(id=leaders[0]['user'])[0]
@@ -55,10 +59,12 @@ class Command(BaseCommand):
         for index, leader in enumerate(leaders):
             userID = leader['user']
             calls = leader['user__count']
-            userExtend = User.objects.filter(id=userID)[0].UserExtend
-            userExtend.daily_leaderboard = index + 1
-            userExtend.daily_leaderboard_calls = calls
-            userExtend.save()
+            user = User.objects.filter(id=userID)
+            if user.exists():
+                userExtend = user[0].UserExtend
+                userExtend.daily_leaderboard = index + 1
+                userExtend.daily_leaderboard_calls = calls
+                userExtend.save()
 
         #On débloque le succes "Avoir été n°1 du classement du jour" au premier de la liste
         leader = User.objects.filter(id=leaders[0]['user'])[0]
