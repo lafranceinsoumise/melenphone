@@ -46,6 +46,8 @@ urlpatterns = [
     url(r'^api/user/infos$', api_user_infos.as_view()),
     url(r'^api/user/achievements$', api_user_achievements.as_view()),
 
+    #REST_FRAMEWORK
+
     #AUTRES URLS
     url(r'^admin/', admin.site.urls),
 

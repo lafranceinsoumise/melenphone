@@ -172,7 +172,7 @@ class api_test_simulatecall(APIView):
 
         callerLat, callerLng = randomLocation()
         calledLat, calledLng = randomLocation()
-        dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
+        dcalls = PrecomputeData.objects.filter(code="dcalls")[0].integer_value
 
         websocketMessage = json.dumps({ 'call': {
                                                 'caller': {'lat':callerLat, 'lng':callerLng},
@@ -298,5 +298,3 @@ class api_basic_information(APIView):
         data = json.dumps(data)
 
         return HttpResponse(data)
-
-class api_user(APIView):
