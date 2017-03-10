@@ -9,7 +9,6 @@ def ws_add(message):
     Group("all-clients").add(message.reply_channel)
 
 def ws_message(message):
-    # Nothing to do here, because you only push, never receive.
     pass
 
 # Connected to websocket.disconnect

@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from callcenter.views import AngularApp
-from callcenter.views import api_user_infos, api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information, api_user, api_test_socket
+from callcenter.views import api_user_myid, api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information, api_user, api_test_socket
 from callcenter.views import webhook_note
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from rest_framework.urlpatterns import format_suffix_patterns
@@ -40,14 +40,15 @@ urlpatterns = [
     url(r'^api/basic_information$', api_basic_information.as_view()),
     url(r'^api/leaderboard/(?P<ranking>\w{0,10})$', api_leaderboard.as_view()),
         #API - TOKEN REQUIRED
-    url(r'^api/user/infos$', api_user_infos.as_view()),
+    url(r'^api/user/myid$', api_user_myid.as_view()),
     url(r'^api/user/achievements$', api_user_achievements.as_view()),
 
     #REST_FRAMEWORK
-    url(r'^api/user/$', api_user.as_view()),
+    url(r'^api/user$', api_user.as_view()),
+    url(r'^api/user/(?P<id>[0-9]+)$', api_user.as_view()),
 
     #AUTRES URLS
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin', admin.site.urls),
 
     #ANGULAR
     url(r'^(?!ng/).*$', AngularApp.as_view(), name="angular_app"),

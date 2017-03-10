@@ -168,7 +168,7 @@ class api_test_simulatecall(APIView):
 
 
 # /api/user/infos/
-class api_user_infos(APIView):
+class api_user_myid(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
         user = request.user
@@ -176,21 +176,8 @@ class api_user_infos(APIView):
         userID = user.id
         username = user.username
 
-        userExtend = user.UserExtend
-        phi = userExtend.phi
-        phi_multiplier = userExtend.phi_multiplier
-        alltime_leaderboard = userExtend.alltime_leaderboard
-        weekly_leaderboard = userExtend.weekly_leaderboard
-        daily_leaderboard = userExtend.daily_leaderboard
-
-
         data = json.dumps({     'id': userID,
-                                'username': username,
-                                'phi': str(phi),
-                                'phiMultiplier':str(phi_multiplier),
-                                'leaderboard':{     'alltime':str(alltime_leaderboard),
-                                                    'weekly':str(weekly_leaderboard),
-                                                    'daily':str(daily_leaderboard)}
+                                'username': username
                         })
 
         return HttpResponse(data)
@@ -374,9 +361,47 @@ class api_user(APIView):
                     }
             return HttpResponse(json.dumps(error), content_type='application/json',status=400)
 
+
     #Login requis
-    def get(self, request):
+    def get(self, request, id=None):
         if request.user.is_authenticated == False:
             return HttpResponseForbidden()
 
-        return HttpResponse(200)
+        #url : /api/user
+        if id is None:
+            if request.user.is_superuser:
+
+                return HttpResponse(200)
+
+            return HttpResponseForbidden()
+
+        #url /api/user/id
+        else:
+            if request.user.id == int(id) or request.user.is_superuser:
+                if User.objects.filter(id=id).exists():
+                    user = User.objects.filter(id=id)[0]
+                    userID = user.id
+                    username = user.username
+
+                    userExtend = user.UserExtend
+                    phi = userExtend.phi
+                    phi_multiplier = userExtend.phi_multiplier
+                    alltime_leaderboard = userExtend.alltime_leaderboard
+                    weekly_leaderboard = userExtend.weekly_leaderboard
+                    daily_leaderboard = userExtend.daily_leaderboard
+
+
+                    data = json.dumps({     'id': userID,
+                                            'username': username,
+                                            'phi': str(phi),
+                                            'phiMultiplier':str(phi_multiplier),
+                                            'leaderboard':{     'alltime':str(alltime_leaderboard),
+                                                                'weekly':str(weekly_leaderboard),
+                                                                'daily':str(daily_leaderboard)}
+                                    })
+
+                    return HttpResponse(data)
+                else:
+                    return HttpResponse(status=404)
+
+            return HttpResponseForbidden()
