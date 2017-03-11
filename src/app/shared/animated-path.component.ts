@@ -35,7 +35,7 @@ export class AnimatedPathComponent implements AfterViewInit {
   @HostBinding('attr.d')
   jlmAnimatedPath: string;
 
-  @Input() transitionDuration = '5s';
+  @Input() transitionTiming = '5s';
 
   @HostBinding('style.display') display = 'none';
   @HostBinding('style.stroke-dasharray') strokeDasharray: string;
@@ -61,7 +61,7 @@ export class AnimatedPathComponent implements AfterViewInit {
 
     setTimeout(() => {
       this.strokeDashoffset = '0';
-      this.transition = `stroke-dashoffset ${this.transitionDuration} linear, transform ${this.transitionDuration} linear`;
+      this.transition = `stroke-dashoffset ${this.transitionTiming} linear, transform ${this.transitionTiming} linear`;
       this.transitionStart = false;
       this.transitionEnd = true;
     });
