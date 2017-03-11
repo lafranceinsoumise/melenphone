@@ -20,7 +20,7 @@
       "prefix": "jlm",
       "styles": [
         "styles.scss",
-        "theme.scss"
+        "_theme.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

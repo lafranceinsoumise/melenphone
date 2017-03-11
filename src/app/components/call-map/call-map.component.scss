@@ -1,17 +1,16 @@
+@import '../../../_colors.scss';
+
 :host {
     display: block;
 }
 
-$jlm-blue: hsl(190, 65%, 51%);
-$jlm-red: hsl(10, 64%, 48%);
-
-path.department {
+.department {
     stroke: $jlm-blue;
     stroke-width: 1;
     fill: transparent;
 }
 
-#France path.department {
+#France .department {
     stroke-width: .8;
 }
 
@@ -19,7 +18,7 @@ path.department {
     fill: white;
 }
 
-g.call {
+.jlmAnimatedCall {
     transition: opacity 1s;
     opacity: 1;
 

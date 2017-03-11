@@ -11,7 +11,11 @@ import { WsCallNotification } from '../../core';
   selector: 'g[jlmAnimatedCall]',
   template: `
     <svg:g>
-      <svg:path *ngIf="pathInstructions" [jlmAnimatedPath]="pathInstructions" [transitionTiming]="'1s 2.5s'" [to]="1"/>
+      <svg:g class="call"
+          *ngIf="pathInstructions"
+          [jlmAnimatedPath]="pathInstructions"
+          [transitionTiming]="'1s 2.5s'"
+          [to]="1"/>
 
       <svg:circle class="caller1"
           [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"

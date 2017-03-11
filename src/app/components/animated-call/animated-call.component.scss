@@ -1,12 +1,14 @@
-path {
+@import '../../../_colors.scss';
+
+.call {
     fill: transparent;
-    stroke: firebrick;
+    stroke: $jlm-red;
     stroke-width: 2px;
     stroke-linecap: round;
 }
 
 circle {
-    stroke: firebrick;
+    stroke: $jlm-red;
     stroke-width: 2px;
     fill: rgba(0,0,0,0);
     animation: zoomIn 1s;
@@ -22,10 +24,10 @@ circle {
     &.caller5 { animation-delay: 2.5s; }
     &.caller6 { animation-delay: 2.75s; }
 
-    &.callee1 { animation-delay: 3.25s; }
-    &.callee2 { animation-delay: 3.5s; }
-    &.callee3 { animation-delay: 3.75s; }
-    &.callee4 { animation-delay: 4s; }
+    &.callee1 { animation-delay: 2.25s; }
+    &.callee2 { animation-delay: 2.5s; }
+    &.callee3 { animation-delay: 2.75s; }
+    &.callee4 { animation-delay: 3s; }
 }
 
 @keyframes zoomIn {

@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   Input,
+  ViewChild,
   HostBinding,
   HostListener,
   ElementRef,
@@ -13,26 +14,25 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'path[jlmAnimatedPath]',
+  selector: 'g[jlmAnimatedPath]',
   styles: [`
-    :host {
+    path {
       transform-origin: center;
-      display; none;
-    }
-    :host.transition-start {
-      // transform: scale(.8);
-    }
-    :host.transition-end {
-      // transform: scale(1);
+      fill: transparent;
     }
   `],
-  template: '',
+  template: `
+    <svg:path #path [attr.d]="jlmAnimatedPath"
+        [style.stroke-dasharray]="strokeDasharray"
+        [style.stroke-dashoffset]="strokeDashoffset"
+        [style.transition]="transition"/>
+  `,
 })
 export class AnimatedPathComponent implements AfterViewInit {
+  @ViewChild('path') pathEl: ViewRef;
   length: number;
 
   @Input('jlmAnimatedPath')
-  @HostBinding('attr.d')
   jlmAnimatedPath: string;
 
   @Input() transitionTiming = '5s';
@@ -40,29 +40,32 @@ export class AnimatedPathComponent implements AfterViewInit {
   @Input() to = 0;
 
   @HostBinding('style.display') display = 'none';
-  @HostBinding('style.stroke-dasharray') strokeDasharray: string;
-  @HostBinding('style.stroke-dashoffset') strokeDashoffset: string;
-  @HostBinding('style.transition') transition: string;
   @HostBinding('class.transition-start') transitionStart = false;
   @HostBinding('class.transition-end') transitionEnd = false;
+  strokeDasharray: string;
+  strokeDashoffset: string;
+  transition: string;
 
-  constructor(private host: ElementRef) {}
+  constructor() {}
 
   ngAfterViewInit() {
-    this.length = this.host.nativeElement.getTotalLength();
-    setTimeout(() => this.playAnimation());
+    this.length = this.pathEl['nativeElement'].getTotalLength();
+    this.playAnimation();
   }
 
   playAnimation() {
-    this.display = 'inline';
-    this.strokeDasharray = `${this.length}`;
-    this.strokeDashoffset = `${this.length * -this.from}`;
-    this.transition = '';
-
     setTimeout(() => {
-      this.strokeDashoffset = `${this.length * -this.to}`;
-      this.transition = `stroke-dashoffset ${this.transitionTiming} linear, transform ${this.transitionTiming} linear`;
+      this.display = 'inline';
+      this.strokeDasharray = `${this.length}`;
+      this.strokeDashoffset = `${this.length * -this.from}`;
+      this.transition = '';
+
+      setTimeout(() => {
+        this.strokeDashoffset = `${this.length * -this.to}`;
+        this.transition = `stroke-dashoffset ${this.transitionTiming} linear, transform ${this.transitionTiming} linear`;
+      });
     });
+
   }
 
 }
