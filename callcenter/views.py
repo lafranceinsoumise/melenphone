@@ -64,8 +64,8 @@ class webhook_note(APIView):
         calledNumber = data['data']['contact']
         calledLat, calledLng = getCalledLocation(calledNumber)
 
-        if UserExtend.objects.filter(agentUsername=callerAgentUsername).exists(): #Si on connait l'agent callhub existe
-            user = UserExtend.objects.filter(agentUsername=callerAgentUsername)[0].user #On le récupère
+        try:
+            user = UserExtend.objects.get(agentUsername=callerAgentUsername).user #On le récupère
 
             calls = Appel.objects.filter(user=user)
             #On vérifie qu'il n'a pas passé un appel trop récement
@@ -114,10 +114,11 @@ class webhook_note(APIView):
                 send_message(websocketMessage)
 
         #Si on ne connait pas l'agent callhub
-        else:
+        except UserExtend.DoesNotExist:
             Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
 
             #On ajoute 1 au compteur des appels du jour
+            # TODO: race condition here
             dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
             dcalls.integer_value += 1
             dcalls.save()
@@ -261,7 +262,7 @@ class api_basic_information(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request):
 
-        dcalls = PrecomputeData.objects.filter(code="dcalls")[0].integer_value
+        dcalls = PrecomputeData.objects.get(code="dcalls").integer_value
 
         data = {'dailyCalls': dcalls}
         data = json.dumps(data)

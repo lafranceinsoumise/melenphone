@@ -1,0 +1,27 @@
+1	L'élite de la nation	Envoyer une note d'appel à 13h37	250	leet
+2	Insoumis.e de niveau 1	Avoir effectué 1 appel.	10	count_insoumis_1
+3	Insoumis.e de niveau 2	Avoir effectué 5 appels.	20	count_insoumis_2
+4	Insoumis.e de niveau 3	Avoir effectué 10 appels.	30	count_insoumis_3
+6	Insoumis.e de niveau 4	Avoir effectué 20 appels.	50	count_insoumis_4
+7	Insoumis.e de niveau 5	Avoir effectué 35 appels.	100	count_insoumis_5
+8	Membre d'un groupe d'appui	Avoir effectué 50 appels.	120	count_membre_appui
+9	Créateur.trice d'un groupe d'appui	Avoir effectué 70 appels.	135	count_createur_appui
+10	Conseiller.ère municipal.e suppléant.e	Avoir effectué 100 appels.	150	count_conseiller_suppleant
+11	Conseiller.ère municipal.e titulaire	Avoir effectué 150 appels.	180	count_conseiller_titulaire
+12	Adjoint.e au Maire d'Issou	Avoir effectué 250 appels.	200	count_adjoint
+13	Maire d'Issou	Avoir effectué 375 appels.	0	count_maire
+14	Directeur.trice de campagne	Avoir effectué 500 appels.	250	count_directeur
+15	Conseiller.ère départemental.e FI	Avoir effectué 700 appels.	300	count_conseiller_departemental
+16	Président.e d'un conseil départelmental	Avoir effectué 1000 appels.	350	count_president_departemental
+17	Conseiller.ère régional.e FI	Avoir effectué 1500 appels.	400	count_conseiller_regional
+18	Président.e d'un conseil régional	Avoir effectué 2000 appels.	500	count_president_regional
+19	Député.e FI de la 5e république	Avoir effectué 2750 appels.	800	count_depute_5
+20	Député.e de la constituante	Avoir effectué 3750 appels.	1000	count_depute_constituante
+21	Député.e FI de la 6e république	Avoir effectué 5000 appels.	2000	count_depute_6
+22	À fond à fond à fond !	Passer 30 appels en une journée !	100	daily_a_fond
+23	Acharné	Passer 50 appels en une journée !	200	daily_acharne
+24	Il est temps d'aller dormir !	Passer 100 appels en une journée !	500	daily_dodo
+25	J'y étais !	Avoir été parmis les 100 premiers à utiliser la plateforme.	50	early_y_etais
+26	Champion.ne !	Avoir été au sommet du classement.	500	leaderboard_alltime
+27	Meneur.se de troupes	Avoir été au sommet du classement hebdomadaire.	200	leaderboard_weekly
+28	Motivation soudaine	Avoir été au sommet du classement du jour.	100	leaderboard_daily
