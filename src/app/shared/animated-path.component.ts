@@ -36,6 +36,8 @@ export class AnimatedPathComponent implements AfterViewInit {
   jlmAnimatedPath: string;
 
   @Input() transitionTiming = '5s';
+  @Input() from = -1;
+  @Input() to = 0;
 
   @HostBinding('style.display') display = 'none';
   @HostBinding('style.stroke-dasharray') strokeDasharray: string;
@@ -54,16 +56,12 @@ export class AnimatedPathComponent implements AfterViewInit {
   playAnimation() {
     this.display = 'inline';
     this.strokeDasharray = `${this.length}`;
-    this.strokeDashoffset = `${this.length}`;
+    this.strokeDashoffset = `${this.length * -this.from}`;
     this.transition = '';
-    this.transitionStart = true;
-    this.transitionEnd = false;
 
     setTimeout(() => {
-      this.strokeDashoffset = '0';
+      this.strokeDashoffset = `${this.length * -this.to}`;
       this.transition = `stroke-dashoffset ${this.transitionTiming} linear, transform ${this.transitionTiming} linear`;
-      this.transitionStart = false;
-      this.transitionEnd = true;
     });
   }
 

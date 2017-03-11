@@ -1,0 +1,10 @@
+:host {
+    display: block;
+    
+    .bg {
+        background-color: white;
+        .fg {
+            background-color: red;
+        }
+    }
+}
