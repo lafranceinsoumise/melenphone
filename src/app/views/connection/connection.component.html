@@ -1,2 +1,5 @@
 <h2>connexion</h2>
 <jlm-login></jlm-login>
+<a href="/connexion/">Se connecter via jlm2017.fr</a>
+
+<button md-button *ngIf="!auth.token" (click)="auth.getToken()">lancer une requete sur /api/token/auth</button>

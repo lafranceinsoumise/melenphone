@@ -28,6 +28,14 @@ export class AuthenticationService {
             });
     }
 
+    getToken() {
+        this.http.get('/api/token/auth')
+            .toPromise()
+            .then((res: Response) => {
+                this.token = res.json().token;
+            });
+    }
+
     logout(): void {
         this.token = null;
         localStorage.removeItem('currentUser');
