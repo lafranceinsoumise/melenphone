@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import {
   trigger,
   state,
@@ -12,7 +12,8 @@ import { WsCallNotification } from '../../core';
   template: `
     <svg:g>
       <svg:path *ngIf="pathInstructions" [jlmAnimatedPath]="pathInstructions" [transitionTiming]="'1s 2.5s'"/>
-      <svg:circle class="caller"
+
+      <svg:circle class="caller1"
           [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
           [attr.cx]="jlmAnimatedCall.caller.svg.x"
           [attr.cy]="jlmAnimatedCall.caller.svg.y"
@@ -48,7 +49,7 @@ import { WsCallNotification } from '../../core';
           [attr.cy]="jlmAnimatedCall.caller.svg.y"
           r="1.5em"/>
 
-      <svg:circle class="callee"
+      <svg:circle class="callee1"
           [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
           [attr.cx]="jlmAnimatedCall.callee.svg.x"
           [attr.cy]="jlmAnimatedCall.callee.svg.y"
@@ -73,87 +74,7 @@ import { WsCallNotification } from '../../core';
             r="1.5em"/>
     </g>
   `,
-  styles: [`
-    line, path {
-      fill: transparent;
-      stroke: firebrick;
-      stroke-width: 2px;
-      stroke-linecap: round;
-    }
-
-    circle {
-      stroke: firebrick;
-      stroke-width: 2px;
-      fill: rgba(0,0,0,0);
-      animation: zoomIn 1s;
-      transform-origin: center;
-    }
-
-    circle.caller {
-      animation: zoomIn 1s;
-      animation-fill-mode: both;
-    }
-
-    circle.caller2 {
-      animation: zoomIn 1s 1s;
-      animation-fill-mode: both;
-    }
-
-    circle.caller3 {
-      animation: zoomIn 1s 2s;
-      animation-fill-mode: both;
-    }
-
-    circle.caller4 {
-      animation: zoomIn 1s 2.25s;
-      animation-fill-mode: both;
-    }
-
-    circle.caller5 {
-      animation: zoomIn 1s 2.5s;
-      animation-fill-mode: both;
-    }
-
-    circle.caller6 {
-      animation: zoomIn 1s 2.75s;
-      animation-fill-mode: both;
-    }
-
-    circle.callee {
-      animation: zoomIn 1s 3.25s;
-      animation-fill-mode: both;
-    }
-
-    circle.callee2 {
-      animation: zoomIn 1s 3.5s;
-      animation-fill-mode: both;
-    }
-
-    circle.callee3 {
-      animation: zoomIn 1s 3.75s;
-      animation-fill-mode: both;
-    }
-
-    circle.callee4 {
-      animation: zoomIn 1s 4s;
-      animation-fill-mode: both;
-    }
-
-
-    @keyframes zoomIn {
-      from {
-        transform: scale(0);
-        opacity:1
-      }
-      80% {
-        opacity:1
-      }
-      to {
-        transform: scale(1);
-        opacity:0
-      }
-    }
-  `]
+  styleUrls: ['./animated-call.component.scss']
 })
 export class AnimatedCallComponent implements OnInit {
 
@@ -165,12 +86,13 @@ export class AnimatedCallComponent implements OnInit {
   constructor() { }
 
   getPathInstructions(desc: WsCallNotification, pathType: 'line' | 'curve') {
-    const callerSvg = desc.caller.svg;
-    const calleeSvg = desc.callee.svg;
-    const delta = {
-      x: calleeSvg.x - callerSvg.x,
-      y: calleeSvg.y - callerSvg.y
-    };
+    const callerSvg = desc.caller.svg,
+          calleeSvg = desc.callee.svg,
+          delta = {
+            x: calleeSvg.x - callerSvg.x,
+            y: calleeSvg.y - callerSvg.y
+          };
+
     switch (pathType) {
       case 'line':
         return `
