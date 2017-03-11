@@ -1,7 +1,7 @@
 <button md-raised-button color="accent" (click)="fullscreenController.toggle(true)">Plein écran</button>
 <button md-raised-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
 <div jlmFullscreen #fullscreenController="fullscreen">
-    <jlm-call-map [timeout]="7000">
+    <jlm-call-map [timeout]="5000">
         <div class="controls" *ngIf="fullscreenController.isFullscreen" >
             <button md-raised-button color="accent" (click)="fullscreenController.exitFullscreen()">sortir du mode plein écran</button>
             <button md-raised-button color="accent" (click)="makeBackendRequest()">Make backend request</button>

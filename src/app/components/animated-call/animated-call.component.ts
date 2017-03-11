@@ -11,47 +11,146 @@ import { WsCallNotification } from '../../core';
   selector: 'g[jlmAnimatedCall]',
   template: `
     <svg:g>
-      <svg:path *ngIf="pathInstructions" [jlmAnimatedPath]="pathInstructions" [transitionTiming]="'1s .75s'"/>
+      <svg:path *ngIf="pathInstructions" [jlmAnimatedPath]="pathInstructions" [transitionTiming]="'1s 2.5s'"/>
       <svg:circle class="caller"
           [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
           [attr.cx]="jlmAnimatedCall.caller.svg.x"
           [attr.cy]="jlmAnimatedCall.caller.svg.y"
-          r="1.6em"/>
+          r="1em"/>
+
+      <svg:circle class="caller2"
+          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
+          [attr.cx]="jlmAnimatedCall.caller.svg.x"
+          [attr.cy]="jlmAnimatedCall.caller.svg.y"
+          r="1em"/>
+
+      <svg:circle class="caller3"
+          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
+          [attr.cx]="jlmAnimatedCall.caller.svg.x"
+          [attr.cy]="jlmAnimatedCall.caller.svg.y"
+          r="0.75em"/>
+
+      <svg:circle class="caller4"
+          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
+          [attr.cx]="jlmAnimatedCall.caller.svg.x"
+          [attr.cy]="jlmAnimatedCall.caller.svg.y"
+          r="1em"/>
+
+      <svg:circle class="caller5"
+          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
+          [attr.cx]="jlmAnimatedCall.caller.svg.x"
+          [attr.cy]="jlmAnimatedCall.caller.svg.y"
+          r="1.25em"/>
+
+      <svg:circle class="caller6"
+          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
+          [attr.cx]="jlmAnimatedCall.caller.svg.x"
+          [attr.cy]="jlmAnimatedCall.caller.svg.y"
+          r="1.5em"/>
+
       <svg:circle class="callee"
           [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
           [attr.cx]="jlmAnimatedCall.callee.svg.x"
           [attr.cy]="jlmAnimatedCall.callee.svg.y"
-          r="1.6em"/>
+          r="0.75em"/>
+
+      <svg:circle class="callee2"
+            [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
+            [attr.cx]="jlmAnimatedCall.callee.svg.x"
+            [attr.cy]="jlmAnimatedCall.callee.svg.y"
+            r="1em"/>
+
+      <svg:circle class="callee3"
+            [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
+            [attr.cx]="jlmAnimatedCall.callee.svg.x"
+            [attr.cy]="jlmAnimatedCall.callee.svg.y"
+            r="1.25em"/>
+
+      <svg:circle class="callee4"
+            [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
+            [attr.cx]="jlmAnimatedCall.callee.svg.x"
+            [attr.cy]="jlmAnimatedCall.callee.svg.y"
+            r="1.5em"/>
     </g>
   `,
   styles: [`
     line, path {
       fill: transparent;
       stroke: firebrick;
-      stroke-width: 4px;
+      stroke-width: 2px;
       stroke-linecap: round;
     }
 
     circle {
-      fill: rgba(0,0,0,.2);
+      stroke: firebrick;
+      stroke-width: 2px;
+      fill: rgba(0,0,0,0);
       animation: zoomIn 1s;
       transform-origin: center;
     }
 
-    circle.callee {
+    circle.caller {
+      animation: zoomIn 1s;
+      animation-fill-mode: both;
+    }
+
+    circle.caller2 {
       animation: zoomIn 1s 1s;
       animation-fill-mode: both;
     }
 
+    circle.caller3 {
+      animation: zoomIn 1s 2s;
+      animation-fill-mode: both;
+    }
+
+    circle.caller4 {
+      animation: zoomIn 1s 2.25s;
+      animation-fill-mode: both;
+    }
+
+    circle.caller5 {
+      animation: zoomIn 1s 2.5s;
+      animation-fill-mode: both;
+    }
+
+    circle.caller6 {
+      animation: zoomIn 1s 2.75s;
+      animation-fill-mode: both;
+    }
+
+    circle.callee {
+      animation: zoomIn 1s 3.25s;
+      animation-fill-mode: both;
+    }
+
+    circle.callee2 {
+      animation: zoomIn 1s 3.5s;
+      animation-fill-mode: both;
+    }
+
+    circle.callee3 {
+      animation: zoomIn 1s 3.75s;
+      animation-fill-mode: both;
+    }
+
+    circle.callee4 {
+      animation: zoomIn 1s 4s;
+      animation-fill-mode: both;
+    }
+
+
     @keyframes zoomIn {
       from {
         transform: scale(0);
+        opacity:1
       }
       80% {
-        transform: scale(1.2);
+        opacity:1
       }
       to {
         transform: scale(1);
+        opacity:0
       }
     }
   `]
@@ -91,7 +190,7 @@ export class AnimatedCallComponent implements OnInit {
 
       const curvePath = `
         M ${step0x} ${step0y}
-        Q ${step0x + vec1x} ${step0y + vec1y} ${x2} ${y2} 
+        Q ${step0x + vec1x} ${step0y + vec1y} ${x2} ${y2}
       `;
 
       return curvePath;
