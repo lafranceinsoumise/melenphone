@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
-interface RegistrationInformations {
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-  country: string;
-  city: string;
-}
+import { UserService, RegistrationInformations } from '../../shared';
 
 @Component({
   selector: 'jlm-registration',
@@ -19,7 +12,7 @@ export class RegistrationComponent implements OnInit {
 
   formInfo: RegistrationInformations;
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.reset();
@@ -36,8 +29,8 @@ export class RegistrationComponent implements OnInit {
     };
   }
 
-  sendInformations(values) {
-    console.log(values);
+  sendInformations(formValues: RegistrationInformations) {
+    this.userService.register(formValues);
   }
 
 }

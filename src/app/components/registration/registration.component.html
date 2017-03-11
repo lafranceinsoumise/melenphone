@@ -1,4 +1,4 @@
-<form (ngSubmit)="sendInformations(f)" #f="ngForm">
+<form (ngSubmit)="sendInformations(f.value)" #f="ngForm">
   <md-input-container>
     <input type="text"
         mdInput
@@ -6,12 +6,12 @@
         name="username"
         [(ngModel)]="formInfo.username"
         required>
-  </md-input-container><br>
+  </md-input-container>
 
   <md-input-container>
     <input type="text"
         mdInput
-        placeholder="email"
+        placeholder="courriel"
         name="email"
         [(ngModel)]="formInfo.email"
         required>
@@ -20,16 +20,16 @@
   <md-input-container>
     <input type="password"
         mdInput
-        placeholder="password"
+        placeholder="mot de passe"
         name="password"
         [(ngModel)]="formInfo.password"
         required>
-  </md-input-container><br>
+  </md-input-container>
 
   <md-input-container>
     <input type="password"
         mdInput
-        placeholder="passwordConfirmation"
+        placeholder="mot de passe (confirmation)"
         name="passwordConfirmation"
         [(ngModel)]="formInfo.passwordConfirmation"
         required>
@@ -38,16 +38,16 @@
   <md-input-container>
     <input type="text"
         mdInput
-        placeholder="country"
+        placeholder="pays"
         name="country"
         [(ngModel)]="formInfo.country"
         required>
-  </md-input-container><br>
+  </md-input-container>
 
   <md-input-container>
     <input type="text"
         mdInput
-        placeholder="city"
+        placeholder="ville"
         name="city"
         [(ngModel)]="formInfo.city"
         required>

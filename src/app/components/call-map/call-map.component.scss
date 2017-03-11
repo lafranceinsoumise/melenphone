@@ -2,8 +2,11 @@
     display: block;
 }
 
+$jlm-blue: hsl(190, 65%, 51%);
+$jlm-red: hsl(10, 64%, 48%);
+
 path.department {
-    stroke: #0098B6;
+    stroke: $jlm-red;
     stroke-width: 1;
     fill: transparent;
 }
@@ -13,7 +16,7 @@ path.department {
 }
 
 .lake {
-    fill:white;
+    fill: white;
 }
 
 g.call {

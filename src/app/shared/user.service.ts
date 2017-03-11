@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 
 import { AuthenticationService } from './authentication.service';
-import { User } from './_models/user.model';
+import { User, RegistrationInformations } from './_models';
 
 @Injectable()
 export class UserService {
@@ -20,6 +20,10 @@ export class UserService {
         return this.http.get('/api/user', options)
             .toPromise()
             .then((res: Response) => res.json() as User[]);
+    }
+
+    register(infos: RegistrationInformations) {
+        // return this.http.post()
     }
 
 }
