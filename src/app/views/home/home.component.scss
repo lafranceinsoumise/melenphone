@@ -2,6 +2,11 @@
     display: block;
 }
 
+jlm-gauge {
+    display: block;
+    margin: .2em 0 1em;
+}
+
 [jlmFullscreen] {
     &:-webkit-full-screen {
         display: flex;

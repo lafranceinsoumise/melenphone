@@ -1,10 +1,18 @@
+@import '../../../_colors.scss';
+
 :host {
     display: block;
+    box-sizing: border-box;
     
     .bg {
-        background-color: white;
+        // box-shadow: 0px 0px 18px -2.5px rgba(0, 0, 0, 1);
+        border-radius: 3px;
+        overflow: hidden;
+        border: 3px solid $jlm-red;
+        
         .fg {
-            background-color: red;
+            height: 3em;
+            background-color: $jlm-red;
         }
     }
 }
