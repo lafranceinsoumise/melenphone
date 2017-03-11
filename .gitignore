@@ -4,6 +4,7 @@ API.py
 # compiled output
 /dist
 /tmp
+/.env/
 
 # dependencies
 /node_modules
