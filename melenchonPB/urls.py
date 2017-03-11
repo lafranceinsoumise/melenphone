@@ -19,10 +19,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from callcenter.views import AngularApp
-from callcenter.views import api_user_myid, api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information, api_user, api_test_socket
+from callcenter.views import api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information, api_test_socket, UserAPI
 from callcenter.views import webhook_note
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from accounts import urls as accounts_urls
+
 
 urlpatterns = [
 
@@ -32,22 +32,16 @@ urlpatterns = [
     # accounts urls
     url(r'^', include(accounts_urls, namespace='accounts')),
 
-    #API
-        #TOKEN
-    url(r'^api/token/auth', obtain_jwt_token),
-    url(r'^api/token/refresh', refresh_jwt_token),
         #API - NO TOKEN REQUIRED
     url(r'^api/test_websocket$', api_test_socket.as_view()),
     url(r'^api/simulate_call$', api_test_simulatecall.as_view()),
     url(r'^api/basic_information$', api_basic_information.as_view()),
     url(r'^api/leaderboard/(?P<ranking>\w{0,10})$', api_leaderboard.as_view()),
         #API - TOKEN REQUIRED
-    url(r'^api/user/myid$', api_user_myid.as_view()),
-    url(r'^api/user/achievements$', api_user_achievements.as_view()),
+    url(r'^api/current_user/profile$', UserAPI.as_view()),
+    url(r'^api/current_user/achievements$', api_user_achievements.as_view()),
 
     #REST_FRAMEWORK
-    url(r'^api/user$', api_user.as_view()),
-    url(r'^api/user/(?P<id>[0-9]+)$', api_user.as_view()),
 
     #AUTRES URLS
     url(r'^admin', admin.site.urls),

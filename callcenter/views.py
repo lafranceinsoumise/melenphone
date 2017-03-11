@@ -1,39 +1,21 @@
 # -*- coding: utf-8 -*-
 
 #Django imports
-from django.shortcuts import render, redirect
-from django.db import models
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
-from django.conf import settings
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
-from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework import permissions
-from rest_framework_jwt import views
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.generics import RetrieveUpdateAPIView
 from django.http import Http404
-from django.http import HttpResponseForbidden
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
-
-
-#Python imports
-import requests
-import json
 
 #Project imports
 from callcenter.achievements import *
-from callcenter.models import *
 from callcenter.map import *
 from callcenter.phi import *
 from callcenter.consumers import *
+from callcenter.serializers import UserExtendSerializer
 from .forms import *
 
-#JWT auth
 
 #ANGULAR APP
 class AngularApp(TemplateView):
@@ -168,23 +150,7 @@ class api_test_simulatecall(APIView):
         return HttpResponse(200)
 
 
-# /api/user/infos/
-class api_user_myid(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    def get(self, request):
-        user = request.user
-
-        userID = user.id
-        username = user.username
-
-        data = json.dumps({     'id': userID,
-                                'username': username
-                        })
-
-        return HttpResponse(data)
-
-
-# /api/user/achievements/
+# /api/current_user/achievements/
 class api_user_achievements(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
@@ -269,140 +235,12 @@ class api_basic_information(APIView):
 
         return HttpResponse(data)
 
-class api_user(APIView):
-    permission_classes = (permissions.AllowAny,)
 
-    #Pas de restrictions
-    def post(self, request):
-        data = json.loads(request.body)
+class UserAPI(RetrieveUpdateAPIView):
+    serializer_class = UserExtendSerializer
 
-        username=data['username']
-        email=data['email']
-        password=data['password']
-        country=data['country']
-        city=data['city']
-
-        #Erreur user existant
-        if User.objects.filter(username=username).exists():
-            error = {
-                        'errors': [{
-                            'type':  'UserAlreadyExists',
-                            'message': "Ce nom d'utilisateur est déjà utilisé."
-                        }]
-                    }
-            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
-
+    def get_object(self):
         try:
-            validate_email(email)
-        except ValidationError:
-            error = {
-                        'errors': [{
-                            'type':  'InvalidEmail',
-                            'message': "Cette adresse mail est invalide."
-                        }]
-                    }
-            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
-
-        #Erreur email existant
-        if User.objects.filter(email=email).exists():
-            error = {
-                        'errors': [{
-                            'type':  'EmailAlreadyExists',
-                            'message': "Cette adresse mail est déjà utilisée."
-                        }]
-                    }
-            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
-
-        address = city + '+' + country
-        address.replace(" ", "+")
-
-        token = 'Token ' + settings.CALLHUB_API_KHEY
-        headers = {'Authorization': token }
-        callhubData = {'username':username, 'email':email, 'team':'tout_le_monde'}
-
-        r = requests.post('https://api.callhub.io/v1/agents/', data=callhubData, headers=headers) #On fait la requete sur l'API de github
-        if r.status_code == requests.codes.created: #Si tout s'est bien passé
-            #On crée le user dans la bdd
-            user,created = User.objects.get_or_create(username=username, email=email) #On tente de créer le user
-            if created:
-                user.set_password(password)
-                user.save()
-                #On crée alors la partie userextend
-                date = timezone.now()
-                date.replace(year = date.year-1)
-                userExtend, created = UserExtend.objects.get_or_create(agentUsername=username, address=address, first_call_of_the_day = date, user=user, phi=0, phi_multiplier=1.0)
-                if created:
-                    userExtend.save()
-                    return HttpResponse(status=201)
-                else: #Si y'a un problème, on supprime le User créé juste avant
-                    user.delete()
-                    form.add_error(None, "Une erreur est survenue.")
-            else:
-                error = {
-                            'errors': [{
-                                'type':  'UnknownError',
-                                'message': "Une erreur est survenue."
-                            }]
-                        }
-                return HttpResponse(json.dumps(error), content_type='application/json',status=400)
-        elif r.status_code == 400: #Bad request : le username existe déjà !
-            error = {
-                        'errors': [{
-                            'type':  'CallhubRegistrationError',
-                            'message': "Ce nom d'utilisateur est déjà utilisé sur Callhub."
-                        }]
-                    }
-            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
-        else: #Autre erreur de callhub
-            error = {
-                        'errors': [{
-                            'type':  'CallhubNotResponding',
-                            'message': "Callhub ne répond pas... Réessayez plus tard."
-                        }]
-                    }
-            return HttpResponse(json.dumps(error), content_type='application/json',status=400)
-
-
-    #Login requis
-    def get(self, request, id=None):
-        if request.user.is_authenticated == False:
-            return HttpResponseForbidden()
-
-        #url : /api/user
-        if id is None:
-            if request.user.is_superuser:
-
-                return HttpResponse(200)
-
-            return HttpResponseForbidden()
-
-        #url /api/user/id
-        else:
-            if request.user.id == int(id) or request.user.is_superuser:
-                if User.objects.filter(id=id).exists():
-                    user = User.objects.filter(id=id)[0]
-                    userID = user.id
-                    username = user.username
-
-                    userExtend = user.UserExtend
-                    phi = userExtend.phi
-                    phi_multiplier = userExtend.phi_multiplier
-                    alltime_leaderboard = userExtend.alltime_leaderboard
-                    weekly_leaderboard = userExtend.weekly_leaderboard
-                    daily_leaderboard = userExtend.daily_leaderboard
-
-
-                    data = json.dumps({     'id': userID,
-                                            'username': username,
-                                            'phi': str(phi),
-                                            'phiMultiplier':str(phi_multiplier),
-                                            'leaderboard':{     'alltime':str(alltime_leaderboard),
-                                                                'weekly':str(weekly_leaderboard),
-                                                                'daily':str(daily_leaderboard)}
-                                    })
-
-                    return HttpResponse(data)
-                else:
-                    return HttpResponse(status=404)
-
-            return HttpResponseForbidden()
+            return self.request.user.UserExtend
+        except UserExtend.DoesNotExist:
+            return UserExtend(user=self.request.user)
