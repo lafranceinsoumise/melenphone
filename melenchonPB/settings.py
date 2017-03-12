@@ -19,16 +19,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG', False))
-
-CALLHUB_API_KHEY=os.environ.get('CALLHUB_API_KHEY','b23384fd45686c6b4e5603ad261400a063f748e5')
-
-ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split()
-
+if bool(os.environ.get('DEV', True)):
+    from melenchonPB.settings_dev import *
+else:
+    from melenchonPB.settings_prod import *
 # Application definition
 
 INSTALLED_APPS = [
@@ -133,19 +127,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static/'
-ANGULAR_URL = '/ng'
 
+ANGULAR_URL = '/ng'
 ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
 
 #channels
 # In settings.py
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "callcenter.routing.channel_routing",
-    },
-}
 
 
 REST_FRAMEWORK = {
