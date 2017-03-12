@@ -66,7 +66,7 @@ class webhook_note(APIView):
 
             if authorization: #Si le dernier appel n'est pas trop recent
                 #On crédite les phis que gagne le user
-                EarnPhi(callerAgentUsername, lastCall)
+                EarnPhi(user, lastCall)
 
                 #On enregistre l'appel avec le user associé
                 Appel.objects.create(user=user)
