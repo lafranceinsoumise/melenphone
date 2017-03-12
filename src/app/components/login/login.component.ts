@@ -29,21 +29,4 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  logout() {
-    this.auth.logout();
-  }
-
-  login() {
-    this.loading = true;
-    this.auth.login(this.credentials.username, this.credentials.password)
-      .then((result) => {
-        this.loading = false;
-        if (result === true) {
-          this.router.navigate(['/']);
-        } else {
-          this.error = `Le nom d'utilisateur ou le mot de passe est incorrect`;
-        }
-      });
-  }
-
 }

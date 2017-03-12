@@ -1,5 +1,49 @@
-<h2>connexion</h2>
-<jlm-login></jlm-login>
-<a href="/connexion/">Se connecter via jlm2017.fr</a>
+<ng-container [ngSwitch]="auth.currentUser === null">
+    <md-card *ngSwitchCase="true">
+        <md-card-content>
+            <p>Connectez-vous via jlm2017.fr</p>
+        </md-card-content>
+        <md-card-actions fxLayoutAlign="end">
+            <a md-raised-button color="primary" href="/connexion/">Connexion</a>
+        </md-card-actions>
+    </md-card>
 
-<button md-button *ngIf="!auth.token" (click)="auth.getToken()">lancer une requete sur /api/token/auth</button>
+    <div *ngSwitchCase="false">
+        <div fxLayout="row" fxLayoutAlign="start">
+            <div *ngIf="auth.currentUser.agentUsername?.length">
+                <md-card>
+                    <md-card-content>
+                        <p>
+                            Vous êtes connecté en tant que 
+                            <span class="pseudo">{{auth.currentUser.agentUsername}}</span>
+                        </p>
+                    </md-card-content>
+                    <md-card-actions fxLayoutAlign="end end">
+                        <a md-raised-button color="warn" href="/deconnexion/">Déconnexion</a>
+                    </md-card-actions>
+                </md-card>
+            </div>
+            <div #createCallhubAccount>
+                <md-card>
+                    <md-card-header>
+                        <md-card-title>
+                            Connexion à jlm2017.fr
+                        </md-card-title>
+                    </md-card-header>
+                    <md-card-content>
+                        <p>
+                            Vous n'avez pas encore créé votre compte callhub.
+                            Sans compte callhub, vous ne pourrez pas passer d'appels (gratuitement) pour
+                            la campagne de la France Insoumise 😕
+                        </p>
+                    </md-card-content>
+                    <md-card-actions fxLayoutAlign="end end">
+                        <a md-button href="/deconnexion/">Déconnexion</a>
+                        <a md-raised-button color="primary" href="/deconnexion/">Créer mon compte callhub</a>
+                    </md-card-actions>
+                </md-card>
+            </div>
+        </div>
+    </div>
+
+</ng-container>

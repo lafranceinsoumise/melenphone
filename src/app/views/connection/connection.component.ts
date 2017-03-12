@@ -12,6 +12,7 @@ export class ConnectionComponent implements OnInit {
   constructor(private auth: AuthenticationService) { }
 
   ngOnInit() {
+    this.auth.getProfile();
   }
 
 }
