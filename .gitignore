@@ -42,3 +42,6 @@ testem.log
 Thumbs.db
 
 db.sqlite3
+
+static/
+static/*

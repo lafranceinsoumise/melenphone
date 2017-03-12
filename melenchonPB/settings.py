@@ -20,13 +20,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y+=el7@#+9=+uc4@0$=2q3*wjk4$@o=64ly7oa2shl2u4-)orq'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get('DEBUG', False))
 
-ALLOWED_HOSTS = [".ngrok.io","localhost","127.0.0.1"]
+CALLHUB_API_KHEY=os.environ.get('CALLHUB_API_KHEY','b23384fd45686c6b4e5603ad261400a063f748e5')
 
+ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split()
 
 # Application definition
 
@@ -131,7 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = 'static/'
 ANGULAR_URL = '/ng'
 
 ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
