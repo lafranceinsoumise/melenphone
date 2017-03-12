@@ -152,4 +152,4 @@ SCOPE_SEPARATOR = ' '
 PROFILE_URL = 'https://auth.jlm2017.fr/voir_profil'
 CLIENT_ID = "melenphone"
 CLIENT_SECRET = "tres_secret"
-LOGIN_REDIRECT = 'angular_app'
+LOGIN_REDIRECT = 'angular_oauth_redirect'

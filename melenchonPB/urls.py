@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^ng/pokechon$', AngularApp.as_view(), name="angular_app"),
     url(r'^ng/login$', AngularApp.as_view(), name="angular_app"),
     url(r'^ng/register$', AngularApp.as_view(), name="angular_app"),
+    url(r'^ng/oauth_redirect$', AngularApp.as_view(), name="angular_oauth_redirect"),
 	url(r'^ng/$', AngularApp.as_view(), name="angular_app"),
     url(r'^$', AngularApp.as_view(), name="angular_app"),
 ] + static(settings.ANGULAR_URL, document_root=settings.ANGULAR_ROOT)
