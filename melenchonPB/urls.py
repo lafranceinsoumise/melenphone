@@ -29,9 +29,10 @@ urlpatterns = [
     #WEBHOOKS
     url(r'^webhook/note', webhook_note.as_view()),
 
-    # accounts urls
+    #Accounts URLs
     url(r'^', include(accounts_urls, namespace='accounts')),
 
+    #API URLs
     url(r'^api/', include(callcenter_urls, namespace='callcenter')),
 
     #AUTRES URLS

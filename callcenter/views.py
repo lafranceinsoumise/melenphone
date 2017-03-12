@@ -103,7 +103,7 @@ class webhook_note(APIView):
 
             #On ajoute 1 au compteur des appels du jour
             # TODO: race condition here
-            dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
+            dcalls = PrecomputeData.objects.get(code="dcalls")
             dcalls.integer_value += 1
             dcalls.save()
 
