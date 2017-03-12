@@ -14,10 +14,10 @@ export class UserService {
         private auth: AuthenticationService) {}
 
     getUsers(): Promise<User[]> {
-        const headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
-        const options = new RequestOptions({headers});
+        // const headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+        // const options = new RequestOptions({headers});
 
-        return this.http.get('/api/user', options)
+        return this.http.get('/api/user')
             .toPromise()
             .then((res: Response) => res.json() as User[]);
     }
