@@ -7,8 +7,8 @@ from django.conf import settings
 
 
 class UserExtend(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="UserExtend", blank=True, null=True)
-    agentUsername = models.CharField(max_length=50, blank=True, unique=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="UserExtend")
+    agentUsername = models.CharField(max_length=50, unique=True)
     location_lat = models.CharField(max_length=20, blank=True)
     location_long = models.CharField(max_length=20, blank=True)
     phi = models.IntegerField(default=0, blank=True, null=True)

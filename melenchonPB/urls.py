@@ -19,9 +19,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from callcenter.views import AngularApp
-from callcenter.views import api_user_achievements, api_test_simulatecall, api_leaderboard, api_basic_information, api_test_socket, UserAPI
 from callcenter.views import webhook_note
 from accounts import urls as accounts_urls
+from callcenter import urls as callcenter_urls
 
 
 urlpatterns = [
@@ -32,16 +32,7 @@ urlpatterns = [
     # accounts urls
     url(r'^', include(accounts_urls, namespace='accounts')),
 
-        #API - NO TOKEN REQUIRED
-    url(r'^api/test_websocket$', api_test_socket.as_view()),
-    url(r'^api/simulate_call$', api_test_simulatecall.as_view()),
-    url(r'^api/basic_information$', api_basic_information.as_view()),
-    url(r'^api/leaderboard/(?P<ranking>\w{0,10})$', api_leaderboard.as_view()),
-        #API - TOKEN REQUIRED
-    url(r'^api/current_user/profile$', UserAPI.as_view()),
-    url(r'^api/current_user/achievements$', api_user_achievements.as_view()),
-
-    #REST_FRAMEWORK
+    url(r'^api/', include(callcenter_urls, namespace='callcenter')),
 
     #AUTRES URLS
     url(r'^admin', admin.site.urls),

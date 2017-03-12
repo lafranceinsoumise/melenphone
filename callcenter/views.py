@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework import permissions
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView
+from rest_framework.mixins import CreateModelMixin
 from django.http import Http404
 
 #Project imports
@@ -13,7 +14,8 @@ from callcenter.achievements import *
 from callcenter.map import *
 from callcenter.phi import *
 from callcenter.consumers import *
-from callcenter.serializers import UserExtendSerializer
+from callcenter.serializers import UserSerializer, UserExtendSerializer
+from callcenter.exceptions import CallerCreationError
 from .forms import *
 
 
@@ -237,10 +239,34 @@ class api_basic_information(APIView):
 
 
 class UserAPI(RetrieveUpdateAPIView):
+    serializer_class = UserSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        print(args)
+        print(kwargs)
+        return super(UserAPI, self).get_serializer(*args, **kwargs)
+
+    def get_object(self):
+        return self.request.user
+
+
+class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
     serializer_class = UserExtendSerializer
 
     def get_object(self):
         try:
             return self.request.user.UserExtend
         except UserExtend.DoesNotExist:
-            return UserExtend(user=self.request.user)
+            raise Http404
+
+    def perform_create(self, serializer):
+        serializer.validated_data['user'] = self.request.user
+        serializer.save()
+
+    def post(self, request, *args, **kwargs):
+        print('test')
+        try:
+            userExtend = request.user.UserExtend
+            raise CallerCreationError('Cannot create new agent if user already has one', code='already_exists')
+        except UserExtend.DoesNotExist:
+            return self.create(request, *args, **kwargs)
