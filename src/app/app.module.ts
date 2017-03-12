@@ -36,6 +36,7 @@ import {
   SocketConnectionService,
   AuthenticationService,
   UserService } from './shared';
+import { ToolbarUserInfoComponent } from './components/toolbar-user-info/toolbar-user-info.component';
 
 export function xsrfStrategyFactory() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -55,7 +56,8 @@ export function xsrfStrategyFactory() {
     ConnectionComponent,
     CallMapComponent,
     AnimatedCallComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    ToolbarUserInfoComponent
   ],
   imports: [
     BrowserAnimationsModule,
