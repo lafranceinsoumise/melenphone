@@ -9,13 +9,13 @@
     </md-card>
 
     <div *ngSwitchCase="false">
-        <div fxLayout="row" fxLayoutAlign="start">
-            <div *ngIf="auth.currentUser.agentUsername?.length">
+        <div fxLayout="row" fxLayoutAlign="start" fxLayoutWrap="wrap">
+            <div *ngIf="auth.currentUser" fxFlex.xs="1 1 400px">
                 <md-card>
                     <md-card-content>
                         <p>
                             Vous êtes connecté en tant que 
-                            <span class="pseudo">{{auth.currentUser.agentUsername}}</span>
+                            <span class="pseudo">{{auth.currentUser.email}}</span>
                         </p>
                     </md-card-content>
                     <md-card-actions fxLayoutAlign="end end">
@@ -23,18 +23,18 @@
                     </md-card-actions>
                 </md-card>
             </div>
-            <div *ngIf="auth.currentUser.agentUsername?.length === 0">
+            <div *ngIf="auth.currentUser.agentUsername === null" fxFlex.xs="1 1 400px">
                 <md-card>
                     <md-card-content>
                         <p>
                             Vous n'avez pas encore créé votre compte callhub.
-                            Sans compte callhub, vous ne pourrez pas passer d'appels (gratuitement) pour
-                            la campagne de la France Insoumise 😕
+                            Sans ce compte, vous ne pourrez pas passer d'appels (gratuitement) pour
+                            la campagne 😕
                         </p>
                     </md-card-content>
                     <md-card-actions fxLayoutAlign="end end">
                         <a md-button href="/deconnexion/">Déconnexion</a>
-                        <a md-raised-button color="primary" href="/deconnexion/">Créer mon compte callhub</a>
+                        <a md-raised-button color="primary" routerLink="/register">Créer mon compte callhub</a>
                     </md-card-actions>
                 </md-card>
             </div>

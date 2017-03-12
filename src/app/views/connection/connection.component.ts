@@ -7,12 +7,8 @@ import { AuthenticationService } from '../../shared/authentication.service';
   templateUrl: './connection.component.html',
   styleUrls: ['./connection.component.scss']
 })
-export class ConnectionComponent implements OnInit {
+export class ConnectionComponent {
 
   constructor(private auth: AuthenticationService) { }
-
-  ngOnInit() {
-    this.auth.getProfile();
-  }
 
 }
