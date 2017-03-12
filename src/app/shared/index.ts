@@ -2,6 +2,7 @@ export * from './_models';
 
 export * from './animated-path.component';
 export * from './authentication.service';
+export * from './callhub.service';
 export * from './coordinates-converter.service';
 export * from './fullscreen.directive';
 export * from './fullscreen.service';

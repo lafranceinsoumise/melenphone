@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService } from '../../shared/authentication.service';
+import { AuthenticationService, CallhubService } from '../../shared';
 
 @Component({
   selector: 'jlm-connection',
@@ -11,10 +11,10 @@ export class ConnectionComponent {
 
   callhubUsername = '';
 
-  constructor(private auth: AuthenticationService) { }
+  constructor(private auth: AuthenticationService, private callhubService: CallhubService) { }
 
   createCallhubAccount(name: string) {
-    console.log('@TODO : call callhub API');
+    return this.callhubService.createCallhubAccount(name);
   }
 
 }

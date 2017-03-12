@@ -27,7 +27,8 @@ import {
   RegistrationComponent,
   LoginComponent,
   CallMapComponent,
-  AnimatedCallComponent
+  AnimatedCallComponent,
+  ToolbarUserInfoComponent
 } from './components';
 
 import {
@@ -35,8 +36,10 @@ import {
   CoordinatesConverterService,
   SocketConnectionService,
   AuthenticationService,
-  UserService } from './shared';
-import { ToolbarUserInfoComponent } from './components/toolbar-user-info/toolbar-user-info.component';
+  UserService,
+  CallhubService
+} from './shared';
+
 
 export function xsrfStrategyFactory() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -79,6 +82,7 @@ export function xsrfStrategyFactory() {
     SocketConnectionService,
     AuthenticationService,
     UserService,
+    CallhubService,
     {
       provide: XSRFStrategy,
       useFactory: xsrfStrategyFactory

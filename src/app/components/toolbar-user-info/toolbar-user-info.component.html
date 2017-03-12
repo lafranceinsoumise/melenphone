@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="user === null">
-    <a *ngSwitchCase="true" md-button href="/connexion/">connexion/inscription</a>
+    <a *ngSwitchCase="true" md-button href="/connexion/">connexion via jlm2017.fr</a>
     <a *ngSwitchCase="false" md-button routerLink="/login">{{ user.email }}</a>
     <a *ngSwitchCase="false" md-button href="/deconnexion/">déconnexion</a>
 </ng-container>

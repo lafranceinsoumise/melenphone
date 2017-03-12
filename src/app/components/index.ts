@@ -6,3 +6,4 @@ export * from './login/login.component';
 export * from './navbar/navbar.component';
 export * from './registration/registration.component';
 export * from './sidenav/sidenav.component';
+export * from './toolbar-user-info/toolbar-user-info.component';
