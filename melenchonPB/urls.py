@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^api/', include(callcenter_urls, namespace='callcenter')),
 
     #AUTRES URLS
-    url(r'^admin', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
 
     #ANGULAR
     url(r'^ng/pokechon$', AngularApp.as_view(), name="angular_app"),

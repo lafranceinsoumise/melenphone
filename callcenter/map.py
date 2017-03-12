@@ -41,10 +41,10 @@ def setupLocationUser(user):
             if geocoding_data: # Si on a au moins 1 résultat
                 location_lat = geocoding_data[0]['lat']
                 location_long = geocoding_data[0]['lon']
-            else: #Si google n'a pas de résultats, on ne connait pas la localisation
+            else: #Si on n'a pas de résultats, on ne connait pas la localisation
                 location_lat="None"
                 location_long="None"
-        else: #Si on a pas une réponse de google, on ne connait pas la localisation
+        else: #Si on a pas une réponse, on ne connait pas la localisation
             location_lat="None"
             location_long="None"
 
