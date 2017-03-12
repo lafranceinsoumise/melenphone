@@ -7,10 +7,7 @@ import { Component } from '@angular/core';
 })
 export class SidenavComponent {
   links = [
-    { path: '/', text: 'Carte' },
-    { path: '/pokechon', text: 'pokéchon' },
-    { path: '/login', text: 'connexion' },
-    { path: '/register', text: `s'inscrire` }
+    { path: '/', text: 'Carte' }
   ];
   constructor() { }
 

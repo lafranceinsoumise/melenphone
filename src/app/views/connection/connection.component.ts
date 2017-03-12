@@ -9,6 +9,12 @@ import { AuthenticationService } from '../../shared/authentication.service';
 })
 export class ConnectionComponent {
 
+  callhubUsername = '';
+
   constructor(private auth: AuthenticationService) { }
+
+  createCallhubAccount(name: string) {
+    console.log('@TODO : call callhub API');
+  }
 
 }

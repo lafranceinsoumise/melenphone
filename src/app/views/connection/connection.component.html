@@ -1,44 +1,39 @@
-<ng-container [ngSwitch]="auth.currentUser === null">
-    <md-card *ngSwitchCase="true">
-        <md-card-content>
+<md-card>
+    <md-card-content>
+        <ng-container *ngIf="auth.currentUser === null">
             <p>Connectez-vous via jlm2017.fr</p>
-        </md-card-content>
-        <md-card-actions fxLayoutAlign="end">
+        </ng-container>
+        <ng-container *ngIf="auth.currentUser !== null">
+            <ng-container *ngIf="auth.currentUser.agentUsername === null">
+                <p>
+                    Bravo, tu as fait la moitié du chemin.
+                    Et maintenant, dernière étape : il te faut un pseudo.
+                    Sans ça, tu ne pourras pas passer d'appel (gratuitement) pour
+                    la campagne 😱
+                </p>
+            </ng-container>
+            <ng-container *ngIf="auth.currentUser.agentUsername !== null">
+                <p>
+                    Vous êtes connecté en tant que 
+                    <span class="pseudo">{{auth.currentUser.email}}</span>
+                </p>
+            </ng-container>
+        </ng-container>
+    </md-card-content>
+    <md-card-actions fxLayout="row" fxLayoutAlign="end">
+        <ng-container *ngIf="auth.currentUser === null">
             <a md-raised-button color="primary" href="/connexion/">Connexion</a>
-        </md-card-actions>
-    </md-card>
-
-    <div *ngSwitchCase="false">
-        <div fxLayout="row" fxLayoutAlign="start" fxLayoutWrap="wrap">
-            <div *ngIf="auth.currentUser" fxFlex.xs="1 1 400px">
-                <md-card>
-                    <md-card-content>
-                        <p>
-                            Vous êtes connecté en tant que 
-                            <span class="pseudo">{{auth.currentUser.email}}</span>
-                        </p>
-                    </md-card-content>
-                    <md-card-actions fxLayoutAlign="end end">
-                        <a md-raised-button color="warn" href="/deconnexion/">Déconnexion</a>
-                    </md-card-actions>
-                </md-card>
-            </div>
-            <div *ngIf="auth.currentUser.agentUsername === null" fxFlex.xs="1 1 400px">
-                <md-card>
-                    <md-card-content>
-                        <p>
-                            Vous n'avez pas encore créé votre compte callhub.
-                            Sans ce compte, vous ne pourrez pas passer d'appels (gratuitement) pour
-                            la campagne 😕
-                        </p>
-                    </md-card-content>
-                    <md-card-actions fxLayoutAlign="end end">
-                        <a md-button href="/deconnexion/">Déconnexion</a>
-                        <a md-raised-button color="primary" routerLink="/register">Créer mon compte callhub</a>
-                    </md-card-actions>
-                </md-card>
-            </div>
-        </div>
-    </div>
-
-</ng-container>
+        </ng-container>
+        <ng-container *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername === null">
+            <form fxFlex fxLayout="row" (ngSubmit)="createCallhubAccount(callhubUsername)">
+                <md-input-container fxFlex>
+                    <input mdInput [(ngModel)]="callhubUsername" name="callhubUsername">
+                </md-input-container>
+                <button md-raised-button color="primary" type="submit">J'enregistre mon pseudo</button>
+            </form>
+        </ng-container>
+        <ng-container *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername !== null">
+            <a md-raised-button color="warn" href="/deconnexion/">Déconnexion</a>
+        </ng-container>
+    </md-card-actions>
+</md-card>
