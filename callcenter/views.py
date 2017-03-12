@@ -242,8 +242,6 @@ class UserAPI(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
 
     def get_serializer(self, *args, **kwargs):
-        print(args)
-        print(kwargs)
         return super(UserAPI, self).get_serializer(*args, **kwargs)
 
     def get_object(self):
