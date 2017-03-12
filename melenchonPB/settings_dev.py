@@ -8,7 +8,7 @@ SECURE_BROWSER_XSS_FILTER = bool(os.environ.get('SECURE_BROWSER_XSS_FILTER', Fal
 SECURE_CONTENT_TYPE_NOSNIFF = bool(os.environ.get('SECURE_CONTENT_TYPE_NOSNIFF', False))
 CSRF_COOKIE_SECURE = bool(os.environ.get('CSRF_COOKIE_SECURE', False))
 CSRF_COOKIE_HTTPONLY = bool(os.environ.get('CSRF_COOKIE_HTTPONLY', False))
-X_FRAME_OPTIONS = bool(os.environ.get('X_FRAME_OPTIONS', False))
+X_FRAME_OPTIONS = os.environ.get('X_FRAME_OPTIONS','SAMEORIGIN')
 
 CHANNEL_LAYERS = {
     "default": {
