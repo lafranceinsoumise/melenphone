@@ -7,8 +7,6 @@ from django.utils.http import urlquote_plus
 from callcenter.models import *
 
 #Python imports
-import numpy as np
-import json
 from random import randint
 import requests
 import phonenumbers

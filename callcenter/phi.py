@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-#Django imports
-from django.utils import timezone
-
 #Python imports
-import datetime
-from decimal import *
+from decimal import Decimal
 
 #Project imports
 from callcenter.models import *

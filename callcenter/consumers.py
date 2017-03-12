@@ -1,5 +1,3 @@
-import json
-
 # In consumers.py
 from channels import Group
 

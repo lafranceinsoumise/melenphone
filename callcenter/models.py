@@ -7,6 +7,9 @@ from django.conf import settings
 from django.utils import timezone
 import datetime
 
+__all__ = ['UserExtend', 'Appel', 'Achievement', 'PrecomputeData']
+
+
 def get_default_date():
     return timezone.now() - datetime.timedelta(days=1)
 

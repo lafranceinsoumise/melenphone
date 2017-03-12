@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-#Django imports
-from django.utils import timezone
 #Project import
 from callcenter.models import *
 

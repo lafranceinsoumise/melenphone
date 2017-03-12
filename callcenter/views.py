@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import json
+
 #Django imports
+from django.conf import settings
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
@@ -10,13 +13,13 @@ from rest_framework.mixins import CreateModelMixin
 from django.http import Http404
 
 #Project imports
-from callcenter.achievements import *
-from callcenter.map import *
-from callcenter.phi import *
-from callcenter.consumers import *
+from callcenter.models import *
+from callcenter.achievements import updateAchievements
+from callcenter.map import getCallerLocation, getCalledLocation, randomLocation
+from callcenter.phi import EarnPhi
+from callcenter.consumers import send_message
 from callcenter.serializers import UserSerializer, UserExtendSerializer
 from callcenter.exceptions import CallerCreationError
-from .forms import *
 
 
 #ANGULAR APP
@@ -263,6 +266,7 @@ class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
 
     def post(self, request, *args, **kwargs):
         try:
+            # try accessing UserExtend related property to see if it exists
             userExtend = request.user.UserExtend
             raise CallerCreationError('Cannot create new agent if user already has one', code='already_exists')
         except UserExtend.DoesNotExist:
