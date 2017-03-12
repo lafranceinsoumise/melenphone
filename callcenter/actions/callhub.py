@@ -6,7 +6,7 @@ from ..exceptions import CallerCreationError
 def create_agent(user, username):
     email = user.email
 
-    token = 'Token ' + settings.CALLHUB_API_KHEY
+    token = 'Token ' + settings.CALLHUB_API_KEY
     headers = {'Authorization': token}
     callhubData = {'username': username, 'email': email, 'team': 'tout_le_monde'}
 
