@@ -83,10 +83,11 @@ def getCalledLocation(number):
         else:
             calledLat, calledLng = randomLocation()
     else:
-        if NumbersLocation.objects.filter(pays=str(countryCode)).exists():
+        try:
+            NumbersLocation.objects.get(pays=str(countryCode)) #Si le pays est dans la bdd
             calledPlace = NumbersLocation.objects.filter(pays=str(countryCode))[0]
             calledLat = calledPlace.location_lat
             calledLng = calledPlace.location_long
-        else:
+        except NumbersLocation.DoesNotExist: #Sinon on random
             calledLat, calledLng = randomLocation()
     return calledLat, calledLng
