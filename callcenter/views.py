@@ -264,7 +264,6 @@ class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
         serializer.save()
 
     def post(self, request, *args, **kwargs):
-        print('test')
         try:
             userExtend = request.user.UserExtend
             raise CallerCreationError('Cannot create new agent if user already has one', code='already_exists')

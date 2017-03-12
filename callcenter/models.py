@@ -4,7 +4,11 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
+import datetime
 
+def get_default_date():
+    return timezone.now() - datetime.timedelta(days=1)
 
 class UserExtend(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="UserExtend")
@@ -13,7 +17,7 @@ class UserExtend(models.Model):
     location_long = models.CharField(max_length=20, blank=True)
     phi = models.IntegerField(default=0, blank=True, null=True)
     phi_multiplier = models.DecimalField(default=1.0, max_digits=2, decimal_places=1, blank=True, null=True)
-    first_call_of_the_day = models.DateTimeField(auto_now=True, blank=True)
+    first_call_of_the_day = models.DateTimeField(default=get_default_date, blank=True)
     daily_leaderboard = models.IntegerField(default=0)
     daily_leaderboard_calls = models.IntegerField(default=0)
     weekly_leaderboard = models.IntegerField(default=0)
@@ -30,6 +34,9 @@ class UserExtend(models.Model):
 class Appel(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     date = models.DateTimeField(auto_now=True, blank=True)
+
+    class Meta:
+        get_latest_by = 'id'
 
 class Achievement(models.Model):
     codeName = models.CharField(max_length=50, unique=True)
