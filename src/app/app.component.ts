@@ -12,7 +12,8 @@ export class AppComponent implements OnInit {
   constructor(private auth: AuthenticationService) {}
 
   ngOnInit() {
-    this.auth.getProfile();
+    this.auth.getProfile()
+      .catch(err => console.error(err.json()));
   }
 
 }
