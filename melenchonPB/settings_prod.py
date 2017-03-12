@@ -12,7 +12,10 @@ X_FRAME_OPTIONS = os.environ['X_FRAME_OPTIONS']
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [ ( os.environ['REDIS_SERVER_NAME'] , int(os.environ['REDIS_SERVER_PORT']) ) ],
+        },
         "ROUTING": "callcenter.routing.channel_routing",
     },
 }

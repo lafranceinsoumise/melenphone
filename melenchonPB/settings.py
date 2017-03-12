@@ -134,8 +134,6 @@ ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
 #channels
 # In settings.py
 
-
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
