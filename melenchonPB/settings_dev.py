@@ -16,3 +16,9 @@ CHANNEL_LAYERS = {
         "ROUTING": "callcenter.routing.channel_routing",
     },
 }
+
+
+
+
+CLIENT_ID = os.environ.get('CLIENT_ID','melenphone')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET','tres_secret')
