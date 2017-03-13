@@ -41,6 +41,7 @@ import {
 } from './shared';
 import { AchievementsComponent } from './components/achievements/achievements.component';
 import { MesTropheesComponent } from './views/mes-trophees/mes-trophees.component';
+import { AboutComponent } from './components/about/about.component';
 
 
 export function xsrfStrategyFactory() {
@@ -64,7 +65,8 @@ export function xsrfStrategyFactory() {
     RegistrationComponent,
     ToolbarUserInfoComponent,
     AchievementsComponent,
-    MesTropheesComponent
+    MesTropheesComponent,
+    AboutComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -18,7 +18,7 @@ import {
   styles: [`
     path {
       transform-origin: center;
-      fill: transparent;
+      fill: inherit;
     }
   `],
   template: `
@@ -57,10 +57,13 @@ export class AnimatedPathComponent implements AfterViewInit {
     setTimeout(() => {
       this.display = 'inline';
       this.strokeDasharray = `${this.length}`;
+      this.transitionStart = false;
+      this.transitionEnd = false;
       this.strokeDashoffset = `${this.length * -this.from}`;
       this.transition = '';
 
       setTimeout(() => {
+        this.transitionStart = true;
         this.strokeDashoffset = `${this.length * -this.to}`;
         this.transition = `stroke-dashoffset ${this.transitionTiming} linear, transform ${this.transitionTiming} linear`;
       });

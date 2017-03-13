@@ -8,6 +8,12 @@
     stroke: $jlm-blue;
     stroke-width: 1;
     fill: transparent;
+    transition: fill 2.4s 4s, stroke 2.5s 4s;
+
+    &.transition-start {
+        fill: $jlm-blue;
+        stroke: white;
+    }
 }
 
 #France .department {
@@ -19,7 +25,7 @@
 }
 
 .jlmAnimatedCall {
-    transition: opacity 1s;
+    transition: opacity 1.5s;
     opacity: 1;
 
     &.remove-start {
