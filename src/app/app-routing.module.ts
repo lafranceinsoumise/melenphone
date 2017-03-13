@@ -5,7 +5,8 @@ import {
   HomeComponent,
   PokechonHomeComponent,
   ConnectionComponent,
-  RegisterComponent
+  RegisterComponent,
+  MesTropheesComponent
 } from './views';
 
 import { AuthGuarg } from './_guards';
@@ -17,7 +18,8 @@ const routes: Routes = [
       { path: '', component: HomeComponent },
       { path: 'pokechon', loadChildren: './pokechon/pokechon.module#PokechonModule' },
       { path: 'login', component: ConnectionComponent },
-      { path: 'register', component: RegisterComponent }
+      { path: 'register', component: RegisterComponent },
+      { path: 'mes-trophees', component: MesTropheesComponent }
     ]
   }
 ];

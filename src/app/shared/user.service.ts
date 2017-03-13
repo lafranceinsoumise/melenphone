@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 
 import { AuthenticationService } from './authentication.service';
-import { User, RegistrationInformations } from './_models';
+import { User, RegistrationInformations, AchievementApiData } from './_models';
 
 @Injectable()
 export class UserService {
@@ -20,6 +20,18 @@ export class UserService {
         return this.http.get('/api/user')
             .toPromise()
             .then((res: Response) => res.json() as User[]);
+    }
+
+    getCurrentUserAchievements(): Promise<AchievementApiData> {
+        return this.http.get(`/api/current_user/achievements`)
+            .toPromise()
+            .then((res: Response) => {
+                if (res.status === 200) {
+                    return res.json() as AchievementApiData;
+                } else {
+                    console.error('Une erreur a eu lieu lors de la récupération des trophées');
+                }
+            });
     }
 
     register(infos: RegistrationInformations) {

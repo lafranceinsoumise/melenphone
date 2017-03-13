@@ -1,0 +1,23 @@
+<p>{{ trophiesData?.unlocked?.length }} Trophées débloqués</p>
+<ul>
+  <li *ngFor="let trophie of trophiesData?.unlocked">
+    <span class="name">
+      {{ trophie.name }}
+    </span>
+    <span class="description">
+      {{ trophie.condition }}
+    </span>
+  </li>
+</ul>
+
+<p>{{ trophiesData?.locked?.length }} Trophées vérouillés</p>
+<ul>
+  <li *ngFor="let trophie of trophiesData?.locked">
+    <span class="name">
+      {{ trophie.name }}
+    </span>
+    <span class="description">
+      {{ trophie.condition }}
+    </span>
+  </li>
+</ul>

@@ -2,7 +2,9 @@
   <button md-icon-button (click)="sidenav.toggle()">
     <md-icon>menu</md-icon>
   </button>
-  <span (click)="sidenav.toggle()">Mélenphone</span>
+  <a routerLink="/">
+    <span>Mélenphone</span>
+  </a>
   <span style="flex: 1 1 auto"></span>
   <jlm-toolbar-user-info [user]="auth.currentUser"></jlm-toolbar-user-info>
 </md-toolbar>

@@ -24,7 +24,7 @@
             </ng-container>
         </ng-container>
     </md-card-content>
-    <md-card-actions fxLayout="row" fxLayoutAlign="end">
+    <md-card-actions fxLayoutAlign="end">
         <ng-container *ngIf="auth.currentUser === null">
             <a md-raised-button color="primary" href="/connexion/">Connexion</a>
         </ng-container>
@@ -41,5 +41,17 @@
         <ng-container *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername !== null">
             <a md-raised-button color="warn" href="/deconnexion/">Déconnexion</a>
         </ng-container>
+    </md-card-actions>
+</md-card>
+
+<md-card *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername !== null">
+    <md-card-title>
+        <span>Mes trophées</span>
+    </md-card-title>
+    <md-card-content>
+        <jlm-mes-trophees></jlm-mes-trophees>
+    </md-card-content>
+    <md-card-actions fxLayoutAlign="end">
+        <a md-raised-button color="primary" routerLink="/mes-trophees">Mes trophées</a>
     </md-card-actions>
 </md-card>

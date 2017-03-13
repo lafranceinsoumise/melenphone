@@ -39,6 +39,8 @@ import {
   UserService,
   CallhubService
 } from './shared';
+import { AchievementsComponent } from './components/achievements/achievements.component';
+import { MesTropheesComponent } from './views/mes-trophees/mes-trophees.component';
 
 
 export function xsrfStrategyFactory() {
@@ -60,7 +62,9 @@ export function xsrfStrategyFactory() {
     CallMapComponent,
     AnimatedCallComponent,
     RegistrationComponent,
-    ToolbarUserInfoComponent
+    ToolbarUserInfoComponent,
+    AchievementsComponent,
+    MesTropheesComponent
   ],
   imports: [
     BrowserAnimationsModule,
