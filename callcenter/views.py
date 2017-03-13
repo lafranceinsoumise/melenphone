@@ -144,7 +144,12 @@ class api_test_simulatecall(APIView):
 
         callerLat, callerLng = randomLocation()
         calledLat, calledLng = randomLocation()
-        dcalls = PrecomputeData.objects.filter(code="dcalls")[0].integer_value
+
+        dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
+        dcalls.integer_value += 1
+        dcalls.save()
+
+        dcalls = dcalls.integer_value
 
         websocketMessage = json.dumps({ 'call': {
                                                 'caller': {'lat':callerLat, 'lng':callerLng, 'id':0, 'agentUsername':'lolz'},
