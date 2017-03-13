@@ -1,10 +1,14 @@
+@import '../_colors.scss';
+
 md-sidenav {
   width: 200px;
 }
 
 main {
   box-sizing: border-box;
+  margin: auto;
   padding: 1em;
+  width: 70%;
 }
 
 a {
@@ -15,3 +19,19 @@ a {
     text-decoration: underline;
   }
 }
+
+.mat-toolbar.mat-primary {
+  background: transparent;
+  padding: 10px 16px;
+}
+
+.logo {
+  background: url('../assets/img/logo.svg') center;
+  background-size: cover;
+  display: block;
+  height: 90px;
+  text-indent: -9000px;
+  width: 268px;
+}
+
+.mat-sidenav-container {color: $main-text;}
