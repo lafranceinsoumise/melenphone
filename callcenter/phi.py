@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 #Python imports
 from decimal import Decimal
-
-#Project imports
-from callcenter.models import *
+from django.utils import timezone
 
 BASE_PHI = 10
 

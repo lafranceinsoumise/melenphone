@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
-#Project import
-from callcenter.models import *
-
 #Python imports
 import datetime
+
+#Django imports
+from django.utils import timezone
+
+#Project import
+from callcenter.models import *
 
 #Fonction principale
 def updateAchievements(user):

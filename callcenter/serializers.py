@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, SlugRelatedField, CharField
+from rest_framework.serializers import ModelSerializer, SlugRelatedField
 
 from .models import UserExtend
 from .actions.callhub import create_agent
