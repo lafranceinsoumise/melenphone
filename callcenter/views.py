@@ -89,7 +89,7 @@ class webhook_note(APIView):
                                                             'lat':callerLat,
                                                             'lng':callerLng,
                                                             'id':user.id,
-                                                            'username':user.username},
+                                                            'agentUsername':user.username},
                                                         'target': {
                                                             'lat':calledLat,
                                                             'lng':calledLng}
@@ -112,7 +112,7 @@ class webhook_note(APIView):
 
             #On envoie les positions au websocket pour l'animation
             websocketMessage = json.dumps({ 'call': {
-                                                    'caller': {'lat':callerLat, 'lng':callerLng, 'id':0, 'username':callerAgentUsername},
+                                                    'caller': {'lat':callerLat, 'lng':callerLng, 'id':0, 'agentUsername':callerAgentUsername},
                                                     'target': {'lat':calledLat, 'lng':calledLng}
                                                     },
                                             'updatedData': {
@@ -143,7 +143,7 @@ class api_test_simulatecall(APIView):
         dcalls = PrecomputeData.objects.filter(code="dcalls")[0].integer_value
 
         websocketMessage = json.dumps({ 'call': {
-                                                'caller': {'lat':callerLat, 'lng':callerLng},
+                                                'caller': {'lat':callerLat, 'lng':callerLng, 'id':0, 'agentUsername':'lolz'},
                                                 'target': {'lat':calledLat, 'lng':calledLng}
                                                 },
                                         'updatedData': {
