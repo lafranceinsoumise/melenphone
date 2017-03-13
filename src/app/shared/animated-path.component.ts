@@ -13,6 +13,8 @@ import {
   AnimationKeyframe
 } from '@angular/core';
 
+import { MapService } from './map.service';
+
 @Component({
   selector: 'g[jlmAnimatedPath]',
   styles: [`
@@ -46,11 +48,17 @@ export class AnimatedPathComponent implements AfterViewInit {
   strokeDashoffset: string;
   transition: string;
 
-  constructor() {}
+  constructor(private mapService: MapService) {}
 
   ngAfterViewInit() {
     this.length = this.pathEl['nativeElement'].getTotalLength();
-    this.playAnimation();
+    if (this.mapService.firstTime) {
+      this.playAnimation();
+    } else {
+      this.strokeDasharray = null;
+      this.strokeDashoffset = null;
+      this.display = 'inline';
+    }
   }
 
   playAnimation() {

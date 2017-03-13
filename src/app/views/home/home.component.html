@@ -1,8 +1,8 @@
-<jlm-gauge [min]="0" [max]="1000" [value]="760"></jlm-gauge>
-<div class="points">1 000 000 000 points</div>
+<jlm-gauge [min]="0" [max]="goal" [value]="dailyCalls"></jlm-gauge>
+<div class="points" *ngIf="auth.currentUser?.phi">{{ auth.currentUser.phi }} points</div>
 <div jlmFullscreen #fullscreenController="fullscreen">
     <jlm-call-map [timeout]="5000">
-        <!--<div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
+        <div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
             <button *ngSwitchCase="false"
                     md-raised-button
                     color="accent"
@@ -12,6 +12,6 @@
                     color="accent"
                     (click)="fullscreenController.exitFullscreen()">sortir du mode plein écran</button>
             <button md-raised-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
-        </div>-->
+        </div>
     </jlm-call-map>
 </div>

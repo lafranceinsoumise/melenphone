@@ -39,7 +39,8 @@ import {
   AuthenticationService,
   UserService,
   CallhubService,
-  LeaderboardService
+  LeaderboardService,
+  MapService
 } from './shared';
 import { AchievementsComponent } from './components/achievements/achievements.component';
 import { MesTropheesComponent } from './views/mes-trophees/mes-trophees.component';
@@ -99,7 +100,8 @@ export function xsrfStrategyFactory() {
       provide: XSRFStrategy,
       useFactory: xsrfStrategyFactory
     },
-    LeaderboardService
+    LeaderboardService,
+    MapService
   ],
   bootstrap: [AppComponent]
 })

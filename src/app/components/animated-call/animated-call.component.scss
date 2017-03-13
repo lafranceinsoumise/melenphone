@@ -3,6 +3,7 @@
 .call {
     fill: transparent;
     stroke: $jlm-red;
+    vector-effect: non-scaling-stroke;
     stroke-width: 2px;
     stroke-linecap: round;
 }

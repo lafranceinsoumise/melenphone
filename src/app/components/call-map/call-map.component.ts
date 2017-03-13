@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, ViewContainerRef, ViewRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ViewContainerRef, ViewRef, ViewChild, ElementRef } from '@angular/core';
 
-import { SocketConnectionService, CoordinatesConverterService } from '../../shared';
+import { SocketConnectionService, CoordinatesConverterService, MapService } from '../../shared';
 import { WsCallNotification, CallNoteDescription } from '../../core';
 
 @Component({
@@ -8,18 +8,24 @@ import { WsCallNotification, CallNoteDescription } from '../../core';
   templateUrl: './call-map.component.html',
   styleUrls: ['./call-map.component.scss']
 })
-export class CallMapComponent implements OnInit {
+export class CallMapComponent implements OnInit, AfterViewInit {
   @ViewChild('svgDocument') svgRef: ElementRef;
   notifications: { call: WsCallNotification, options: any}[] = [];
+  shouldAnimate = false;
 
   @Input() timeout = 3000;
 
   constructor(
     private scs: SocketConnectionService,
+    private mapService: MapService,
     private coordsCvrtr: CoordinatesConverterService) {}
 
   ngOnInit() {
     this.scs.room.addEventListener('message', (event) => this.onCallNotification(event), false);
+  }
+
+  ngAfterViewInit() {
+      this.mapService.firstTime = false;
   }
 
   getSvgDimensions(): {width: number, height: number} {

@@ -1,19 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { CoordinatesConverterService, SocketConnectionService } from '../../shared';
+import { CoordinatesConverterService, SocketConnectionService, AuthenticationService } from '../../shared';
 import 'rxjs/add/operator/toPromise';
-import { WsCallNotification } from '../../core';
+import { WsCallNotification, CallNoteDescription } from '../../core';
 
 @Component({
   selector: 'jlm-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+  dailyCalls: number;
+  goal: 200;
 
   constructor(
     private coordsConverter: CoordinatesConverterService,
-    private wsc: SocketConnectionService,
+    private scs: SocketConnectionService,
+    private auth: AuthenticationService,
     private http: Http) { }
 
   makeBackendRequest() {
@@ -26,6 +30,18 @@ export class HomeComponent {
         return res.json();
       })
       .catch(error => console.error(error));
+  }
+
+  ngOnInit() {
+    this.scs.room.addEventListener('message', (event) => this.onNotif(event), false);
+  }
+
+  onNotif(message: MessageEvent) {
+    const notif = JSON.parse(message.data) as CallNoteDescription;
+    this.dailyCalls = notif.updatedData.dailyCalls;
+    if (notif.call.caller.agentUsername === this.auth.currentUser.agentUsername) {
+      this.auth.currentUser.phi += 10;
+    }
   }
 
 }

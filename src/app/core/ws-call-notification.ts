@@ -26,13 +26,15 @@ export interface CallNoteDescription {
         caller: {
             lat: string;
             lng: string;
+            id: number;
+            agentUsername: string;
         };
         target: {
             lat: string;
             lng: string;
         };
-        updatedData: {
-            dailyCalls: number;
-        }
     };
+    updatedData: {
+        dailyCalls: number;
+    }
 }
