@@ -55,8 +55,8 @@ export class AnimatedPathComponent implements AfterViewInit {
   ngAfterViewInit() {
     if (this.doNotAnimate) {
       this.strokeDasharray = undefined;
-      this.strokeDashoffset = null;
-      this.display = 'inline';
+      this.strokeDashoffset = undefined;
+      this.display = undefined;
       this.transitionEnd = true;
     } else {
       this.length = this.pathEl['nativeElement'].getTotalLength();
@@ -77,7 +77,7 @@ export class AnimatedPathComponent implements AfterViewInit {
         this.transitionStart = true;
         this.strokeDashoffset = `${this.length * -this.to}`;
         this.transition = `stroke-dashoffset ${this.transitionTiming} linear, transform ${this.transitionTiming} linear`;
-      });
+      }, 10);
     });
 
   }
