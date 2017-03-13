@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 import datetime
 
-__all__ = ['UserExtend', 'Appel', 'Achievement', 'PrecomputeData']
+__all__ = ['UserExtend', 'Appel', 'Achievement', 'PrecomputeData', 'NumbersLocation']
 
 
 def get_default_date():
