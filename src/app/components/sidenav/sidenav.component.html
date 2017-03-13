@@ -1,3 +1,3 @@
-<a *ngFor="let link of links" routerLinkActive="active" [routerLink]="[link.path]">
+<a *ngFor="let link of links" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="[link.path]">
   {{ link.text }}
 </a>
