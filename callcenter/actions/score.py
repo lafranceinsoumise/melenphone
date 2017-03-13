@@ -30,8 +30,8 @@ def update_scores(user):
         pipe.zincrby('leaderboards:alltime',str(user.id))
 
         for day in sevenPreviousDays:
-            pipe.incr('leaderboards:weekly:' + day, str(user.id))
+            pipe.zincrby('leaderboards:weekly:' + day, str(user.id))
 
-        pipe.incr('leaderboards:daily:' + today, str(user.id))
+        pipe.zincrby('leaderboards:daily:' + today, str(user.id))
 
     pipe.execute()
