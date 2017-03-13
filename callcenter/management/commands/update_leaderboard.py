@@ -13,6 +13,9 @@ import datetime
 from callcenter.models import Appel, UserExtend
 from callcenter.achievements import unlockAchievement
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
