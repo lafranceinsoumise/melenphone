@@ -12,7 +12,7 @@
 
     &.transition-start {
         fill: $jlm-blue;
-        stroke: white;
+        stroke: darken($jlm-blue, 20);
     }
 }
 
