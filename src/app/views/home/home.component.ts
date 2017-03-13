@@ -11,7 +11,7 @@ import { WsCallNotification, CallNoteDescription } from '../../core';
 })
 export class HomeComponent implements OnInit {
 
-  dailyCalls: number;
+  dailyCalls = 0;
   goal: 200;
 
   constructor(

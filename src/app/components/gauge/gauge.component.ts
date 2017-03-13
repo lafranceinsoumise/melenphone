@@ -9,7 +9,7 @@ export class GaugeComponent implements OnInit {
 
   @Input() min = 100;
   @Input() max = 1000;
-  @Input() value = null;
+  @Input() value = 0;
 
   constructor() { }
 
