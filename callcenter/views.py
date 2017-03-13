@@ -127,6 +127,8 @@ class webhook_note(APIView):
 
 # /api/test_websocket/
 class api_test_socket(APIView):
+    if settings.DEBUG == False:
+        raise Http404
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
         send_message(request.body)
@@ -135,6 +137,8 @@ class api_test_socket(APIView):
 
 # /api/simulate_call/
 class api_test_simulatecall(APIView):
+    if settings.DEBUG == False:
+        raise Http404
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
 

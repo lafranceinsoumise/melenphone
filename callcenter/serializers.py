@@ -17,11 +17,11 @@ class UserExtendSerializer(ModelSerializer):
     class Meta:
         model = UserExtend
         fields = (
-            'id', 'agentUsername', 'phi', 'phi_multiplier',
+            'id', 'agentUsername', 'phi', 'phi_multiplier', 'first_call_of_the_day',
             'alltime_leaderboard', 'weekly_leaderboard', 'daily_leaderboard'
         )
         read_only_fields = (
-            'id', 'phi', 'phi_multiplier',
+            'id', 'phi', 'phi_multiplier', 'first_call_of_the_day',
             'alltime_leaderboard', 'weekly_leaderboard', 'daily_leaderboard'
         )
 
