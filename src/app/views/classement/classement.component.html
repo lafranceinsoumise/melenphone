@@ -1,0 +1,19 @@
+<md-card>
+  <md-card-title>Classement</md-card-title>
+  <md-card-content>
+    <table>
+      <thead>
+        <tr>
+          <th>Pseudo</th>
+          <th>Nombre d'appels</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows">
+          <td>{{row.username}}</td>
+          <td>{{row.calls}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card-content>
+</md-card>

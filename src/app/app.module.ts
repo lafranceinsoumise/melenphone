@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { MaterialModule } from '@angular/material';
@@ -16,7 +16,8 @@ import {
   HomeComponent,
   ConnectionComponent,
   PokechonHomeComponent,
-  RegisterComponent
+  RegisterComponent,
+  ClassementComponent
 } from './views';
 
 import {
@@ -37,11 +38,13 @@ import {
   SocketConnectionService,
   AuthenticationService,
   UserService,
-  CallhubService
+  CallhubService,
+  LeaderboardService
 } from './shared';
 import { AchievementsComponent } from './components/achievements/achievements.component';
 import { MesTropheesComponent } from './views/mes-trophees/mes-trophees.component';
 import { AboutComponent } from './components/about/about.component';
+import { OauthRedirectComponent } from './views/oauth-redirect/oauth-redirect.component';
 
 
 export function xsrfStrategyFactory() {
@@ -66,11 +69,14 @@ export function xsrfStrategyFactory() {
     ToolbarUserInfoComponent,
     AchievementsComponent,
     MesTropheesComponent,
-    AboutComponent
+    AboutComponent,
+    OauthRedirectComponent,
+    ClassementComponent
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
+    CommonModule,
     FormsModule,
     HttpModule,
     MaterialModule.forRoot(),
@@ -92,7 +98,8 @@ export function xsrfStrategyFactory() {
     {
       provide: XSRFStrategy,
       useFactory: xsrfStrategyFactory
-    }
+    },
+    LeaderboardService
   ],
   bootstrap: [AppComponent]
 })

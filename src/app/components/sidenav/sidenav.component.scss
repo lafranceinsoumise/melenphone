@@ -1,0 +1,14 @@
+@import '../../../_colors.scss';
+
+a {
+    display: block;
+    padding: 1em;
+    font-size: 1.1em;
+    color: black;
+    font-weight: bold;
+
+    &.active {
+        background-color: $jlm-red;
+        color: white;
+    }
+}
