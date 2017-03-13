@@ -1,8 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import './_theme.scss';
+@import './_colors.scss';
 
-html, body, jlm-root, md-sidenav-container, main {
+body {
+    background: #fafafa;
+    color: $main-text;
+    font-family: Montserrat, serif;
+}
+
+html, body {
     margin: 0;
     width: 100%;
     height: 100%;

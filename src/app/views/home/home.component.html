@@ -1,16 +1,17 @@
 <jlm-gauge [min]="0" [max]="1000" [value]="760"></jlm-gauge>
+<div class="points">1 000 000 000 points</div>
 <div jlmFullscreen #fullscreenController="fullscreen">
     <jlm-call-map [timeout]="5000">
-        <div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
+        <!--<div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
             <button *ngSwitchCase="false"
-                    md-raised-button 
-                    color="accent" 
+                    md-raised-button
+                    color="accent"
                     (click)="fullscreenController.toggle(true)">Plein écran</button>
-            <button *ngSwitchCase="true" 
-                    md-raised-button 
-                    color="accent" 
+            <button *ngSwitchCase="true"
+                    md-raised-button
+                    color="accent"
                     (click)="fullscreenController.exitFullscreen()">sortir du mode plein écran</button>
             <button md-raised-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
-        </div>
+        </div>-->
     </jlm-call-map>
 </div>

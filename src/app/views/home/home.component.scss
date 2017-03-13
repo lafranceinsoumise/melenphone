@@ -1,13 +1,29 @@
 :host {
     display: block;
+    margin-top: 20px;
 }
 
 jlm-gauge {
-    display: block;
-    margin: .2em 0 1em;
+    display: inline-block;
+    width: 75%;
+    vertical-align: middle;
+}
+
+.points {
+    background: url('../../../assets/img/phi.png') no-repeat right;
+    background-size: 26px auto;
+    display: inline-block;
+    line-height: 38px;
+    padding-right: 2em;
+    text-align: right;
+    text-transform: uppercase;
+    vertical-align: middle;
+    width: calc(25% - 3em);
 }
 
 [jlmFullscreen] {
+    margin-top: 70px;
+
     &:-webkit-full-screen {
         display: flex;
         background-color: white;
