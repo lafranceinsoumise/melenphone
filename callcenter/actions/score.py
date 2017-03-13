@@ -5,6 +5,7 @@ import redis
 
 def update_scores(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
+    pipe = r.pipeline(transaction=False)
 
     # Cles necessaires :
     tzdate = timezone.now()
@@ -15,20 +16,21 @@ def update_scores(user):
         sevenPreviousDays.append(str(tzdate.year) + '/' + str(tzdate.month) + '/' + str(tzdate.day))
 
     # Global counters
-    r.incr('call_count:alltime')
+    pipe.incr('call_count:alltime')
 
     for day in sevenPreviousDays:
-        r.incr('call_count:weekly:' + day)
+        pipe.incr('call_count:weekly:' + day)
 
-    r.incr('call_count:daily:' + today)
+    pipe.incr('call_count:daily:' + today)
 
 
 
     # Leaderboards
-    r.zincrby('leaderboards:alltime',str(user.id))
+    pipe.zincrby('leaderboards:alltime',str(user.id))
 
     for day in sevenPreviousDays:
-        r.incr('leaderboards:weekly:' + day, str(user.id))
+        pipe.incr('leaderboards:weekly:' + day, str(user.id))
 
-    r.incr('leaderboards:daily:' + today, str(user.id))
+    pipe.incr('leaderboards:daily:' + today, str(user.id))
 
+    pipe.execute()
