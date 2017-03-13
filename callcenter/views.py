@@ -196,7 +196,7 @@ class api_leaderboard(APIView):
             users = users.filter(alltime_leaderboard__gte=1).order_by('alltime_leaderboard')
             usersTab = []
             for user in users:
-                username = user.user.username
+                username = user.agentUsername
                 calls = user.alltime_leaderboard_calls
                 usersTab.append({'username':username, 'calls':str(calls)})
 
@@ -205,7 +205,7 @@ class api_leaderboard(APIView):
             users = users.filter(weekly_leaderboard__gte=1).order_by('weekly_leaderboard')
             usersTab = []
             for user in users:
-                username = user.user.username
+                username = user.agentUsername
                 calls = user.weekly_leaderboard_calls
                 usersTab.append({'username':username, 'calls':str(calls)})
 
@@ -214,7 +214,7 @@ class api_leaderboard(APIView):
             users = users.filter(daily_leaderboard__gte=1).order_by('daily_leaderboard')
             usersTab = []
             for user in users:
-                username = user.user.username
+                username = user.agentUsername
                 calls = user.daily_leaderboard_calls
                 usersTab.append({'username':username, 'calls':str(calls)})
 
