@@ -113,7 +113,7 @@ AUTHENTICATION_BACKENDS = [
 
 LANGUAGE_CODE = 'fr-fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
@@ -151,3 +151,9 @@ DEFAULT_SCOPE = ['view_profile']
 SCOPE_SEPARATOR = ' '
 PROFILE_URL = 'https://auth.jlm2017.fr/voir_profil'
 LOGIN_REDIRECT = 'angular_oauth_redirect'
+
+
+# redis
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_MAX_CONNECTIONS = 4
