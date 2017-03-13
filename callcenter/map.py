@@ -4,7 +4,7 @@
 from django.utils.http import urlquote_plus
 
 #Project import
-from callcenter.models import *
+from callcenter.models import NumbersLocation, UserExtend
 
 #Python imports
 from random import randint
