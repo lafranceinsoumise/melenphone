@@ -26,11 +26,12 @@ def update_scores(user):
 
 
     # Leaderboards
-    pipe.zincrby('leaderboards:alltime',str(user.id))
+    if not(user is None):
+        pipe.zincrby('leaderboards:alltime',str(user.id))
 
-    for day in sevenPreviousDays:
-        pipe.incr('leaderboards:weekly:' + day, str(user.id))
+        for day in sevenPreviousDays:
+            pipe.incr('leaderboards:weekly:' + day, str(user.id))
 
-    pipe.incr('leaderboards:daily:' + today, str(user.id))
+        pipe.incr('leaderboards:daily:' + today, str(user.id))
 
     pipe.execute()
