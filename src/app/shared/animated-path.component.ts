@@ -31,12 +31,14 @@ import { MapService } from './map.service';
   `,
 })
 export class AnimatedPathComponent implements AfterViewInit {
+  
   @ViewChild('path') pathEl: ViewRef;
   length: number;
 
   @Input('jlmAnimatedPath')
   jlmAnimatedPath: string;
 
+  @Input() doNotAnimate = false;
   @Input() transitionTiming = '5s';
   @Input() from = -1;
   @Input() to = 0;
@@ -48,16 +50,17 @@ export class AnimatedPathComponent implements AfterViewInit {
   strokeDashoffset: string;
   transition: string;
 
-  constructor(private mapService: MapService) {}
+  constructor() {}
 
   ngAfterViewInit() {
-    this.length = this.pathEl['nativeElement'].getTotalLength();
-    if (this.mapService.firstTime) {
-      this.playAnimation();
-    } else {
-      this.strokeDasharray = null;
+    if (this.doNotAnimate) {
+      this.strokeDasharray = undefined;
       this.strokeDashoffset = null;
       this.display = 'inline';
+      this.transitionEnd = true;
+    } else {
+      this.length = this.pathEl['nativeElement'].getTotalLength();
+      this.playAnimation();
     }
   }
 

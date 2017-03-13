@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
   onNotif(message: MessageEvent) {
     const notif = JSON.parse(message.data) as CallNoteDescription;
     this.dailyCalls = notif.updatedData.dailyCalls;
-    if (notif.call.caller.agentUsername === this.auth.currentUser.agentUsername) {
+    if (this.auth.currentUser !== null && this.auth.currentUser.agentUsername === notif.call.caller.agentUsername) {
       this.auth.currentUser.phi += 10;
     }
   }
