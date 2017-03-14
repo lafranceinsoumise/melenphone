@@ -34,7 +34,18 @@ export class CallMapComponent implements OnInit, AfterViewInit {
   }
 
   onCallNotification(event: MessageEvent) {
-    const rawNotification = JSON.parse(event.data) as CallNoteDescription;
+    const parsed = JSON.parse(event.data);
+    switch (parsed.type) {
+      case 'call':
+        this.pushCall(parsed.value as CallNoteDescription);
+      break;
+      case 'achievement':
+      break;
+    }
+
+  }
+
+  pushCall(rawNotification: CallNoteDescription) {
     const call: WsCallNotification = {
       caller: {
         gps: {
@@ -56,7 +67,6 @@ export class CallMapComponent implements OnInit, AfterViewInit {
     call.callee.svg = {x: calleeSvgCoords.x * mapWidth, y: calleeSvgCoords.y * mapHeight};
     const notifRef = {call, options: {removeStart: false}};
     this.notifications.push(notifRef);
-
     setTimeout(
       () => {
         notifRef.options.removeStart = true;
