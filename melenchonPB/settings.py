@@ -157,3 +157,5 @@ LOGIN_REDIRECT = 'angular_oauth_redirect'
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_MAX_CONNECTIONS = 4
+
+MIN_DELAY = 30

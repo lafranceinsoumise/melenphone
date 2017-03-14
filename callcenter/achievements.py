@@ -17,7 +17,8 @@ def updateAchievements(user):
         functions = [   leet,
                         callCount,
                         dailyCalls,
-                        earlyAdopters
+                        earlyAdopters,
+                        leaderboards
                     ]
         for f in functions:
             f(user)
@@ -37,18 +38,18 @@ def unlockAchievement(codeName, user):
 
 def leet(user):
     now = timezone.now()
-    if(now.hours == 13 and now.minute == 37):
+    if(now.hour == 13 and now.minute == 37):
         unlockAchievement("leet", user)
 
 def earlyAdopters(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
-    callersCount = r.scard('leaderbord:alltime')
+    callersCount = r.scard('leaderbords:alltime')
     if callersCount < 100:
         unlockAchievement("early_y_etais", user)
 
 def dailyCalls(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
-    dailyCalls = int(r.zscore('leaderboard:daily:' + format_date(timezone.now()), str(user.id)))
+    dailyCalls = int(r.zscore('leaderboards:daily:' + format_date(timezone.now()), str(user.id)))
     if dailyCalls == 30:
         unlockAchievement("daily_a_fond", user)
     if dailyCalls == 50:
@@ -59,7 +60,7 @@ def dailyCalls(user):
 
 def callCount(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
-    count = int(r.zscore('leaderboard:alltime', str(user.id)))
+    count = int(r.zscore('leaderboards:alltime', str(user.id)))
     if count == 1:
         unlockAchievement("count_insoumis_1", user)
     if count == 5:
@@ -98,3 +99,15 @@ def callCount(user):
         unlockAchievement("count_depute_constituante", user)
     if count == 5000:
         unlockAchievement("count_depute_6", user)
+
+def leaderboards(user):
+    r = redis.StrictRedis(connection_pool=redis_pool)
+
+    if int(r.zrank('leaderboards:alltime', str(user.id))) == 0:
+        unlockAchievement("leaderboard_alltime", user)
+
+    if int(r.zrank('leaderboards:weekly:' + format_date(timezone.now()), str(user.id))) == 0:
+        unlockAchievement("leaderboard_weekly", user)
+
+    if int(r.zrank('leaderboards:daily:' + format_date(timezone.now()), str(user.id))) == 0:
+        unlockAchievement("leaderboard_daily", user)

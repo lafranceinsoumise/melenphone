@@ -13,7 +13,7 @@ def update_scores(user):
 
     sevenPreviousDays = [today]
     for i in range(6):
-        tzdate -= datetime.timedelta(days=1)
+        tzdate += datetime.timedelta(days=1)
         sevenPreviousDays.append(format_date(tzdate))
 
     # Global counters

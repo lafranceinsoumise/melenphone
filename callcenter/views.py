@@ -16,6 +16,7 @@ from django.http import Http404
 
 #Project imports
 from callcenter.models import *
+from accounts.models import User
 from callcenter.achievements import updateAchievements
 from callcenter.map import getCallerLocation, getCalledLocation, randomLocation
 from callcenter.phi import EarnPhi
@@ -42,7 +43,7 @@ class webhook_note(APIView):
 
     def post(self, request):
 
-        jsondata = request.body
+        jsondata = request.body.decode('utf-8')
         data = json.loads(jsondata)
 
         #Latitude et longitude de l'appelant
@@ -59,13 +60,12 @@ class webhook_note(APIView):
 
         try:
             user = UserExtend.objects.get(agentUsername=callerAgentUsername).user #On le récupère
-            lastCall = r.getset('lastcall:user:' + str(user.id), now)
+            lastCall = float(r.getset('lastcall:user:' + str(user.id), now) or 0)
         except UserExtend.DoesNotExist:
             user = None
             lastCall = None
 
-
-        if lastCall is None or (now - lastCall < MIN_DELAY):
+        if lastCall is None or (now - lastCall > settings.MIN_DELAY):
             #On crédite les phis que gagne le user
             EarnPhi(user, lastCall)
 
@@ -83,7 +83,7 @@ class webhook_note(APIView):
                 id = user.id
                 agentUsername = user.UserExtend.agentUsername
 
-            dailyCalls = r.get('callcount:daily:' + format_date(timezone.now()))
+            dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
 
             websocketMessage = json.dumps({ 'call': {
                                                     'caller': {
@@ -129,7 +129,7 @@ class api_test_simulatecall(APIView):
         update_scores(None)
 
         r = redis.StrictRedis(connection_pool=redis_pool)
-        dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())))
+        dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
 
         websocketMessage = json.dumps({ 'call': {
                                                 'caller': {'lat':callerLat, 'lng':callerLng, 'id':None, 'agentUsername':None},
@@ -178,33 +178,32 @@ class api_user_achievements(APIView):
 class api_leaderboard(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request, ranking):
-        users = UserExtend.objects.all()
-
+        r = redis.StrictRedis(connection_pool=redis_pool)
         #URL "alltime" -> On récupère le leaderboard alltime
         if ranking == "alltime":
-            users = users.filter(alltime_leaderboard__gte=1).order_by('alltime_leaderboard')
+            ranking = r.zrange('leaderboards:alltime',0,49,withscores=True)
             usersTab = []
-            for user in users:
-                username = user.agentUsername
-                calls = user.alltime_leaderboard_calls
+            for ranked in ranking:
+                username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+                calls = int(ranked[1])
                 usersTab.append({'username':username, 'calls':str(calls)})
 
         #URL "weekly" -> On récupère le leaderboard weekly
         elif ranking == "weekly":
-            users = users.filter(weekly_leaderboard__gte=1).order_by('weekly_leaderboard')
+            ranking = r.zrange('leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
             usersTab = []
-            for user in users:
-                username = user.agentUsername
-                calls = user.weekly_leaderboard_calls
+            for ranked in ranking:
+                username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+                calls = int(ranked[1])
                 usersTab.append({'username':username, 'calls':str(calls)})
 
         #URL "daily" -> On récupère le leaderboard daily
         elif ranking == "daily":
-            users = users.filter(daily_leaderboard__gte=1).order_by('daily_leaderboard')
+            ranking = r.zrange('leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
             usersTab = []
-            for user in users:
-                username = user.agentUsername
-                calls = user.daily_leaderboard_calls
+            for ranked in ranking:
+                username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+                calls = int(ranked[1])
                 usersTab.append({'username':username, 'calls':str(calls)})
 
         #Ne correspond à aucun leaderboard -> 404
@@ -222,7 +221,7 @@ class api_basic_information(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request):
         r = redis.StrictRedis(connection_pool=redis_pool)
-        dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())))
+        dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
 
         data = {'dailyCalls': dailyCalls}
         data = json.dumps(data)
