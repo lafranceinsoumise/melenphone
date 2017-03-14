@@ -1,14 +1,24 @@
-:host {
-    display: block;
-}
+@import '../../../_colors.scss';
 
 md-card {
-    width: 500px;
-    margin-bottom: 1em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  color: $main-text;
+  font-family: Montserrat, sans-serif;
+  margin-bottom: 30px;
 }
 
-.pseudo {
-    color: firebrick;
-    font-weight: bold;
-    font-size: 1.1em;
+strong {
+  color: $jlm-red;
+  font-size: 1.1em;
+}
+
+.deco {
+  background: $jlm-red;
+  color: #fff;
+}
+
+h2 {
+  font-family: 'Roboto Slab', serif;
+  color: $jlm-blue;
+  margin: 0;
 }

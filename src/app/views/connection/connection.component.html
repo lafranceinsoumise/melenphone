@@ -6,12 +6,12 @@
         <ng-container *ngIf="auth.currentUser !== null">
             <ng-container *ngIf="auth.currentUser.agentUsername !== null">
                 <p>
-                    Vous êtes connecté en tant que 
-                    <span class="pseudo">{{auth.currentUser.email}}</span>
+                    Vous êtes connecté en tant que
+                    <strong>{{auth.currentUser.email}}</strong>
                 </p>
                 <p>
-                    Votre nom d‘utilisateur callhub est <span class="pseudo">
-                    {{ auth.currentUser.agentUsername }}</span>
+                    Votre nom d‘utilisateur callhub est <strong>
+                    {{ auth.currentUser.agentUsername }}</strong>
                 </p>
             </ng-container>
         </ng-container>
@@ -21,19 +21,16 @@
             <a md-raised-button color="primary" href="/connexion/">Connexion</a>
         </ng-container>
         <ng-container *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername !== null">
-            <a md-raised-button color="warn" href="/deconnexion/">Déconnexion</a>
+            <a class="deco" md-button href="/deconnexion/">Déconnexion</a>
         </ng-container>
     </md-card-actions>
 </md-card>
 
 <md-card *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername !== null">
     <md-card-title>
-        <span>Mes trophées</span>
+        <h2>Mes trophées</h2>
     </md-card-title>
     <md-card-content>
         <jlm-mes-trophees></jlm-mes-trophees>
     </md-card-content>
-    <md-card-actions fxLayoutAlign="end">
-        <a md-raised-button color="primary" routerLink="/mes-trophees">Mes trophées</a>
-    </md-card-actions>
 </md-card>
