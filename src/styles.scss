@@ -1,16 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
-
-@import './_theme.scss';
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto+Slab');
 @import './_colors.scss';
+@import './_theme.scss';
+
+* {box-sizing: border-box;}
 
 body {
-    background: #fafafa;
-    color: $main-text;
-    font-family: Montserrat, serif;
+  background: #fafafa;
+  color: $main-text;
+  font-family: Montserrat, serif;
 }
 
 html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.clearfix {
+  overflow: auto;
+  zoom: 1;
 }

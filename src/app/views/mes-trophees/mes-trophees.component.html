@@ -1,4 +1,5 @@
-<p>{{ trophiesData?.unlocked?.length }} Trophées débloqués</p>
+<ng-container *ngIf="trophiesData?.unlocked.length">
+<h3>{{ trophiesData?.unlocked?.length }} Trophées débloqués</h3>
 <ul>
   <li *ngFor="let trophie of trophiesData?.unlocked">
     <span class="name">
@@ -9,15 +10,16 @@
     </span>
   </li>
 </ul>
+</ng-container>
 
-<p>{{ trophiesData?.locked?.length }} Trophées vérouillés</p>
+<h3>{{ trophiesData?.locked?.length }} Trophées verrouillés</h3>
 <ul>
   <li *ngFor="let trophie of trophiesData?.locked">
-    <span class="name">
+    <div class="name">
       {{ trophie.name }}
-    </span>
-    <span class="description">
+    </div>
+    <div class="description">
       {{ trophie.condition }}
-    </span>
+    </div>
   </li>
 </ul>

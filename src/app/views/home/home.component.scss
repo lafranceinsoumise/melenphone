@@ -5,20 +5,20 @@
 
 jlm-gauge {
     display: inline-block;
-    width: 75%;
+    width: calc(100% - 210px);
     vertical-align: middle;
 }
 
 .points {
     background: url('../../../assets/img/phi.png') no-repeat right;
-    background-size: 26px auto;
+    background-size: 20px auto;
     display: inline-block;
+    font-size: 0.9em;
     line-height: 38px;
-    padding-right: 2em;
+    padding-right: 1.8em;
     text-align: right;
-    text-transform: uppercase;
     vertical-align: middle;
-    width: calc(25% - 3em);
+    width: 200px;
 }
 
 [jlmFullscreen] {
@@ -83,10 +83,6 @@ jlm-gauge {
 }
 
 [jlmFullscreen] .controls {
-    position: absolute;
-    background-color: transparent;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 1em;
+  position: absolute;
+  bottom: 0;
 }

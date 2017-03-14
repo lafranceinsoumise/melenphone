@@ -1,0 +1,27 @@
+@import '../../../_colors.scss';
+
+h3 {
+  color: $jlm-red;
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.35em;
+  margin-left: 20px;
+}
+
+ul {
+  border-top: 1px solid $border;
+  list-style: none;
+  margin: 0 30px;
+  padding: 0;
+}
+
+li {
+  border-bottom: 1px solid $border;
+  padding: 8px 10px;
+}
+
+.name {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.description {color: $secondary-text;}

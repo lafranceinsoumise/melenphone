@@ -1,37 +1,31 @@
 @import '../_colors.scss';
 
-md-sidenav {
-  width: 200px;
-}
-
-main {
-  box-sizing: border-box;
-  margin: auto;
-  padding: 1em;
-  width: 70%;
-}
-
-a {
-  color: white;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.mat-toolbar.mat-primary {
-  background: transparent;
+nav {
   padding: 10px 16px;
+}
+
+h1 {
+  display: inline-block;
+  margin: 0;
 }
 
 .logo {
   background: url('../assets/img/logo.svg') center;
   background-size: cover;
   display: block;
-  height: 90px;
+  height: 96px;
   text-indent: -9000px;
-  width: 268px;
+  width: 288px;
 }
 
-.mat-sidenav-container {color: $main-text;}
+jlm-toolbar-user-info {
+  display: inline-block;
+  float: right;
+  margin: 8px 0;
+}
+
+main {
+  margin: 10px auto;
+  padding: 1em;
+  width: 70%;
+}
