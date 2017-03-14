@@ -4,7 +4,6 @@ import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { MaterialModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { environment } from '../environments/environment';
 
@@ -68,7 +67,6 @@ export function xsrfStrategyFactory() {
     ClassementComponent
   ],
   imports: [
-    BrowserAnimationsModule,
     BrowserModule,
     CommonModule,
     FormsModule,
