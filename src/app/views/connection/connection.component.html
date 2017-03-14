@@ -4,14 +4,6 @@
             <p>Connectez-vous via jlm2017.fr</p>
         </ng-container>
         <ng-container *ngIf="auth.currentUser !== null">
-            <ng-container *ngIf="auth.currentUser.agentUsername === null">
-                <p>
-                    Bravo, tu as fait la moitié du chemin.
-                    Et maintenant, dernière étape : il te faut un pseudo.
-                    Sans ça, tu ne pourras pas passer d'appel (gratuitement) pour
-                    la campagne 😱
-                </p>
-            </ng-container>
             <ng-container *ngIf="auth.currentUser.agentUsername !== null">
                 <p>
                     Vous êtes connecté en tant que 
@@ -27,16 +19,6 @@
     <md-card-actions fxLayoutAlign="end">
         <ng-container *ngIf="auth.currentUser === null">
             <a md-raised-button color="primary" href="/connexion/">Connexion</a>
-        </ng-container>
-        <ng-container *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername === null">
-            <form fxFlexFill (ngSubmit)="createCallhubAccount(callhubUsername)">
-                <div>
-                    <md-input-container fxFlexFill>
-                        <input mdInput [(ngModel)]="callhubUsername" placeholder="pseudo" name="callhubUsername">
-                    </md-input-container>
-                </div>
-                <button md-raised-button color="primary" type="submit">J'enregistre mon pseudo</button>
-            </form>
         </ng-container>
         <ng-container *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername !== null">
             <a md-raised-button color="warn" href="/deconnexion/">Déconnexion</a>
