@@ -15,8 +15,8 @@ def get_default_date():
 class UserExtend(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="UserExtend")
     agentUsername = models.CharField(max_length=50, unique=True)
-    location_lat = models.CharField(max_length=20, blank=True)
-    location_long = models.CharField(max_length=20, blank=True)
+    location_lat = models.CharField(default=None, max_length=20, blank=True, null=True)
+    location_long = models.CharField(default=None, max_length=20, blank=True, null=True)
     phi = models.IntegerField(default=0, blank=True, null=True)
     phi_multiplier = models.DecimalField(default=1.0, max_digits=2, decimal_places=1, blank=True, null=True)
     first_call_of_the_day = models.DateTimeField(default=get_default_date, blank=True)

@@ -84,6 +84,8 @@ class webhook_note(APIView):
                 agentUsername = user.UserExtend.agentUsername
 
             dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
+            weeklyCalls = int(r.get('call_count:weekly:' + format_date(timezone.now())) or 0)
+            alltimeCalls = int(r.get('call_count:alltime') or 0)
 
             websocketMessage = json.dumps({ 'call': {
                                                     'caller': {
@@ -96,7 +98,9 @@ class webhook_note(APIView):
                                                         'lng':calledLng}
                                                     },
                                             'updatedData': {
-                                                    'dailyCalls':dailyCalls
+                                                    'dailyCalls':dailyCalls,
+                                                    'weeklyCalls':weeklyCalls,
+                                                    'alltimeCalls':alltimeCalls
                                                     }
             })
             send_message(websocketMessage)
@@ -130,13 +134,17 @@ class api_test_simulatecall(APIView):
 
         r = redis.StrictRedis(connection_pool=redis_pool)
         dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
+        weeklyCalls = int(r.get('call_count:weekly:' + format_date(timezone.now())) or 0)
+        alltimeCalls = int(r.get('call_count:alltime') or 0)
 
         websocketMessage = json.dumps({ 'call': {
                                                 'caller': {'lat':callerLat, 'lng':callerLng, 'id':None, 'agentUsername':None},
                                                 'target': {'lat':calledLat, 'lng':calledLng}
                                                 },
                                         'updatedData': {
-                                                'dailyCalls':dailyCalls
+                                                'dailyCalls':dailyCalls,
+                                                'weeklyCalls':weeklyCalls,
+                                                'alltimeCalls':alltimeCalls
                                                 }
         })
 
@@ -222,8 +230,14 @@ class api_basic_information(APIView):
     def get(self, request):
         r = redis.StrictRedis(connection_pool=redis_pool)
         dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
+        weeklyCalls = int(r.get('call_count:weekly:' + format_date(timezone.now())) or 0)
+        alltimeCalls = int(r.get('call_count:alltime') or 0)
 
-        data = {'dailyCalls': dailyCalls}
+        data = {
+                'dailyCalls':dailyCalls,
+                'weeklyCalls':weeklyCalls,
+                'alltimeCalls':alltimeCalls
+                }
         data = json.dumps(data)
 
         return HttpResponse(data)
