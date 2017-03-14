@@ -12,7 +12,7 @@ import { WsCallNotification, CallNoteDescription } from '../../core';
 export class HomeComponent implements OnInit {
 
   dailyCalls = 0;
-  goal: 200;
+  goal = 1000;
 
   constructor(
     private coordsConverter: CoordinatesConverterService,
