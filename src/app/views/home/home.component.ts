@@ -51,7 +51,10 @@ export class HomeComponent implements OnInit {
     const notif = JSON.parse(message.data) as CallNoteDescription;
     this.dailyCalls = notif.updatedData.dailyCalls;
     this.goal = this.chooseCallGoal(this.dailyCalls);
-    if (this.auth.currentUser !== null && this.auth.currentUser.agentUsername === notif.call.caller.agentUsername) {
+    if (
+      this.auth.currentUser !== null
+      && this.auth.currentUser.agentUsername === notif.call.caller.agentUsername
+    ) {
       this.auth.currentUser.phi += 10;
     }
   }
@@ -59,7 +62,7 @@ export class HomeComponent implements OnInit {
   chooseCallGoal(callCount){
     const sizes = [10, 50, 100, 250, 500, 1000, 2000, 5000, 10000, 50000];
     for (const value of sizes) {
-      if (callCount < 0.95*value) {
+      if (callCount < 0.95 * value) {
           return value;
       }
     }
