@@ -72,6 +72,9 @@ class webhook_note(APIView):
             #On ajoute l'appel au serveur redis
             update_scores(user)
 
+            #On ajoute l'appel à la bdd pour pouvoir reconstruire redis si besoin
+            Call.objects.create(user=user)
+
             #On met à jour les achievements
             updateAchievements(user)
 
@@ -131,6 +134,7 @@ class api_test_simulatecall(APIView):
         calledLat, calledLng = randomLocation()
 
         update_scores(None)
+        Call.objects.create()
 
         r = redis.StrictRedis(connection_pool=redis_pool)
         dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)

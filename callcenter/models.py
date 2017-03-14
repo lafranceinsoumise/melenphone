@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 import datetime
 
-__all__ = ['UserExtend', 'Achievement', 'AchievementUnlock', 'NumbersLocation']
+__all__ = ['UserExtend', 'Achievement', 'AchievementUnlock', 'NumbersLocation', 'Call']
 
 def get_default_date():
     return timezone.now() - datetime.timedelta(days=1)
@@ -57,3 +57,7 @@ class NumbersLocation(models.Model):
 
     def get_location(self):
         return self.location_lat, self.location_long
+
+class Call(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
+    date = models.DateTimeField(auto_now=True)
