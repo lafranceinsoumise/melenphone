@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { CoordinatesConverterService, SocketConnectionService, AuthenticationService } from '../../shared';
 import 'rxjs/add/operator/toPromise';
 import { WsCallNotification, CallNoteDescription } from '../../core';
+import { isDevMode } from '@angular/core';
 
 @Component({
   selector: 'jlm-home',
@@ -14,6 +15,9 @@ export class HomeComponent implements OnInit {
   dailyCalls = 0;
   get goal() {
     return this.chooseCallGoal(this.dailyCalls || 0);
+  }
+  get isDevMode() {
+    return isDevMode();
   }
 
   constructor(

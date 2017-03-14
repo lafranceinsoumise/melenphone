@@ -6,6 +6,7 @@ import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared';

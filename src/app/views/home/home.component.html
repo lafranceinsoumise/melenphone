@@ -11,7 +11,7 @@
                     md-raised-button
                     color="accent"
                     (click)="fullscreenController.exitFullscreen()">sortir du mode plein écran</button>
-            <button md-raised-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
+            <button *ngIf="isDevMode" md-raised-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
         </div>
     </jlm-call-map>
 </div>
