@@ -86,9 +86,9 @@ class webhook_note(APIView):
                 id = user.id
                 agentUsername = user.UserExtend.agentUsername
 
-            dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
-            weeklyCalls = int(r.get('call_count:weekly:' + format_date(timezone.now())) or 0)
-            alltimeCalls = int(r.get('call_count:alltime') or 0)
+            dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
+            weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
+            alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
             websocketMessage = json.dumps({ 'call': {
                                                     'caller': {
@@ -137,9 +137,9 @@ class api_test_simulatecall(APIView):
         Call.objects.create()
 
         r = redis.StrictRedis(connection_pool=redis_pool)
-        dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
-        weeklyCalls = int(r.get('call_count:weekly:' + format_date(timezone.now())) or 0)
-        alltimeCalls = int(r.get('call_count:alltime') or 0)
+        dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
+        weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
+        alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
         websocketMessage = json.dumps({ 'call': {
                                                 'caller': {'lat':callerLat, 'lng':callerLng, 'id':None, 'agentUsername':None},
@@ -193,7 +193,7 @@ class api_leaderboard(APIView):
         r = redis.StrictRedis(connection_pool=redis_pool)
         #URL "alltime" -> On récupère le leaderboard alltime
         if ranking == "alltime":
-            ranking = r.zrange('leaderboards:alltime',0,49,withscores=True)
+            ranking = r.zrange('melenphone:leaderboards:alltime',0,49,withscores=True)
             usersTab = []
             for ranked in ranking:
                 username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
@@ -202,7 +202,7 @@ class api_leaderboard(APIView):
 
         #URL "weekly" -> On récupère le leaderboard weekly
         elif ranking == "weekly":
-            ranking = r.zrange('leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
+            ranking = r.zrange('melenphone:leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
             usersTab = []
             for ranked in ranking:
                 username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
@@ -211,7 +211,7 @@ class api_leaderboard(APIView):
 
         #URL "daily" -> On récupère le leaderboard daily
         elif ranking == "daily":
-            ranking = r.zrange('leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
+            ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
             usersTab = []
             for ranked in ranking:
                 username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
@@ -233,9 +233,9 @@ class api_basic_information(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request):
         r = redis.StrictRedis(connection_pool=redis_pool)
-        dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())) or 0)
-        weeklyCalls = int(r.get('call_count:weekly:' + format_date(timezone.now())) or 0)
-        alltimeCalls = int(r.get('call_count:alltime') or 0)
+        dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
+        weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
+        alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
         data = {
                 'dailyCalls':dailyCalls,

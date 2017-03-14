@@ -17,22 +17,22 @@ def update_scores(user):
         sevenPreviousDays.append(format_date(tzdate))
 
     # Global counters
-    pipe.incr('call_count:alltime')
+    pipe.incr('melenphone:call_count:alltime')
 
     for day in sevenPreviousDays:
-        pipe.incr('call_count:weekly:' + day)
+        pipe.incr('melenphone:call_count:weekly:' + day)
 
-    pipe.incr('call_count:daily:' + today)
+    pipe.incr('melenphone:call_count:daily:' + today)
 
 
 
     # Leaderboards
     if not(user is None):
-        pipe.zincrby('leaderboards:alltime',str(user.id))
+        pipe.zincrby('melenphone:leaderboards:alltime',str(user.id))
 
         for day in sevenPreviousDays:
-            pipe.zincrby('leaderboards:weekly:' + day, str(user.id))
+            pipe.zincrby('melenphone:leaderboards:weekly:' + day, str(user.id))
 
-        pipe.zincrby('leaderboards:daily:' + today, str(user.id))
+        pipe.zincrby('melenphone:leaderboards:daily:' + today, str(user.id))
 
     pipe.execute()

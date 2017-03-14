@@ -49,7 +49,7 @@ def earlyAdopters(user):
 
 def dailyCalls(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
-    dailyCalls = int(r.zscore('leaderboards:daily:' + format_date(timezone.now()), str(user.id)))
+    dailyCalls = int(r.zscore('melenphone:leaderboards:daily:' + format_date(timezone.now()), str(user.id)))
     if dailyCalls == 30:
         unlockAchievement("daily_a_fond", user)
     if dailyCalls == 50:
@@ -60,7 +60,7 @@ def dailyCalls(user):
 
 def callCount(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
-    count = int(r.zscore('leaderboards:alltime', str(user.id)))
+    count = int(r.zscore('melenphone:leaderboards:alltime', str(user.id)))
     if count == 1:
         unlockAchievement("count_insoumis_1", user)
     if count == 5:
@@ -103,11 +103,11 @@ def callCount(user):
 def leaderboards(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
 
-    if int(r.zrank('leaderboards:alltime', str(user.id))) == 0:
+    if int(r.zrank('melenphone:leaderboards:alltime', str(user.id))) == 0:
         unlockAchievement("leaderboard_alltime", user)
 
-    if int(r.zrank('leaderboards:weekly:' + format_date(timezone.now()), str(user.id))) == 0:
+    if int(r.zrank('melenphone:leaderboards:weekly:' + format_date(timezone.now()), str(user.id))) == 0:
         unlockAchievement("leaderboard_weekly", user)
 
-    if int(r.zrank('leaderboards:daily:' + format_date(timezone.now()), str(user.id))) == 0:
+    if int(r.zrank('melenphone:leaderboards:daily:' + format_date(timezone.now()), str(user.id))) == 0:
         unlockAchievement("leaderboard_daily", user)
