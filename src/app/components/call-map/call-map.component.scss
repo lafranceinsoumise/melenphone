@@ -21,6 +21,15 @@
     }
 }
 
+.monde {
+    animation-fill-mode: both;
+    animation: appear 2s ease-in;
+    .department {
+        fill: $jlm-blue;
+        stroke: darken($jlm-blue, 20);
+    }
+}
+
 #France .department {
     stroke-width: .8;
 }
@@ -36,4 +45,9 @@
     &.remove-start {
         opacity: 0;
     }
+}
+
+@keyframes appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
