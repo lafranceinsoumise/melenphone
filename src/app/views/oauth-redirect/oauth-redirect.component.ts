@@ -30,7 +30,9 @@ export class OauthRedirectComponent implements OnInit {
             this.shouldDisplayCallhubForm = true;
           } else {
             this.shouldDisplayNormalMessage = true;
-            this.snackBar.open('Connexion avec le QG de la France Insoumise établie 🚀');
+            this.snackBar.open('Connexion avec le QG de la France Insoumise établie 🚀', undefined, {
+              duration: 4000
+            });
             this.router.navigate(['/']);
           }
         }
@@ -42,14 +44,14 @@ export class OauthRedirectComponent implements OnInit {
 
     return this.callhub.createCallhubAccount(callhubUsername)
       .then((user) => {
-        this.snackBar.open('Compte Callhub créé avec succès 🚀');
+        this.snackBar.open('Compte Callhub créé avec succès 🚀', undefined, { duration: 4000 });
         this.router.navigate(['/']);
         return user;
       })
       .catch((err) => {
         this.pendingRequest = false;
         this.errorMessage = err.detail;
-        this.snackBar.open(this.errorMessage);
+        this.snackBar.open(this.errorMessage, undefined, { duration: 4000 });
       });
   }
 
