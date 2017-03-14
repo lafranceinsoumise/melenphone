@@ -7,8 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GaugeComponent implements OnInit {
 
-  @Input() min = 100;
-  @Input() max = 1000;
+  @Input() min = 1;
+  @Input() max = 10;
   @Input() value = 0;
 
   constructor() { }
