@@ -23,7 +23,7 @@ const routes: Routes = [
       { path: 'register', component: RegisterComponent },
       { path: 'classement', component: ClassementComponent },
       { path: 'mes-trophees', component: MesTropheesComponent },
-      { path: 'oauth-redirect', component: OauthRedirectComponent }
+      { path: 'oauth_redirect', component: OauthRedirectComponent }
     ]
   }
 ];

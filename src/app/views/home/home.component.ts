@@ -12,7 +12,9 @@ import { WsCallNotification, CallNoteDescription } from '../../core';
 export class HomeComponent implements OnInit {
 
   dailyCalls = 0;
-  goal = 0;
+  get goal() {
+    return this.chooseCallGoal(this.dailyCalls || 0);
+  }
 
   constructor(
     private coordsConverter: CoordinatesConverterService,
@@ -42,7 +44,6 @@ export class HomeComponent implements OnInit {
         }
 
         this.dailyCalls = res.json()['dailyCalls'];
-        this.goal = this.chooseCallGoal(this.dailyCalls);
       })
       .catch(error => console.error(error));
   }
@@ -50,7 +51,6 @@ export class HomeComponent implements OnInit {
   onNotif(message: MessageEvent) {
     const notif = JSON.parse(message.data) as CallNoteDescription;
     this.dailyCalls = notif.updatedData.dailyCalls;
-    this.goal = this.chooseCallGoal(this.dailyCalls);
     if (
       this.auth.currentUser !== null
       && this.auth.currentUser.agentUsername === notif.call.caller.agentUsername
@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  chooseCallGoal(callCount){
+  chooseCallGoal(callCount) {
     const sizes = [10, 50, 100, 250, 500, 1000, 2000, 5000, 10000, 50000];
     for (const value of sizes) {
       if (callCount < 0.95 * value) {

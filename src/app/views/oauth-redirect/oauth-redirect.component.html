@@ -1,4 +1,4 @@
-<md-card>
+<md-card *ngIf="shouldDisplayNormalMessage">
     <md-card-header>
         <md-card-title>
             Vous êtes à présent connecté
@@ -8,6 +8,6 @@
 
     </md-card-content>
     <md-card-actions fxlayoutAlign="end">
-        <button md-raised-button color="accent">aller à l'accueil</button>
+        <a md-raised-button color="accent" routerLink="/">aller à l'accueil</a>
     </md-card-actions>
 </md-card>
