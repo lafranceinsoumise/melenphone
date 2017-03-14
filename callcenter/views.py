@@ -90,7 +90,9 @@ class webhook_note(APIView):
             weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
             alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
-            websocketMessage = json.dumps({ 'call': {
+            websocketMessage = json.dumps({ 'type':'call',
+                                            'values':{
+                                                 'call': {
                                                     'caller': {
                                                         'lat':callerLat,
                                                         'lng':callerLng,
@@ -100,12 +102,13 @@ class webhook_note(APIView):
                                                         'lat':calledLat,
                                                         'lng':calledLng}
                                                     },
-                                            'updatedData': {
+                                                'updatedData': {
                                                     'dailyCalls':dailyCalls,
                                                     'weeklyCalls':weeklyCalls,
                                                     'alltimeCalls':alltimeCalls
                                                     }
-            })
+                                            }
+                                        })
             send_message(websocketMessage)
 
         return HttpResponse(status=200)
@@ -141,16 +144,25 @@ class api_test_simulatecall(APIView):
         weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
         alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
-        websocketMessage = json.dumps({ 'call': {
-                                                'caller': {'lat':callerLat, 'lng':callerLng, 'id':None, 'agentUsername':None},
-                                                'target': {'lat':calledLat, 'lng':calledLng}
-                                                },
-                                        'updatedData': {
-                                                'dailyCalls':dailyCalls,
-                                                'weeklyCalls':weeklyCalls,
-                                                'alltimeCalls':alltimeCalls
-                                                }
-        })
+        websocketMessage = json.dumps({'type': 'call',
+                                       'values': {
+                                           'call': {
+                                               'caller': {
+                                                   'lat': callerLat,
+                                                   'lng': callerLng,
+                                                   'id': None,
+                                                   'agentUsername': None},
+                                               'target': {
+                                                   'lat': calledLat,
+                                                   'lng': calledLng}
+                                           },
+                                           'updatedData': {
+                                               'dailyCalls': dailyCalls,
+                                               'weeklyCalls': weeklyCalls,
+                                               'alltimeCalls': alltimeCalls
+                                           }
+                                       }
+                                       })
 
         send_message(websocketMessage)
         return HttpResponse(200)

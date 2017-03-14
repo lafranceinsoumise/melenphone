@@ -2,6 +2,7 @@
 
 #Python imports
 import redis
+import json
 
 #Django imports
 from django.utils import timezone
@@ -9,6 +10,7 @@ from django.utils import timezone
 #Project import
 from callcenter.models import *
 from melenchonPB.redis import redis_pool, format_date
+from callcenter.consumers import send_message
 
 #Fonction principale
 def updateAchievements(user):
@@ -31,6 +33,16 @@ def unlockAchievement(codeName, user):
             userExtend = user.UserExtend
             userExtend.phi = userExtend.phi + (achievement.phi * userExtend.phi_multiplier)
             userExtend.save()
+            websocketMessage = json.dumps({'type': 'achievement',
+                                           'values': {
+                                                'agentUsername':userExtend.agentUsername,
+                                                'achievement':{
+                                                    'name':achievement.name,
+                                                    'condition':achievement.condition
+                                                }
+                                           }
+                                        })
+            send_message(websocketMessage)
 
 
 ########### ACHIEVEMENT CONDITIONS ################
