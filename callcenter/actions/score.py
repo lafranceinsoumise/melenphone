@@ -1,5 +1,5 @@
 from django.utils import timezone
-from melenchonPB.redis_pool import redis_pool
+from melenchonPB.redis import redis_pool, format_date
 import datetime
 import redis
 
@@ -9,11 +9,12 @@ def update_scores(user):
 
     # Cles necessaires :
     tzdate = timezone.now()
-    today = str(tzdate.year) + '/' + str(tzdate.month) + '/' + str(tzdate.day)
+    today = format_date(tzdate)
+
     sevenPreviousDays = [today]
     for i in range(6):
         tzdate -= datetime.timedelta(days=1)
-        sevenPreviousDays.append(str(tzdate.year) + '/' + str(tzdate.month) + '/' + str(tzdate.day))
+        sevenPreviousDays.append(format_date(tzdate))
 
     # Global counters
     pipe.incr('call_count:alltime')

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import json
-
+import redis
 #Django imports
+from django.utils import timezone
+
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.generic import TemplateView
@@ -20,7 +22,8 @@ from callcenter.phi import EarnPhi
 from callcenter.consumers import send_message
 from callcenter.serializers import UserSerializer, UserExtendSerializer
 from callcenter.exceptions import CallerCreationError
-
+from melenchonPB.redis import redis_pool, format_date
+from callcenter.actions.score import update_scores
 
 #ANGULAR APP
 class AngularApp(TemplateView):
@@ -38,7 +41,6 @@ class webhook_note(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        MIN_DELAY = 60
 
         jsondata = request.body
         data = json.loads(jsondata)
@@ -51,75 +53,54 @@ class webhook_note(APIView):
         calledNumber = data['data']['contact']
         calledLat, calledLng = getCalledLocation(calledNumber)
 
+        r = redis.StrictRedis(connection_pool=redis_pool)
+
+        now = timezone.now().timestamp()
+
         try:
             user = UserExtend.objects.get(agentUsername=callerAgentUsername).user #On le récupère
-
-            calls = Appel.objects.filter(user=user)
-            #On vérifie qu'il n'a pas passé un appel trop récement
-            if len(calls) == 0: #Si le user n'a jamais appelé
-                authorization = True
-                lastCall = None
-            else:
-                calls = calls.order_by('-date')
-                lastCall = calls[0].date
-                if (timezone.now() - lastCall).seconds > MIN_DELAY:
-                    authorization = True
-                else:
-                    authorization = False #Si le dernier appel est trop récent (<60s), on s'arrête
-
-            if authorization: #Si le dernier appel n'est pas trop recent
-                #On crédite les phis que gagne le user
-                EarnPhi(user, lastCall)
-
-                #On enregistre l'appel avec le user associé
-                Appel.objects.create(user=user)
-
-                #On ajoute l'appel au décompte du jour
-                dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
-                dcalls.integer_value += 1
-                dcalls.save()
-
-
-                #On met à jour les achievements
-                updateAchievements(user)
-
-                #On envoie les positions au websocket pour l'animation
-                websocketMessage = json.dumps({ 'call': {
-                                                        'caller': {
-                                                            'lat':callerLat,
-                                                            'lng':callerLng,
-                                                            'id':user.id,
-                                                            'agentUsername':user.username},
-                                                        'target': {
-                                                            'lat':calledLat,
-                                                            'lng':calledLng}
-                                                        },
-                                                'updatedData': {
-                                                        'dailyCalls':dcalls.integer_value
-                                                        }
-                })
-                send_message(websocketMessage)
-
-        #Si on ne connait pas l'agent callhub
+            lastCall = r.getset('lastcall:user:' + str(user.id), now)
         except UserExtend.DoesNotExist:
-            Appel.objects.create() #On enregistre quand même l'appel (pour les stats)
+            user = None
+            lastCall = None
 
-            #On ajoute 1 au compteur des appels du jour
-            # TODO: race condition here
-            dcalls = PrecomputeData.objects.get(code="dcalls")
-            dcalls.integer_value += 1
-            dcalls.save()
+
+        if lastCall is None or (now - lastCall < MIN_DELAY):
+            #On crédite les phis que gagne le user
+            EarnPhi(user, lastCall)
+
+            #On ajoute l'appel au serveur redis
+            update_scores(user)
+
+            #On met à jour les achievements
+            updateAchievements(user)
 
             #On envoie les positions au websocket pour l'animation
+            if user is None:
+                id = None
+                agentUsername = None
+            else:
+                id = user.id
+                agentUsername = user.UserExtend.agentUsername
+
+            dailyCalls = r.get('callcount:daily:' + format_date(timezone.now()))
+
             websocketMessage = json.dumps({ 'call': {
-                                                    'caller': {'lat':callerLat, 'lng':callerLng, 'id':0, 'agentUsername':callerAgentUsername},
-                                                    'target': {'lat':calledLat, 'lng':calledLng}
+                                                    'caller': {
+                                                        'lat':callerLat,
+                                                        'lng':callerLng,
+                                                        'id':id,
+                                                        'agentUsername':agentUsername},
+                                                    'target': {
+                                                        'lat':calledLat,
+                                                        'lng':calledLng}
                                                     },
                                             'updatedData': {
-                                                    'dailyCalls':dcalls.integer_value
+                                                    'dailyCalls':dailyCalls
                                                     }
             })
             send_message(websocketMessage)
+
         return HttpResponse(status=200)
 
 
@@ -145,18 +126,17 @@ class api_test_simulatecall(APIView):
         callerLat, callerLng = randomLocation()
         calledLat, calledLng = randomLocation()
 
-        dcalls = PrecomputeData.objects.filter(code="dcalls")[0]
-        dcalls.integer_value += 1
-        dcalls.save()
+        update_scores(None)
 
-        dcalls = dcalls.integer_value
+        r = redis.StrictRedis(connection_pool=redis_pool)
+        dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())))
 
         websocketMessage = json.dumps({ 'call': {
-                                                'caller': {'lat':callerLat, 'lng':callerLng, 'id':0, 'agentUsername':'lolz'},
+                                                'caller': {'lat':callerLat, 'lng':callerLng, 'id':None, 'agentUsername':None},
                                                 'target': {'lat':calledLat, 'lng':calledLng}
                                                 },
                                         'updatedData': {
-                                                'dailyCalls':dcalls
+                                                'dailyCalls':dailyCalls
                                                 }
         })
 
@@ -241,10 +221,10 @@ class api_leaderboard(APIView):
 class api_basic_information(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request):
+        r = redis.StrictRedis(connection_pool=redis_pool)
+        dailyCalls = int(r.get('call_count:daily:' + format_date(timezone.now())))
 
-        dcalls = PrecomputeData.objects.get(code="dcalls").integer_value
-
-        data = {'dailyCalls': dcalls}
+        data = {'dailyCalls': dailyCalls}
         data = json.dumps(data)
 
         return HttpResponse(data)

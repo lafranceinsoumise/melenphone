@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 import datetime
 
-__all__ = ['UserExtend', 'Appel', 'Achievement', 'AchievementUnlock', 'NumbersLocation', 'PrecomputeData']
+__all__ = ['UserExtend', 'Achievement', 'AchievementUnlock', 'NumbersLocation', 'PrecomputeData']
 
 def get_default_date():
     return timezone.now() - datetime.timedelta(days=1)
@@ -33,13 +33,6 @@ class UserExtend(models.Model):
     def get_achievements(self):
         return self.achievements_aux.all()
 
-class Appel(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
-    date = models.DateTimeField(auto_now=True, blank=True)
-
-    class Meta:
-        get_latest_by = 'id'
-
 class Achievement(models.Model):
     codeName = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=50)
@@ -64,11 +57,3 @@ class NumbersLocation(models.Model):
 
     def get_location(self):
         return self.location_lat, self.location_long
-
-class PrecomputeData(models.Model):
-    code = models.CharField(max_length=10, unique=True)
-    text_value = models.TextField(null=True)
-    integer_value = models.IntegerField(null=True)
-
-    def __str__(self):
-        return self.code

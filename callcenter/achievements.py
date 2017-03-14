@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 
 #Python imports
-import datetime
+import redis
 
 #Django imports
 from django.utils import timezone
 
 #Project import
 from callcenter.models import *
+from melenchonPB.redis import redis_pool, format_date
 
 #Fonction principale
 def updateAchievements(user):
-    calls = Appel.objects.filter(user=user).order_by('-date')
-    
-    #Appeler les autres fonctions de validation
-    functions = [   leet,
-                    callCount,
-                    dailyCalls,
-                    earlyAdopters
-                ]
-    for f in functions:
-        f(user, calls)
+    if not(user is None):
+        #Appeler les autres fonctions de validation
+        functions = [   leet,
+                        callCount,
+                        dailyCalls,
+                        earlyAdopters
+                    ]
+        for f in functions:
+            f(user)
 
 def unlockAchievement(codeName, user):
     if Achievement.objects.filter(codeName=codeName).exists():
@@ -35,18 +35,20 @@ def unlockAchievement(codeName, user):
 ########### ACHIEVEMENT CONDITIONS ################
 
 
-def leet(user, calls):
-    lastCall = calls[0].date
-    if lastCall.minute == 37 and lastCall.hour == 13:
+def leet(user):
+    now = timezone.now()
+    if(now.hours == 13 and now.minute == 37):
         unlockAchievement("leet", user)
 
-def earlyAdopters(user, calls):
-    callersCount = calls.values('user').distinct().count()
+def earlyAdopters(user):
+    r = redis.StrictRedis(connection_pool=redis_pool)
+    callersCount = r.scard('leaderbord:alltime')
     if callersCount < 100:
         unlockAchievement("early_y_etais", user)
 
-def dailyCalls(user, calls):
-    dailyCalls = calls.filter(date__gte=timezone.now() - datetime.timedelta(days=1)).count()
+def dailyCalls(user):
+    r = redis.StrictRedis(connection_pool=redis_pool)
+    dailyCalls = int(r.zscore('leaderboard:daily:' + format_date(timezone.now()), str(user.id)))
     if dailyCalls == 30:
         unlockAchievement("daily_a_fond", user)
     if dailyCalls == 50:
@@ -55,8 +57,9 @@ def dailyCalls(user, calls):
         unlockAchievement("daily_dodo", user)
 
 
-def callCount(user, calls):
-    count = calls.count()
+def callCount(user):
+    r = redis.StrictRedis(connection_pool=redis_pool)
+    count = int(r.zscore('leaderboard:alltime', str(user.id)))
     if count == 1:
         unlockAchievement("count_insoumis_1", user)
     if count == 5:
