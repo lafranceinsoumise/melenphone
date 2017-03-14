@@ -1,13 +1,7 @@
-<md-toolbar color="primary">
+<nav>
   <h1><a class="logo" routerLink="/">Mélenphone</a></h1>
-  <span style="flex: 1 1 auto"></span>
   <jlm-toolbar-user-info [user]="auth.currentUser"></jlm-toolbar-user-info>
-</md-toolbar>
-<md-sidenav-container>
-  <md-sidenav #sidenav [opened]="false" mode="side">
-    <jlm-sidenav></jlm-sidenav>
-  </md-sidenav>
-  <main>
-    <router-outlet></router-outlet>
-  </main>
-</md-sidenav-container>
+</nav>
+<main>
+  <router-outlet></router-outlet>
+</main>
