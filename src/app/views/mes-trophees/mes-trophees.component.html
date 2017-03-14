@@ -2,12 +2,12 @@
 <h3>{{ trophiesData?.unlocked?.length }} Trophées débloqués</h3>
 <ul>
   <li *ngFor="let trophie of trophiesData?.unlocked">
-    <span class="name">
+    <div class="name">
       {{ trophie.name }}
-    </span>
-    <span class="description">
+    </div>
+    <div class="description">
       {{ trophie.condition }}
-    </span>
+    </div>
   </li>
 </ul>
 </ng-container>
