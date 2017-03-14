@@ -18,12 +18,15 @@ export class CallhubService {
       .toPromise()
       .then((res: Response) => {
         if (res.status === 400) {
-          throw new Error('erreur lors de la création de l\agent callhub');
+          throw new Error(res.json());
         } else if (res.status === 204) {
           this.currentUser = res.json() as CallhubUser;
           this.auth.currentUser.agentUsername = this.currentUser.agentUsername;
           return this.currentUser;
         }
+      })
+      .catch(err => {
+        throw err.json();
       });
   }
 

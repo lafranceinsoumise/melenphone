@@ -32,7 +32,7 @@
             </p>
         </md-card-content>
         <md-card-actions fxLayoutAlign="end">
-            <button md-raised-button color="primary" type="submit">J'enregistre mon pseudo</button>
+            <button md-raised-button color="primary" type="submit" [disabled]="pendingRequest">J'enregistre mon pseudo</button>
         </md-card-actions>
     </md-card>
 </form>
