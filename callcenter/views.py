@@ -91,7 +91,7 @@ class webhook_note(APIView):
             alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
             websocketMessage = json.dumps({ 'type':'call',
-                                            'values':{
+                                            'value':{
                                                  'call': {
                                                     'caller': {
                                                         'lat':callerLat,
@@ -145,7 +145,7 @@ class api_test_simulatecall(APIView):
         alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
         websocketMessage = json.dumps({'type': 'call',
-                                       'values': {
+                                       'value': {
                                            'call': {
                                                'caller': {
                                                    'lat': callerLat,
