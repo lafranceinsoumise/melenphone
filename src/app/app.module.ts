@@ -17,17 +17,13 @@ import {
   HomeComponent,
   ConnectionComponent,
   PokechonHomeComponent,
-  RegisterComponent,
   ClassementComponent
 } from './views';
 
 import {
   NavbarComponent,
-  SidenavComponent,
   DynamicComponentComponent,
   GaugeComponent,
-  RegistrationComponent,
-  LoginComponent,
   CallMapComponent,
   AnimatedCallComponent,
   ToolbarUserInfoComponent
@@ -57,17 +53,13 @@ export function xsrfStrategyFactory() {
   declarations: [
     AppComponent,
     NavbarComponent,
-    SidenavComponent,
     HomeComponent,
-    LoginComponent,
     DynamicComponentComponent,
     PokechonHomeComponent,
     GaugeComponent,
-    RegisterComponent,
     ConnectionComponent,
     CallMapComponent,
     AnimatedCallComponent,
-    RegistrationComponent,
     ToolbarUserInfoComponent,
     AchievementsComponent,
     MesTropheesComponent,

@@ -5,7 +5,6 @@ import {
   HomeComponent,
   PokechonHomeComponent,
   ConnectionComponent,
-  RegisterComponent,
   MesTropheesComponent,
   OauthRedirectComponent,
   ClassementComponent
@@ -20,7 +19,6 @@ const routes: Routes = [
       { path: '', component: HomeComponent },
       { path: 'pokechon', loadChildren: './pokechon/pokechon.module#PokechonModule' },
       { path: 'login', component: ConnectionComponent },
-      { path: 'register', component: RegisterComponent },
       { path: 'classement', component: ClassementComponent },
       { path: 'mes-trophees', component: MesTropheesComponent },
       { path: 'oauth_redirect', component: OauthRedirectComponent }
