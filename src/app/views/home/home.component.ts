@@ -34,6 +34,16 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.scs.room.addEventListener('message', (event) => this.onNotif(event), false);
+    this.http.get('/api/basic_information')
+      .toPromise()
+      .then((res: Response) => {
+        if (res.status !== 200) {
+          throw new Error(`erreur de communication avec le serveur : ${res.status}`);
+        }
+
+        this.dailyCalls = res.json()['dailyCalls'];
+      })
+      .catch(error => console.error(error));
   }
 
   onNotif(message: MessageEvent) {
