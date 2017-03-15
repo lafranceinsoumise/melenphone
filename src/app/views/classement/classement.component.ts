@@ -8,13 +8,13 @@ import { LeaderboardService, LeaderboardApiData } from '../../shared';
   styleUrls: ['./classement.component.scss']
 })
 export class ClassementComponent implements OnInit {
-  rows: LeaderboardApiData;
+  leaderboards: LeaderboardApiData;
 
   constructor(private leaderboardService: LeaderboardService) { }
 
   ngOnInit() {
-    this.leaderboardService.getDaily()
-      .then(leaderboard => this.rows = leaderboard)
+    this.leaderboardService.getLeaderboards()
+      .then(leaderboards => this.leaderboards = leaderboards)
       .catch(err => console.trace(err));
   }
 

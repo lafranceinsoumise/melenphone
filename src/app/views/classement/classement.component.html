@@ -1,4 +1,4 @@
-<md-card>
+<md-card *ngIf="leaderboards">
   <md-card-title>Classement</md-card-title>
   <md-card-content>
     <table>
@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of rows">
+        <tr *ngFor="let row of leaderboards.daily">
           <td>{{row.username}}</td>
           <td>{{row.calls}}</td>
         </tr>

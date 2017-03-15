@@ -6,41 +6,19 @@ import { LeaderboardApiData } from './_models';
 
 @Injectable()
 export class LeaderboardService {
-  dailyLeaderboard: LeaderboardApiData;
-  weeklyLeaderboard: LeaderboardApiData;
-  monthlyLeaderboard: LeaderboardApiData;
+  leaderboards: LeaderboardApiData;
 
   constructor(private http: Http) { }
 
-  getLeaderboard(period: 'daily' | 'weekly' | 'monthly'): Promise<LeaderboardApiData> {
-    return this.http.get('/api/leaderboard/daily')
+  getLeaderboards(): Promise<LeaderboardApiData> {
+    return this.http.get('/api/leaderboard')
       .toPromise()
       .then((res: Response) => {
         if (res.status !== 200) {
-          throw new Error('Erreur durant la requete du classement');
+          throw new Error('Erreur durant la requête du classement');
         }
-        return res.json().leaderboard as LeaderboardApiData;
-      });
-  }
-
-  getDaily(): Promise<LeaderboardApiData> {
-    return this.getLeaderboard('daily')
-      .then((lb: LeaderboardApiData) => {
-        return this.dailyLeaderboard = lb;
-      });
-  }
-
-  getWeekly(): Promise<LeaderboardApiData> {
-    return this.getLeaderboard('weekly')
-      .then((lb: LeaderboardApiData) => {
-        return this.weeklyLeaderboard = lb;
-      });
-  }
-
-  getMonthly(): Promise<LeaderboardApiData> {
-    return this.getLeaderboard('monthly')
-      .then((lb: LeaderboardApiData) => {
-        return this.monthlyLeaderboard = lb;
+        this.leaderboards = res.json() as LeaderboardApiData;
+        return this.leaderboards;
       });
   }
 
