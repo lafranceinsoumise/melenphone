@@ -23,7 +23,13 @@
 
 .monde {
     animation-fill-mode: both;
-    animation: appear 2s ease-in;
+    animation: appear 6s ease-in;
+
+    &.no-animation {
+        animation-fill-mode: initial;
+        animation: initial;
+    }
+    
     .department {
         fill: $jlm-blue;
         stroke: darken($jlm-blue, 20);
@@ -48,6 +54,7 @@
 }
 
 @keyframes appear {
-    from { opacity: 0; }
+    from { opacity: 0 }
+    80% { opacity: 0; }
     to { opacity: 1; }
 }

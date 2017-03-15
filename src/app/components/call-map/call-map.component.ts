@@ -21,6 +21,7 @@ export class CallMapComponent implements OnInit, AfterViewInit {
     private coordsCvrtr: CoordinatesConverterService) {}
 
   ngOnInit() {
+    this.shouldAnimate = this.mapService.firstTime;
     this.scs.room.addEventListener('message', (event) => this.onCallNotification(event), false);
   }
 
