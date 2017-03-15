@@ -13,19 +13,14 @@ import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 
 import {
-  HomeComponent,
-  ProfileComponent,
-  PokechonHomeComponent,
-  ClassementComponent
-} from './views';
-
-import {
+  AboutComponent,
   NavbarComponent,
   DynamicComponentComponent,
   GaugeComponent,
   CallMapComponent,
   AnimatedCallComponent,
-  ToolbarUserInfoComponent
+  ToolbarUserInfoComponent,
+  AchievementsComponent
 } from './components';
 
 import {
@@ -38,10 +33,17 @@ import {
   LeaderboardService,
   MapService
 } from './shared';
-import { AchievementsComponent } from './components/achievements/achievements.component';
-import { MesTropheesComponent } from './views/mes-trophees/mes-trophees.component';
-import { AboutComponent } from './components/about/about.component';
-import { OauthRedirectComponent } from './views/oauth-redirect/oauth-redirect.component';
+
+import {
+  ClassementComponent,
+  HomeComponent,
+  MesTropheesComponent,
+  OauthRedirectComponent,
+  PokechonHomeComponent,
+  ProfileComponent
+} from './views';
+import { TrophiesComponent } from './components/trophies/trophies.component';
+
 
 
 export function xsrfStrategyFactory() {
@@ -64,7 +66,8 @@ export function xsrfStrategyFactory() {
     MesTropheesComponent,
     AboutComponent,
     OauthRedirectComponent,
-    ClassementComponent
+    ClassementComponent,
+    TrophiesComponent
   ],
   imports: [
     BrowserModule,

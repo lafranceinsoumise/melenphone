@@ -1,5 +1,5 @@
 <jlm-gauge [min]="0" [max]="goal" [value]="dailyCalls"></jlm-gauge>
-<div class="points" *ngIf="auth.currentUser && auth.currentUser.phi > -1">{{ auth.currentUser?.phi }} points</div>
+<div class="points" *ngIf="auth.currentUser && auth.currentUser.phi > -1">{{ auth.currentUser?.phi }}</div>
 <div jlmFullscreen #fullscreenController="fullscreen">
     <jlm-call-map [timeout]="5000">
         <div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
