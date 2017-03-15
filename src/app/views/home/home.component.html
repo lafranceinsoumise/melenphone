@@ -3,15 +3,13 @@
 <div jlmFullscreen #fullscreenController="fullscreen">
     <jlm-call-map [timeout]="5000">
         <div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
+            <button *ngIf="isDevMode" md-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
             <button *ngSwitchCase="false"
-                    md-raised-button
-                    color="accent"
-                    (click)="fullscreenController.toggle(true)">Plein écran</button>
+                    md-button
+                    (click)="fullscreenController.toggle(true)"><i class="material-icons">fullscreen</i></button>
             <button *ngSwitchCase="true"
-                    md-raised-button
-                    color="accent"
-                    (click)="fullscreenController.exitFullscreen()">sortir du mode plein écran</button>
-            <button *ngIf="isDevMode" md-raised-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
+                    md-button
+                    (click)="fullscreenController.exitFullscreen()"><i class="material-icons">fullscreen_exit</i></button>
         </div>
     </jlm-call-map>
 </div>

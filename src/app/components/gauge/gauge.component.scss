@@ -1,24 +1,34 @@
 @import '../../../_colors.scss';
 
 :host {
-    display: block;
+  display: block;
+  box-sizing: border-box;
+  color: #fff;
+
+  .bg {
     box-sizing: border-box;
-    color: #fff;
+    height: 38px;
+    border-radius: 3px;
+    border: 3px solid $jlm-red;
 
-    .bg {
-        box-sizing: border-box;
-        height: 38px;
-        line-height: 32px;
-        border-radius: 3px;
-        overflow: hidden;
-        border: 3px solid $jlm-red;
-
-        .fg {
-            color: black;
-            background-color: $jlm-red;
-            padding: 0 1em;
-            text-align: right;
-            transition: .3s;
-        }
+    .fg {
+      background-color: $jlm-red;
+      color: #fff;
+      height: 32px;
+      line-height: 32px;
+      padding: 0 1em;
+      position: relative;
+      transition: .3s;
     }
+
+    .legend {
+      position: absolute;
+      text-shadow: 0 1px 4px $jlm-red;
+      right: 0;
+      text-align: right;
+      padding: 0 10px;
+      white-space: nowrap;
+      width: 100%;
+    }
+  }
 }

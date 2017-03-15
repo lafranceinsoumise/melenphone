@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     private coordsConverter: CoordinatesConverterService,
     private scs: SocketConnectionService,
     private auth: AuthenticationService,
-    private http: Http) { }
+    private http: Http) { console.log('callhub')}
 
   makeBackendRequest() {
     this.http.post('/api/simulate_call', '')
