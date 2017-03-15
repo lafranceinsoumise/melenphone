@@ -40,7 +40,7 @@ urlpatterns = [
 
     #ANGULAR
     url(r'^ng/pokechon$', AngularApp.as_view(), name="angular_app"),
-    url(r'^ng/login$', AngularApp.as_view(), name="angular_app"),
+    url(r'^ng/profile$', AngularApp.as_view(), name="angular_app"),
     url(r'^ng/register$', AngularApp.as_view(), name="angular_app"),
     url(r'^ng/mes-trophees$', AngularApp.as_view(), name="angular_app"),
     url(r'^ng/classement$', AngularApp.as_view(), name="angular_app"),

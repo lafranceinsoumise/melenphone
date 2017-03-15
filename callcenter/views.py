@@ -181,7 +181,7 @@ class api_user_achievements(APIView):
         dataUnlockedAchievements = []
         idList = []
         for achievement in unlockedAchievements:
-            dataUnlockedAchievements.append({'name':achievement.name, 'condition':achievement.condition})
+            dataUnlockedAchievements.append({'name':achievement.name, 'condition':achievement.condition, 'phi':achievement.phi})
             idList.append(achievement.id)
 
         #Recuperation des achivements restants
@@ -189,7 +189,7 @@ class api_user_achievements(APIView):
 
         dataLockedAchievements = []
         for achievement in lockedAchievements:
-            dataLockedAchievements.append({'name':achievement.name, 'condition':achievement.condition})
+            dataLockedAchievements.append({'name':achievement.name, 'condition':achievement.condition, 'phi':achievement.phi})
 
         data['unlocked'] = dataUnlockedAchievements
         data['locked'] = dataLockedAchievements

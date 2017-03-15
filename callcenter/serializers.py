@@ -6,11 +6,12 @@ from accounts.models import User
 
 class UserSerializer(ModelSerializer):
     agentUsername = SlugRelatedField(slug_field='agentUsername', source='UserExtend', read_only=True)
+    phi = SlugRelatedField(slug_field='phi', source='UserExtend', read_only=True)
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'city', 'country_code', 'agentUsername')
-        read_only_fields = ('email', 'agentUsername')
+        fields = ('email', 'first_name', 'last_name', 'city', 'country_code', 'agentUsername', 'phi')
+        read_only_fields = ('email', 'agentUsername', 'phi')
 
 
 class UserExtendSerializer(ModelSerializer):
