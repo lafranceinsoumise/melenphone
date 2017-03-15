@@ -4,7 +4,7 @@ import { Routes, RouterModule, ExtraOptions, PreloadAllModules } from '@angular/
 import {
   HomeComponent,
   PokechonHomeComponent,
-  ConnectionComponent,
+  ProfileComponent,
   MesTropheesComponent,
   OauthRedirectComponent,
   ClassementComponent
@@ -18,7 +18,7 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'pokechon', loadChildren: './pokechon/pokechon.module#PokechonModule' },
-      { path: 'login', component: ConnectionComponent },
+      { path: 'profile', component: ProfileComponent },
       { path: 'classement', component: ClassementComponent },
       { path: 'mes-trophees', component: MesTropheesComponent },
       { path: 'oauth_redirect', component: OauthRedirectComponent }

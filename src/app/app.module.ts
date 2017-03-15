@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
 
 import {
   HomeComponent,
-  ConnectionComponent,
+  ProfileComponent,
   PokechonHomeComponent,
   ClassementComponent
 } from './views';
@@ -56,7 +56,7 @@ export function xsrfStrategyFactory() {
     DynamicComponentComponent,
     PokechonHomeComponent,
     GaugeComponent,
-    ConnectionComponent,
+    ProfileComponent,
     CallMapComponent,
     AnimatedCallComponent,
     ToolbarUserInfoComponent,

@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, CallhubService } from '../../shared';
 
 @Component({
-  selector: 'jlm-connection',
-  templateUrl: './connection.component.html',
-  styleUrls: ['./connection.component.scss']
+  selector: 'jlm-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss']
 })
-export class ConnectionComponent {
+export class ProfileComponent {
 
   callhubUsername = '';
 
