@@ -13,11 +13,12 @@ jlm-gauge {
 
 .points {
     background: url('../../../assets/img/phi.png') no-repeat right;
-    background-size: 20px auto;
+    background-size: 25px auto;
     display: inline-block;
-    font-size: 0.9em;
+    font-size: 1.8em;
+    color:$jlm-darkblue;
     line-height: 38px;
-    padding-right: 1.8em;
+    padding-right: 1.1em;
     text-align: right;
     vertical-align: middle;
     width: 200px;
