@@ -201,40 +201,38 @@ class api_user_achievements(APIView):
 # /api/leaderboard/X/ avec X = alltime ou weekly ou daily
 class api_leaderboard(APIView):
     permission_classes = (permissions.AllowAny,)
-    def get(self, request, ranking):
+    def get(self, request):
         r = redis.StrictRedis(connection_pool=redis_pool)
-        #URL "alltime" -> On récupère le leaderboard alltime
-        if ranking == "alltime":
-            ranking = r.zrange('melenphone:leaderboards:alltime',0,49,withscores=True)
-            usersTab = []
-            for ranked in ranking:
-                username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
-                calls = int(ranked[1])
-                usersTab.append({'username':username, 'calls':str(calls)})
 
-        #URL "weekly" -> On récupère le leaderboard weekly
-        elif ranking == "weekly":
-            ranking = r.zrange('melenphone:leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
-            usersTab = []
-            for ranked in ranking:
-                username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
-                calls = int(ranked[1])
-                usersTab.append({'username':username, 'calls':str(calls)})
+        ranking = r.zrange('melenphone:leaderboards:alltime',0,49,withscores=True)
+        alltime = []
+        for ranked in ranking:
+            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+            calls = int(ranked[1])
+            alltime.append({'username':username, 'calls':calls})
 
-        #URL "daily" -> On récupère le leaderboard daily
-        elif ranking == "daily":
-            ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
-            usersTab = []
-            for ranked in ranking:
-                username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
-                calls = int(ranked[1])
-                usersTab.append({'username':username, 'calls':str(calls)})
 
-        #Ne correspond à aucun leaderboard -> 404
-        else:
-            raise Http404
+        ranking = r.zrange('melenphone:leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
+        weekly = []
+        for ranked in ranking:
+            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+            calls = int(ranked[1])
+            weekly.append({'username':username, 'calls':calls})
 
-        data = {'leaderboard':usersTab}
+
+        ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
+        daily = []
+        for ranked in ranking:
+            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+            calls = int(ranked[1])
+            daily.append({'username':username, 'calls':calls})
+
+
+        data = {
+                'alltime':alltime,
+                'weekly':weekly,
+                'daily':daily
+                }
         data = json.dumps(data)
 
         return HttpResponse(data)
