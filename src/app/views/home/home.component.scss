@@ -1,3 +1,5 @@
+@import '../../../_colors.scss';
+
 :host {
     display: block;
     margin-top: 20px;
@@ -23,6 +25,7 @@ jlm-gauge {
 
 [jlmFullscreen] {
     margin-top: 70px;
+    position: relative;
 
     &:-webkit-full-screen {
         display: flex;
@@ -84,5 +87,13 @@ jlm-gauge {
 
 [jlmFullscreen] .controls {
   position: absolute;
-  bottom: 0;
+  top: 10px;
+  right: 10px;
+
+  button {
+    background: $jlm-red;
+    color: #fff;
+    border: 0;
+    min-width: auto;
+  }
 }
