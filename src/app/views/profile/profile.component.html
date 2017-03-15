@@ -26,11 +26,4 @@
     </md-card-actions>
 </md-card>
 
-<md-card *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername !== null">
-    <md-card-title>
-        <h2>Mes trophées</h2>
-    </md-card-title>
-    <md-card-content>
-        <jlm-mes-trophees></jlm-mes-trophees>
-    </md-card-content>
-</md-card>
+<jlm-mes-trophees></jlm-mes-trophees>
