@@ -15,12 +15,14 @@
 
   <h3>{{ trophiesData?.locked?.length }} Trophées verrouillés</h3>
   <ul>
-    <li *ngFor="let trophie of trophiesData?.locked">
-      <div class="name">
-        {{ trophie.name }}
-      </div>
-      <div class="description">
-        {{ trophie.condition }}
+    <li *ngFor="let trophie of trophiesData?.locked" fxLayout="row">
+      <div fxFlex>
+        <div class="name">
+          {{ trophie.name }}
+        </div>
+        <div class="description">
+          {{ trophie.condition }}
+        </div>
       </div>
       <div class="trophee_phi">
       {{ trophie.phi }}
