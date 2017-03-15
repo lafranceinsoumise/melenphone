@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
@@ -32,6 +32,10 @@ export class AuthenticationService {
     // }
 
     getProfile(): Promise<User> {
+        return this.getBasicInfo();
+    }
+
+    getBasicInfo(): Promise<User> {
         return this.http.get('/api/current_user/profile')
             .toPromise()
             .then((res: Response) => {
@@ -43,8 +47,24 @@ export class AuthenticationService {
                     throw new Error(`Accès interdit. Veuillez vous connecter`);
                 }
                 this.currentUser = res.json() as User;
-
+                if (isDevMode) {
+                    console.group('login success');
+                    console.table([this.currentUser]);
+                    console.groupEnd();
+                }
                 return this.currentUser;
+            });
+    }
+
+    getExtendedInfo() {
+        return this.http.get('/api/current_user/caller_information')
+            .toPromise()
+            .then((res: Response) => {
+                if (res.status === 200) {
+                    return res.json();
+                } else {
+                    return {};
+                }
             });
     }
 
