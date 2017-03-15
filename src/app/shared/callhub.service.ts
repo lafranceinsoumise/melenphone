@@ -18,7 +18,7 @@ export class CallhubService {
       .toPromise()
       .then((res: Response) => {
         if (res.status === 400) {
-          throw new Error(res.json());
+          throw res.json();
         } else if (res.status === 201) {
           this.currentUser = res.json() as CallhubUser;
           this.auth.currentUser.agentUsername = this.currentUser.agentUsername;
@@ -26,7 +26,7 @@ export class CallhubService {
         }
       })
       .catch(err => {
-        throw err.json();
+        throw err;
       });
   }
 
