@@ -17,9 +17,10 @@ export class CallhubService {
     return this.http.post('/api/current_user/caller_information', {agentUsername})
       .toPromise()
       .then((res: Response) => {
+          debugger;
         if (res.status === 400) {
           throw new Error(res.json());
-        } else if (res.status === 204) {
+        } else if (res.status === 201) {
           this.currentUser = res.json() as CallhubUser;
           this.auth.currentUser.agentUsername = this.currentUser.agentUsername;
           return this.currentUser;
