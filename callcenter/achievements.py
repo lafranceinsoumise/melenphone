@@ -34,11 +34,12 @@ def unlockAchievement(codeName, user):
             userExtend.phi = userExtend.phi + (achievement.phi * userExtend.phi_multiplier)
             userExtend.save()
             websocketMessage = json.dumps({'type': 'achievement',
-                                           'value': {
+                                           'values': {
                                                 'agentUsername':userExtend.agentUsername,
                                                 'achievement':{
                                                     'name':achievement.name,
-                                                    'condition':achievement.condition
+                                                    'condition':achievement.condition,
+                                                    'phi':achievement.phi
                                                 }
                                            }
                                         })

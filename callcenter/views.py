@@ -132,14 +132,26 @@ class api_test_simulatecall(APIView):
         raise Http404
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
+        r = redis.StrictRedis(connection_pool=redis_pool)
+
+        user = User.objects.all()[0]
+        now = timezone.now().timestamp()
 
         callerLat, callerLng = randomLocation()
         calledLat, calledLng = randomLocation()
 
-        update_scores(None)
-        Call.objects.create()
+        lastCall = float(r.getset('lastcall:user:' + str(user.id), now) or 0)
+        EarnPhi(user, lastCall)
 
-        r = redis.StrictRedis(connection_pool=redis_pool)
+        # On ajoute l'appel au serveur redis
+        update_scores(user)
+
+        # On ajoute l'appel à la bdd pour pouvoir reconstruire redis si besoin
+        Call.objects.create(user=user)
+
+        # On met à jour les achievements
+        updateAchievements(user)
+
         dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
         weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
         alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
@@ -150,8 +162,8 @@ class api_test_simulatecall(APIView):
                                                'caller': {
                                                    'lat': callerLat,
                                                    'lng': callerLng,
-                                                   'id': None,
-                                                   'agentUsername': None},
+                                                   'id': user.id,
+                                                   'agentUsername': user.UserExtend.agentUsername},
                                                'target': {
                                                    'lat': calledLat,
                                                    'lng': calledLng}
