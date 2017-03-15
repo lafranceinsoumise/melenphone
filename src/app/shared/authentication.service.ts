@@ -56,7 +56,7 @@ export class AuthenticationService {
             });
     }
 
-    getExtendedInfo() {
+    getExtendedInfo(): Promise<User> {
         return this.http.get('/api/current_user/caller_information')
             .toPromise()
             .then((res: Response) => {

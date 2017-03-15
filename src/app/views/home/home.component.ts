@@ -1,9 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, isDevMode } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { CoordinatesConverterService, SocketConnectionService, AuthenticationService } from '../../shared';
 import 'rxjs/add/operator/toPromise';
 import { WsCallNotification, CallNoteDescription } from '../../core';
-import { isDevMode } from '@angular/core';
+import {
+  CoordinatesConverterService,
+  SocketConnectionService,
+  AuthenticationService,
+  UserService
+} from '../../shared';
 
 @Component({
   selector: 'jlm-home',
@@ -62,7 +66,10 @@ export class HomeComponent implements OnInit {
           this.auth.currentUser !== null
           && this.auth.currentUser.agentUsername === notif.call.caller.agentUsername
         ) {
-          this.auth.currentUser.phi += 10;
+          this.auth.getExtendedInfo()
+            .then((info) => {
+              this.auth.currentUser.phi = info.phi;
+            });
         }
       break;
       case 'achievement':
