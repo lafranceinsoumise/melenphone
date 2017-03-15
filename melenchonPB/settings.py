@@ -11,6 +11,25 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from django.core.exceptions import ImproperlyConfigured
+import dj_database_url
+
+
+def env_to_bool(variable, default):
+    value = os.environ.get(variable)
+    if value.lower() in ['true', 't', 'yes', 'y']:
+        return True
+    if value.lower() in ['false', 'f', 'no', 'n']:
+        return False
+    return default
+
+
+def env_required(variable):
+    try:
+        return os.environ[variable]
+    except KeyError:
+        raise ImproperlyConfigured('Required environment variable: %s' % (variable,))
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,11 +38,28 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-if bool(os.environ.get('DEV', True)):
-    from melenchonPB.settings_dev import *
-else:
-    from melenchonPB.settings_prod import *
-# Application definition
+DEBUG = env_to_bool('DEBUG', False)
+
+
+# Security parameters
+
+SECRET_KEY = env_required('SECRET_KEY')
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(' ')
+
+SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE = env_to_bool('COOKIE_SECURE', True)
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+# the cookie should be available from js --> set to False
+CSRF_COOKIE_HTTPONLY = False
+
+# allow displaying website only from same origin
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -53,7 +89,7 @@ ROOT_URLCONF = 'melenchonPB.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'ngApp/dist')],
+        'DIRS': [os.path.join(BASE_DIR)],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,10 +109,7 @@ WSGI_APPLICATION = 'melenchonPB.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config('DATABASE_URL', default='sqlite:///db.sqlite3', conn_max_age=600)
 }
 
 
@@ -131,7 +164,38 @@ STATIC_ROOT = 'static/'
 ANGULAR_URL = '/ng'
 ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
 
+# redis
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = int(os.environ.get('REDIS_PORT', 6379))
+REDIS_UNIX_SOCKET = os.environ.get('REDIS_UNIX_SOCKET')
+REDIS_MAX_CONNECTIONS = 4
+
+
 #channels
+
+CHANNEL_BACKEND = os.environ.get('CHANNEL_BACKEND', 'inmemory')
+
+if CHANNEL_BACKEND == 'inmemory':
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": 'asgiref.inmemory.ChannelLayer',
+            "ROUTING": "callcenter.routing.channel_routing",
+        },
+    }
+elif CHANNEL_BACKEND == 'redis':
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "asgi_redis.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [(REDIS_HOST, REDIS_PORT)],
+            },
+            "ROUTING": "callcenter.routing.channel_routing",
+        },
+    }
+else:
+    raise ImproperlyConfigured('Unknown CHANNEL_BACKEND type : "%s"' % (CHANNEL_BACKEND,))
+
+
 # In settings.py
 
 REST_FRAMEWORK = {
@@ -143,19 +207,25 @@ REST_FRAMEWORK = {
     ),
 }
 
+# callhub parameters
+CALLHUB_API_KEY = env_required('CALLHUB_API_KEY')
+
 # jlm-auth parameters
-REDIRECT_BASE = 'http://localhost:8000'
-AUTHORIZATION_URL = 'https://auth.jlm2017.fr/autoriser'
-ACCESS_TOKEN_URL = 'https://auth.jlm2017.fr/token'
+AUTHORIZATION_URL = env_required('AUTHORIZATION_URL')
+ACCESS_TOKEN_URL = env_required('ACCESS_TOKEN_URL')
 DEFAULT_SCOPE = ['view_profile']
 SCOPE_SEPARATOR = ' '
-PROFILE_URL = 'https://auth.jlm2017.fr/voir_profil'
+PROFILE_URL = env_required('PROFILE_URL')
+
+# where to redirect once logged in
 LOGIN_REDIRECT = 'angular_oauth_redirect'
 
+# the base for the redirect_uri to use in the OAuth process
+REDIRECT_BASE = os.environ.get('REDIRECT_BASE', 'http://localhost:8000')
 
-# redis
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_MAX_CONNECTIONS = 4
+# OAuth client parameters
+CLIENT_ID = env_required('CLIENT_ID')
+CLIENT_SECRET = env_required('CLIENT_SECRET')
 
+# minimum lenght of call so that it is counted, in seconds
 MIN_DELAY = 30

@@ -3,6 +3,11 @@ import os
 import sys
 
 if __name__ == "__main__":
+    debug = os.environ.get("DEBUG")
+    if debug is None or debug.lower() in ['true', 't', 'yes', 'y']:
+        import envdir
+        envdir.read()
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "melenchonPB.settings")
     try:
         from django.core.management import execute_from_command_line
