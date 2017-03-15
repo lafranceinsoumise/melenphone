@@ -20,12 +20,6 @@ class UserExtend(models.Model):
     phi = models.IntegerField(default=0, blank=True, null=True)
     phi_multiplier = models.DecimalField(default=1.0, max_digits=2, decimal_places=1, blank=True, null=True)
     first_call_of_the_day = models.DateTimeField(default=get_default_date, blank=True)
-    daily_leaderboard = models.IntegerField(default=0)
-    daily_leaderboard_calls = models.IntegerField(default=0)
-    weekly_leaderboard = models.IntegerField(default=0)
-    weekly_leaderboard_calls = models.IntegerField(default=0)
-    alltime_leaderboard = models.IntegerField(default=0)
-    alltime_leaderboard_calls = models.IntegerField(default=0)
 
     def __str__(self):
         return self.agentUsername
