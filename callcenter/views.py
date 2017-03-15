@@ -90,6 +90,13 @@ class webhook_note(APIView):
             weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
             alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
+            ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
+            dailyLeaderboard = []
+            for ranked in ranking:
+                username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+                calls = int(ranked[1])
+                dailyLeaderboard.append({'username': username, 'calls': calls})
+
             websocketMessage = json.dumps({ 'type':'call',
                                             'value':{
                                                  'call': {
@@ -105,7 +112,8 @@ class webhook_note(APIView):
                                                 'updatedData': {
                                                     'dailyCalls':dailyCalls,
                                                     'weeklyCalls':weeklyCalls,
-                                                    'alltimeCalls':alltimeCalls
+                                                    'alltimeCalls':alltimeCalls,
+                                                    'dailyLeaderboard': dailyLeaderboard
                                                     }
                                             }
                                         })
@@ -156,6 +164,13 @@ class api_test_simulatecall(APIView):
         weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
         alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
+        ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
+        dailyLeaderboard = []
+        for ranked in ranking:
+            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+            calls = int(ranked[1])
+            dailyLeaderboard.append({'username': username, 'calls': calls})
+
         websocketMessage = json.dumps({'type': 'call',
                                        'value': {
                                            'call': {
@@ -171,7 +186,8 @@ class api_test_simulatecall(APIView):
                                            'updatedData': {
                                                'dailyCalls': dailyCalls,
                                                'weeklyCalls': weeklyCalls,
-                                               'alltimeCalls': alltimeCalls
+                                               'alltimeCalls': alltimeCalls,
+                                               'dailyLeaderboard':dailyLeaderboard
                                            }
                                        }
                                        })
@@ -259,10 +275,18 @@ class api_basic_information(APIView):
         weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
         alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
+        ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
+        dailyLeaderboard = []
+        for ranked in ranking:
+            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+            calls = int(ranked[1])
+            dailyLeaderboard.append({'username': username, 'calls': calls})
+
         data = {
                 'dailyCalls':dailyCalls,
                 'weeklyCalls':weeklyCalls,
-                'alltimeCalls':alltimeCalls
+                'alltimeCalls':alltimeCalls,
+                'dailyLeaderboard': dailyLeaderboard
                 }
         data = json.dumps(data)
 
