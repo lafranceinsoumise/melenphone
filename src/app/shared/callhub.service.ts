@@ -17,7 +17,6 @@ export class CallhubService {
     return this.http.post('/api/current_user/caller_information', {agentUsername})
       .toPromise()
       .then((res: Response) => {
-          debugger;
         if (res.status === 400) {
           throw new Error(res.json());
         } else if (res.status === 201) {
