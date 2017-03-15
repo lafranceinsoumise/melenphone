@@ -229,3 +229,12 @@ CLIENT_SECRET = env_required('CLIENT_SECRET')
 
 # minimum lenght of call so that it is counted, in seconds
 MIN_DELAY = 30
+
+# parameters for calculating phi earnings
+from decimal import Decimal
+BASE_PHI = 10
+MULTIPLIER_RESET = 3600
+PHI_FIRST_CALL = 50
+PHI_ALEA = 2
+MULTIPLIER_GROWTH = Decimal('0.1')
+MAX_MULTIPLIER = 3

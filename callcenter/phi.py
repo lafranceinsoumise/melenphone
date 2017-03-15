@@ -4,14 +4,15 @@
 from django.utils import timezone
 from decimal import Decimal
 from django.utils import timezone
+from django.conf import settings
+import random
 
-BASE_PHI = 10
-
-MULTIPLIER_RESET = 3600
-
-PHI_FIRST_CALL = 50
-MULTIPLIER_GROWTH = Decimal('0.1')
-MAX_MULTIPLIER = 3
+BASE_PHI = settings.BASE_PHI
+PHI_ALEA = settings.PHI_ALEA
+MULTIPLIER_RESET = settings.MULTIPLIER_RESET
+PHI_FIRST_CALL = settings.PHI_FIRST_CALL
+MULTIPLIER_GROWTH = settings.MULTIPLIER_GROWTH
+MAX_MULTIPLIER = settings.MAX_MULTIPLIER
 
 
 def EarnPhi(user, lastCall):
@@ -30,7 +31,7 @@ def EarnPhi(user, lastCall):
                 user.phi_multiplier = 1
 
             #ETAPE 2 : Le joueur gagne des phis
-            user.phi = user.phi + (BASE_PHI * user.phi_multiplier)
+            user.phi = user.phi + ((BASE_PHI + random.randint((-1)*PHI_ALEA,PHI_ALEA)) * user.phi_multiplier)
 
             #ETAPE 3 : On augmente le multiplier et on vérifie qu'il ne dépasse pas le max
             user.phi_multiplier = min(user.phi_multiplier + MULTIPLIER_GROWTH, MAX_MULTIPLIER)
