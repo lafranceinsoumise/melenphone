@@ -136,10 +136,11 @@ class api_test_socket(APIView):
 
 # /api/simulate_call/
 class api_test_simulatecall(APIView):
-    if settings.DEBUG == False:
-        raise Http404
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
+        if settings.DEBUG == False:
+            raise Http404
+
         r = redis.StrictRedis(connection_pool=redis_pool)
 
         user = User.objects.all()[0]
