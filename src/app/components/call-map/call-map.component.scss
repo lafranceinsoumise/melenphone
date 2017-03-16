@@ -12,12 +12,12 @@
 
     &.transition-start {
         fill: $jlm-blue;
-        stroke: darken($jlm-blue, 20);
+        stroke: hsla(190, 65%, 38%, 1);
     }
     &.transition-end {
         transition: fill 2.4s, stroke 2.5s;
         fill: $jlm-blue;
-        stroke: darken($jlm-blue, 20);
+        stroke: hsla(190, 65%, 38%, 1);
     }
 }
 
@@ -29,10 +29,10 @@
         animation-fill-mode: initial;
         animation: initial;
     }
-    
+
     .department {
         fill: $jlm-blue;
-        stroke: darken($jlm-blue, 20);
+        stroke: hsla(190, 65%, 38%, 1);
     }
 }
 
