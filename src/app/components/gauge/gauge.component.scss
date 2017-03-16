@@ -1,34 +1,30 @@
 @import '../../../_colors.scss';
 
-:host {
-  display: block;
-  box-sizing: border-box;
-  color: #fff;
+.bg {
+  height: 30px;
+  background: #fff;
+  border-radius: 2px;
+  border: 3px solid #fff;
 
-  .bg {
-    box-sizing: border-box;
-    height: 38px;
-    border-radius: 3px;
-    border: 3px solid $jlm-red;
+  .fg {
+    background: $jlm-blue;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 1em;
+    position: relative;
+    transition: .3s;
+  }
 
-    .fg {
-      background-color: $jlm-red;
-      color: #fff;
-      height: 32px;
-      line-height: 32px;
-      padding: 0 1em;
-      position: relative;
-      transition: .3s;
-    }
-
-    .legend {
-      position: absolute;
-      text-shadow: 0 1px 4px $jlm-red;
-      right: 0;
-      text-align: right;
-      padding: 0 10px;
-      white-space: nowrap;
-      width: 100%;
-    }
+  .legend {
+    color: #fff;
+    font-size: 14px;
+    right: 0;
+    text-align: right;
+    text-shadow: 0 1px 6px $jlm-blue;
+    padding: 0 15px;
+    position: absolute;
+    white-space: nowrap;
+    width: 100%;
   }
 }

@@ -1,15 +1,11 @@
-<jlm-gauge [min]="0" [max]="goal" [value]="dailyCalls"></jlm-gauge>
-<div class="points" *ngIf="auth.currentUser && auth.currentUser.phi > -1">{{ auth.currentUser?.phi }}</div>
 <div jlmFullscreen #fullscreenController="fullscreen">
-    <jlm-call-map [timeout]="5000">
-        <div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
-            <button *ngIf="isDevMode" md-button color="accent" (click)="makeBackendRequest()">Make backend request</button>
-            <button *ngSwitchCase="false"
-                    md-button
-                    (click)="fullscreenController.toggle(true)"><i class="material-icons">fullscreen</i></button>
-            <button *ngSwitchCase="true"
-                    md-button
-                    (click)="fullscreenController.exitFullscreen()"><i class="material-icons">fullscreen_exit</i></button>
-        </div>
-    </jlm-call-map>
+  <button md-button *ngIf="isDevMode" color="warn" (click)="makeBackendRequest()">Make backend request</button>
+  <jlm-call-map [timeout]="5000">
+    <div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
+      <button *ngSwitchCase="false"
+      (click)="fullscreenController.toggle(true)"><i class="material-icons">fullscreen</i></button>
+      <button *ngSwitchCase="true"
+      (click)="fullscreenController.exitFullscreen()"><i class="material-icons">fullscreen_exit</i></button>
+    </div>
+  </jlm-call-map>
 </div>

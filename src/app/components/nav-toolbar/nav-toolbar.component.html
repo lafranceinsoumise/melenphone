@@ -1,0 +1,10 @@
+<ng-container [ngSwitch]="user === null">
+    <a *ngSwitchCase="true" md-button href="/connexion/">Connexion (via jlm2017.fr)</a>
+    <ng-container *ngSwitchCase="false">
+        <a md-button *ngIf="user.agentUsername !== null" href="//app.callhub.io/v2/agent-console/" target="_blank"><i class="material-icons">phone</i> Appeler</a>
+        <a md-button *ngIf="user.agentUsername === null" routerLink="/oauth_redirect">Créer mon agent Callhub</a>
+        <a md-button routerLink="/classement"><i class="material-icons">show_chart</i> Classement</a>
+        <a md-button routerLink="/mes-trophees"><i class="material-icons">grade</i> Mes trophées</a>
+        <a md-button href="/deconnexion/"><i class="material-icons">power_settings_new</i> Déconnexion</a>
+    </ng-container>
+</ng-container>

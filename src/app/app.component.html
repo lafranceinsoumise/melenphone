@@ -1,6 +1,15 @@
+<header class="subnav clearfix">
+  <div *ngIf="auth.currentUser && auth.currentUser.phi > -1" class="user-info">
+    <div class="username">{{ auth.currentUser.agentUsername }}</div>
+    <div class="points">{{ auth.currentUser?.phi }}</div>
+  </div>
+  <h1><a routerLink="/">Mélenphone</a></h1>
+</header>
 <nav>
-  <h1><a class="logo" routerLink="/">Mélenphone</a></h1>
-  <jlm-toolbar-user-info [user]="auth.currentUser"></jlm-toolbar-user-info>
+  <div class="clearfix wrapper">
+    <jlm-gauge [min]="0" [max]="goal" [value]="dailyCalls"></jlm-gauge>
+    <jlm-nav-toolbar [user]="auth.currentUser"></jlm-nav-toolbar>
+  </div>
 </nav>
 <main>
   <router-outlet></router-outlet>

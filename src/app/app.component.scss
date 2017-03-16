@@ -1,31 +1,79 @@
 @import '../_colors.scss';
 
-nav {
-  padding: 10px 16px;
+header {
+  margin: auto;
+  max-width: 1600px;  
+  position: relative;
+  width: 80%;
+}
+
+.user-info {
+  position: absolute;
+  right: 16px;
+  text-align: right;
+  top: 25px;
+
+  .username {
+    color: $jlm-red;
+    font-family: 'Roboto Slab', serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .points {
+    background: url('../assets/img/phi.png') no-repeat right;
+    background-size: 20px auto;
+    display: inline-block;
+    font-size: 24px;
+    color:$jlm-darkblue;
+    line-height: 38px;
+    padding-right: 1.1em;
+    text-align: right;
+    vertical-align: middle;
+  }
 }
 
 h1 {
-  display: inline-block;
-  margin: 0;
+  margin: 5px 0 8px;
+
+  a {
+    background: url('../assets/img/logo.svg') center;
+    background-size: cover;
+    display: inline-block;
+    height: 100px;
+    text-indent: -9000px;
+    width: 300px;
+  }
 }
 
-.logo {
-  background: url('../assets/img/logo.svg') center;
-  background-size: cover;
-  display: block;
-  height: 96px;
-  text-indent: -9000px;
-  width: 288px;
+nav {
+  background: $jlm-red;
+  border-bottom: 1px solid darken($jlm-red, 5%);
+  border-top: 1px solid darken($jlm-red, 5%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+
+  .wrapper {
+    background: url('../assets/img/logo-min.svg') 16px center no-repeat;
+    background-size: 30px;
+    margin: auto;
+    max-width: 1600px;
+    padding: 12px 16px 12px 62px;
+    width: 80%;
+  }
 }
 
-jlm-toolbar-user-info {
-  display: inline-block;
-  float: right;
-  margin: 8px 0;
+jlm-gauge {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  float: left;
+  overflow: hidden;
+  max-width: 50%;
+  width: calc(100% - 484px);
 }
+
+jlm-nav-toolbar {float: right;}
 
 main {
-  margin: 10px auto;
-  padding: 1em;
-  width: 70%;
+  margin: 60px auto;
+  max-width: 1600px;
+  width: 80%;
 }

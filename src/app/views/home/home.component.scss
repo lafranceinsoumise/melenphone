@@ -1,100 +1,84 @@
 @import '../../../_colors.scss';
 
-:host {
-    display: block;
-    margin-top: 20px;
-}
-
-jlm-gauge {
-    display: inline-block;
-    width: calc(100% - 210px);
-    vertical-align: middle;
-}
-
-.points {
-    background: url('../../../assets/img/phi.png') no-repeat right;
-    background-size: 25px auto;
-    display: inline-block;
-    font-size: 1.8em;
-    color:$jlm-darkblue;
-    line-height: 38px;
-    padding-right: 1.1em;
-    text-align: right;
-    vertical-align: middle;
-    width: 200px;
+.mat-button {
+  color: $jlm-red;
+  position: absolute;
 }
 
 [jlmFullscreen] {
-    margin-top: 70px;
-    position: relative;
+  position: relative;
 
-    &:-webkit-full-screen {
-        display: flex;
-        background-color: white;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+  &:-webkit-full-screen {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
-        jlm-call-map {
-            flex: 1;
-            margin: auto;
-        }
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
     }
-    &:-moz-full-screen {
-        display: flex;
-        background-color: white;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+  }
+  &:-moz-full-screen {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
-        jlm-call-map {
-            flex: 1;
-            margin: auto;
-        }
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
     }
-    &:-ms-full-screen {
-        display: flex;
-        background-color: white;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+  }
+  &:-ms-full-screen {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
-        jlm-call-map {
-            flex: 1;
-            margin: auto;
-        }
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
     }
-    &:fullscreen {
-        display: flex;
-        background-color: white;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+  }
+  &:fullscreen {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
-        jlm-call-map {
-            flex: 1;
-            margin: auto;
-        }
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
     }
+  }
 }
 
 [jlmFullscreen] .controls {
   position: absolute;
-  top: 10px;
+  bottom: 10px;
   right: 10px;
 
   button {
-    background: $jlm-red;
-    color: #fff;
     border: 0;
+    background: transparent;
+    color: $jlm-red;
     min-width: auto;
+
+    &:focus {outline: 0;}
   }
+
+  .material-icons {font-size: 42px;}
 }

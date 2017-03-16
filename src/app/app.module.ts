@@ -14,12 +14,11 @@ import { AppComponent } from './app.component';
 
 import {
   AboutComponent,
-  NavbarComponent,
   DynamicComponentComponent,
   GaugeComponent,
   CallMapComponent,
   AnimatedCallComponent,
-  ToolbarUserInfoComponent,
+  NavToolbarComponent,
   AchievementsComponent
 } from './components';
 
@@ -53,7 +52,6 @@ export function xsrfStrategyFactory() {
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
     HomeComponent,
     DynamicComponentComponent,
     PokechonHomeComponent,
@@ -61,7 +59,7 @@ export function xsrfStrategyFactory() {
     ProfileComponent,
     CallMapComponent,
     AnimatedCallComponent,
-    ToolbarUserInfoComponent,
+    NavToolbarComponent,
     AchievementsComponent,
     MesTropheesComponent,
     AboutComponent,
