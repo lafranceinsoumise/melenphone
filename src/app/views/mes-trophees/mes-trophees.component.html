@@ -2,12 +2,15 @@
   <ng-container *ngIf="trophiesData?.unlocked.length">
     <h3>{{ trophiesData?.unlocked?.length }} Trophées débloqués</h3>
     <ul>
-      <li *ngFor="let trophie of trophiesData?.unlocked">
-        <div class="name">
-          {{ trophie.name }}
-        </div>
-        <div class="description">
-          {{ trophie.condition }}
+      <li class="clearfix" *ngFor="let trophie of trophiesData?.unlocked">
+        <img [src]="'assets/img/achievements/' + trophie.codeName + '.png'" />
+        <div class="content">
+          <div class="name">
+            {{ trophie.name }}
+          </div>
+          <div class="description">
+            {{ trophie.condition }}
+          </div>
         </div>
       </li>
     </ul>
@@ -15,8 +18,9 @@
 
   <h3>{{ trophiesData?.locked?.length }} Trophées verrouillés</h3>
   <ul>
-    <li *ngFor="let trophie of trophiesData?.locked" fxLayout="row">
-      <div fxFlex>
+    <li class="clearfix" *ngFor="let trophie of trophiesData?.locked">
+      <img src="assets/img/achievements/locked.png" />
+      <div class="content">
         <div class="name">
           {{ trophie.name }}
         </div>
@@ -30,4 +34,3 @@
     </li>
   </ul>
 </md-card>
-
