@@ -10,6 +10,10 @@ def populate_numberslocation(apps, schema_editor):
         reader = csv.reader(f, delimiter='\t')
         for line in reader:
             code, pays, zone, indicatif, _, location_lat, location_long, _, _ = line
+
+            if zone == 'None': zone = ''
+            if indicatif == 'None': indicatif = ''
+
             NumbersLocation.objects.create(
                 code=code,
                 pays=pays,
