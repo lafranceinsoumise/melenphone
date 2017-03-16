@@ -90,7 +90,7 @@ ROOT_URLCONF = 'melenchonPB.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR)],
+        'DIRS': [os.path.join(BASE_DIR), 'ngApp/dist/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
