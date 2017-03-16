@@ -17,6 +17,7 @@ import dj_database_url
 
 def env_to_bool(variable, default):
     value = os.environ.get(variable)
+    if value is None: return default
     if value.lower() in ['true', 't', 'yes', 'y']:
         return True
     if value.lower() in ['false', 'f', 'no', 'n']:
