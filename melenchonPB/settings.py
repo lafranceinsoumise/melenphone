@@ -58,8 +58,7 @@ CSRF_COOKIE_HTTPONLY = False
 # allow displaying website only from same origin
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-
-
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
 
 INSTALLED_APPS = [
