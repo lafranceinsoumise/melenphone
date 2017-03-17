@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import sys
 from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
 
@@ -35,12 +36,10 @@ def env_required(variable):
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 DEBUG = env_to_bool('DEBUG', False)
-
 
 # Security parameters
 
@@ -60,6 +59,30 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
+if DEBUG == False:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': True,
+        'formatters': {
+            'standard': {
+                'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+            },
+        },
+        'handlers': {
+            'console': {
+                'level': 'DEBUG' if DEBUG else 'INFO',
+                'class': 'logging.StreamHandler',
+                'stream': sys.stderr
+            }
+        },
+        'loggers': {
+            'django': {
+                'level': 'DEBUG',
+                'handlers': ['console'],
+                'propagate': True,
+            },
+        }
+    }
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -88,14 +111,12 @@ ROOT_URLCONF = 'melenchonPB.urls'
 
 WSGI_APPLICATION = 'melenchonPB.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
     'default': dj_database_url.config('DATABASE_URL', default='sqlite:///db.sqlite3', conn_max_age=600)
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -124,7 +145,6 @@ AUTHENTICATION_BACKENDS = [
     'accounts.backend.JLMOAuth2'
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -137,7 +157,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
@@ -157,8 +176,7 @@ REDIS_PORT = int(os.environ.get('REDIS_PORT', 6379))
 REDIS_UNIX_SOCKET = os.environ.get('REDIS_UNIX_SOCKET')
 REDIS_MAX_CONNECTIONS = 4
 
-
-#channels
+# channels
 
 CHANNEL_BACKEND = os.environ.get('CHANNEL_BACKEND', 'inmemory')
 
@@ -181,7 +199,6 @@ elif CHANNEL_BACKEND == 'redis':
     }
 else:
     raise ImproperlyConfigured('Unknown CHANNEL_BACKEND type : "%s"' % (CHANNEL_BACKEND,))
-
 
 # In settings.py
 
@@ -219,6 +236,7 @@ MIN_DELAY = 30
 
 # parameters for calculating phi earnings
 from decimal import Decimal
+
 BASE_PHI = 10
 MULTIPLIER_RESET = 3600
 PHI_FIRST_CALL = 50
