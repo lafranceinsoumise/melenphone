@@ -1,6 +1,7 @@
 import { Component, OnInit, isDevMode } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import { BasicService } from '../../shared';
 
 @Component({
   selector: 'jlm-home',
@@ -14,7 +15,9 @@ export class HomeComponent implements OnInit {
   }
 
   constructor(
-    private http: Http) {}
+    private http: Http,
+    private basic: BasicService
+  ) {}
 
   ngOnInit() {
   }

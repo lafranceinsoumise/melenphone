@@ -4,7 +4,9 @@ import 'rxjs/add/operator/toPromise';
 import { CallNoteDescription } from './core';
 import {
   SocketConnectionService,
-  AuthenticationService
+  AuthenticationService,
+  BasicService,
+  BasicInformationApiData,
 } from './shared';
 
 @Component({
@@ -13,16 +15,15 @@ import {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
-  dailyCalls = 0;
   get goal() {
-    return this.chooseCallGoal(this.dailyCalls || 0);
+    return this.chooseCallGoal(this.basic.infos.dailyCalls || 0);
   }
 
   constructor(
     private scs: SocketConnectionService,
     private auth: AuthenticationService,
-    private http: Http
+    private http: Http,
+    private basic: BasicService,
   ) {}
 
   ngOnInit() {
@@ -31,16 +32,9 @@ export class AppComponent implements OnInit {
     this.scs.room.addEventListener('message', (event) =>
       this.onNotif(event)
     , false);
-    this.http.get('/api/basic_information')
-      .toPromise()
-      .then((res: Response) => {
-        if (res.status !== 200) {
-          throw new Error(`erreur de communication avec le serveur : ${res.status}`);
-        }
-
-        this.dailyCalls = res.json()['dailyCalls'];
-      })
-      .catch(error => console.error(error));
+    this.basic.getBasicInfo()
+      .then(infos => this.basic.infos = infos)
+      .catch(err => console.trace(err));
   }
 
   onNotif(message: MessageEvent) {
@@ -48,7 +42,7 @@ export class AppComponent implements OnInit {
     switch (parsed.type) {
       case 'call':
         const notif = parsed.value as CallNoteDescription;
-        this.dailyCalls = notif.updatedData.dailyCalls;
+        this.basic.infos = notif.updatedData;
         if (
           this.auth.currentUser !== null
           && this.auth.currentUser.agentUsername === notif.call.caller.agentUsername

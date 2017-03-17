@@ -12,3 +12,4 @@ export * from './overlay.component';
 export * from './shared.module';
 export * from './socket-connection.service';
 export * from './user.service';
+export * from './basic.service';

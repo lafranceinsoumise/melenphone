@@ -7,7 +7,7 @@
 </header>
 <nav>
   <div class="clearfix wrapper">
-    <jlm-gauge [min]="0" [max]="goal" [value]="dailyCalls"></jlm-gauge>
+    <jlm-gauge *ngIf="basic.infos" [min]="0" [max]="goal" [value]="basic.infos.dailyCalls"></jlm-gauge>
     <jlm-nav-toolbar [user]="auth.currentUser"></jlm-nav-toolbar>
   </div>
 </nav>

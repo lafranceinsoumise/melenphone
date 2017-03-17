@@ -4,7 +4,7 @@ header {
   margin: auto;
   max-width: 1600px;
   position: relative;
-  width: 80%;
+  width: 90%;
 }
 
 .user-info {
@@ -25,7 +25,7 @@ header {
     background-size: 20px auto;
     display: inline-block;
     font-size: 24px;
-    color: $jlm-darkblue;
+    color: $jlm-blue;
     line-height: 38px;
     padding-right: 1.1em;
     text-align: right;
@@ -58,7 +58,7 @@ nav {
     margin: auto;
     max-width: 1600px;
     padding: 12px 16px 12px 62px;
-    width: 80%;
+    width: 90%;
   }
 }
 
@@ -73,7 +73,7 @@ jlm-gauge {
 jlm-nav-toolbar {float: right;}
 
 main {
-  margin: 60px auto;
+  margin: 45px auto;
   max-width: 1600px;
-  width: 80%;
+  width: 90%;
 }

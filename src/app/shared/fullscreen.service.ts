@@ -14,5 +14,4 @@ export class FullscreenService {
     }
     return exitFn.bind(document);
   }
-
 }

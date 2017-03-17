@@ -1,3 +1,5 @@
+import { BasicInformationApiData } from '../shared';
+
 export interface WsCallNotification {
     caller: {
         gps: {
@@ -34,7 +36,5 @@ export interface CallNoteDescription {
             lng: string;
         };
     };
-    updatedData: {
-        dailyCalls: number;
-    }
+    updatedData: BasicInformationApiData;
 }

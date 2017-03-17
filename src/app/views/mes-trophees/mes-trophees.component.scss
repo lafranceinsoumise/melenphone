@@ -1,6 +1,12 @@
 @import '../../../_colors.scss';
 
-h3 {
+.mat-card {
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  color: $main-text;
+}
+
+h2 {
   color: $jlm-red;
   font-family: 'Roboto Slab', serif;
   font-size: 28px;
@@ -28,7 +34,6 @@ img {
 .content {float: left;}
 
 .name {
-  color: $main-text;
   font-size: 1.2em;
   margin: 8px 0 5px;
 }
@@ -41,7 +46,7 @@ img {
   display: inline-block;
   float: right;
   font-size: 18px;
-  color: $jlm-darkblue;
+  color: $jlm-blue;
   line-height: 67px;
   padding-right: 1.3em;
   text-align: right;

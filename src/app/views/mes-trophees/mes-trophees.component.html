@@ -1,6 +1,6 @@
 <md-card>
   <ng-container *ngIf="trophiesData?.unlocked.length">
-    <h3>{{ trophiesData?.unlocked?.length }} Trophées débloqués</h3>
+    <h2>{{ trophiesData?.unlocked?.length }} Trophées débloqués</h2>
     <ul>
       <li class="clearfix" *ngFor="let trophie of trophiesData?.unlocked">
         <img [src]="'assets/img/achievements/' + trophie.codeName + '.png'" />
@@ -16,7 +16,7 @@
     </ul>
   </ng-container>
 
-  <h3>{{ trophiesData?.locked?.length }} Trophées verrouillés</h3>
+  <h2>{{ trophiesData?.locked?.length }} Trophées verrouillés</h2>
   <ul>
     <li class="clearfix" *ngFor="let trophie of trophiesData?.locked">
       <img src="assets/img/achievements/locked.png" />

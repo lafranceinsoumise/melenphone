@@ -1,12 +1,15 @@
 @import '../../../_colors.scss';
 
-.mat-button {
-  color: $jlm-red;
-  position: absolute;
+jlm-topten {
+  float: right;
+  width: 230px;
 }
 
 [jlmFullscreen] {
+  padding: 20px 0;
   position: relative;
+  float: left;
+  width: calc(100% - 280px);
 
   &:-webkit-full-screen {
     display: flex;
@@ -16,6 +19,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100%;
 
     jlm-call-map {
       flex: 1;
@@ -30,6 +34,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100%;
 
     jlm-call-map {
       flex: 1;
@@ -44,6 +49,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100%;
 
     jlm-call-map {
       flex: 1;
@@ -58,27 +64,34 @@
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100%;
 
     jlm-call-map {
       flex: 1;
       margin: auto;
     }
   }
-}
 
-[jlmFullscreen] .controls {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-
-  button {
-    border: 0;
-    background: transparent;
+  .mat-button {
     color: $jlm-red;
-    min-width: auto;
-
-    &:focus {outline: 0;}
+    display: none;
+    position: absolute;
   }
 
-  .material-icons {font-size: 42px;}
+  .controls {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+
+    button {
+      border: 0;
+      background: transparent;
+      color: $jlm-red;
+      min-width: auto;
+
+      &:focus {outline: 0;}
+    }
+
+    .material-icons {font-size: 42px;}
+  }
 }

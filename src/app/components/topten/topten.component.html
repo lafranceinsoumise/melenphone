@@ -1,0 +1,23 @@
+<md-card *ngIf="dailyLeaderboard" class="topten">
+  <h2>Classement du jour</h2>
+  <table>
+    <thead>
+      <tr>
+        <th class="rank">#</th>
+        <th>Pseudo</th>
+        <th>Appels</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of dailyLeaderboard; let i = index">
+        <td class="rank">
+          <span [class]=" (i === 0) ? 'first' : ( (i === 1) ? 'second' : ( (i === 2) ? 'third' : '' ))">
+            {{ i + 1 }}
+          </span>
+        </td>
+        <td>{{row.username}}</td>
+        <td class="calls">{{row.calls}}</td>
+      </tr>
+    </tbody>
+  </table>
+</md-card>

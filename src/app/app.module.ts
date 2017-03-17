@@ -19,7 +19,7 @@ import {
   CallMapComponent,
   AnimatedCallComponent,
   NavToolbarComponent,
-  AchievementsComponent
+  ToptenComponent,
 } from './components';
 
 import {
@@ -30,7 +30,8 @@ import {
   UserService,
   CallhubService,
   LeaderboardService,
-  MapService
+  MapService,
+  BasicService,
 } from './shared';
 
 import {
@@ -60,12 +61,12 @@ export function xsrfStrategyFactory() {
     CallMapComponent,
     AnimatedCallComponent,
     NavToolbarComponent,
-    AchievementsComponent,
     MesTropheesComponent,
     AboutComponent,
     OauthRedirectComponent,
     ClassementComponent,
-    TrophiesComponent
+    TrophiesComponent,
+    ToptenComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,7 +94,8 @@ export function xsrfStrategyFactory() {
       useFactory: xsrfStrategyFactory
     },
     LeaderboardService,
-    MapService
+    MapService,
+    BasicService,
   ],
   bootstrap: [AppComponent]
 })
