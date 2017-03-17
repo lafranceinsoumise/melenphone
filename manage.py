@@ -2,9 +2,20 @@
 import os
 import sys
 
+true_values = ['true', 't', 'yes', 'y']
+
 if __name__ == "__main__":
-    debug = os.environ.get("DEBUG")
-    if debug is None or debug.lower() in ['true', 't', 'yes', 'y']:
+
+    debug = os.environ.get('DEBUG')
+    no_envdir = os.environ.get('NO_ENVDIR')
+
+    # we load envdir only in debug mode and if no_envdir is not set to true
+    load_envdir = (
+        (debug is None or debug.lower() in true_values)
+        and (no_envdir is None or no_envdir not in true_values)
+    )
+
+    if load_envdir:
         import envdir
         envdir.read()
 
