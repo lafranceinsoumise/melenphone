@@ -1,0 +1,86 @@
+@import '../../../_colors.scss';
+
+.leaderboards {padding: 60px 0;}
+
+.mat-card {
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  color: $main-text;
+  float: left;
+  margin: 0 10px;
+  position: relative;
+  width: calc(100% / 3 - 20px);
+
+  @media (max-width: 820px) {
+    margin-bottom: 80px;
+    width: 100%;
+  }
+}
+
+.mine {
+  font-size: 18px;
+  left: 0px;
+  position: absolute;
+  text-align: center;
+  top: -48px;
+  width: 100%;
+
+  span {
+    color: $jlm-blue;
+    font-family: 'Roboto Slab', serif;
+    font-weight: 700;
+  }
+}
+
+h2 {
+  color: $jlm-red;
+  font-family: 'Roboto Slab', serif;
+  font-size: 18px;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 13px;
+  width: 100%;
+}
+
+th,
+td {
+  line-height: 36px;
+  padding: 0 5px;
+}
+
+th {
+  color: $jlm-blue;
+  font-family: 'Roboto Slab', serif;
+  text-align: left;
+}
+
+td {border-top: 1px solid $border;}
+
+.rank,
+.calls {text-align: center;}
+
+td.rank {
+  font-size: 13px;
+
+  span {margin: auto;}
+}
+
+.first,
+.second,
+.third {
+  border-radius: 50%;
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  width: 20px;
+}
+
+.first {background: #cba135;}
+.second {background: #cccccc;}
+.third {background: #cd8032;}

@@ -1,5 +1,7 @@
 @import '../../../_colors.scss';
 
+:host {padding: 0 8px;}
+
 jlm-topten {
   float: right;
   width: 250px;

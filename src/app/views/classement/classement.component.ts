@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { LeaderboardService, LeaderboardApiData } from '../../shared';
+import { BasicService, LeaderboardService, LeaderboardApiData } from '../../shared';
 
 @Component({
   selector: 'jlm-classement',
@@ -10,9 +10,13 @@ import { LeaderboardService, LeaderboardApiData } from '../../shared';
 export class ClassementComponent implements OnInit {
   leaderboards: LeaderboardApiData;
 
-  constructor(private leaderboardService: LeaderboardService) { }
+  constructor(
+    private basic: BasicService,
+    private leaderboardService: LeaderboardService,
+  ) { }
 
   ngOnInit() {
+    console.log(this.basic);
     this.leaderboardService.getLeaderboards()
       .then(leaderboards => this.leaderboards = leaderboards)
       .catch(err => console.trace(err));

@@ -1,5 +1,7 @@
 @import '../../../_colors.scss';
 
+:host {padding: 2px 8px 0 0;}
+
 .mat-card {
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
