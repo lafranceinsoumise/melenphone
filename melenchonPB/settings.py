@@ -205,7 +205,7 @@ SCOPE_SEPARATOR = ' '
 PROFILE_URL = env_required('PROFILE_URL')
 
 # where to redirect once logged in
-LOGIN_REDIRECT = '/ng/oauth_redirect$'
+LOGIN_REDIRECT = '/ng/oauth_redirect'
 
 # the base for the redirect_uri to use in the OAuth process
 REDIRECT_BASE = os.environ.get('REDIRECT_BASE', 'http://localhost:8000')
