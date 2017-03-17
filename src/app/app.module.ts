@@ -42,9 +42,6 @@ import {
   PokechonHomeComponent,
   ProfileComponent
 } from './views';
-import { TrophiesComponent } from './components/trophies/trophies.component';
-
-
 
 export function xsrfStrategyFactory() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -65,7 +62,6 @@ export function xsrfStrategyFactory() {
     AboutComponent,
     OauthRedirectComponent,
     ClassementComponent,
-    TrophiesComponent,
     ToptenComponent,
   ],
   imports: [
