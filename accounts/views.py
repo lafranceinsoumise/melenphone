@@ -67,7 +67,7 @@ class AuthReturn(RedirectView):
     if it worked, before redirecting the user back to the main page.
     """
     http_method_names = ['get']
-    url = reverse_lazy(settings.LOGIN_REDIRECT)
+    url = settings.LOGIN_REDIRECT
 
     def get(self, request, *args, **kwargs):
         state_nonce = request.session.get('oauth2_nonce', None)

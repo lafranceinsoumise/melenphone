@@ -13,15 +13,38 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+import re
+
 from django.conf import settings
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.core.exceptions import ImproperlyConfigured
+from django.views.static import serve
 
-from callcenter.views import AngularApp
 from callcenter.views import webhook_note
 from accounts import urls as accounts_urls
 from callcenter import urls as callcenter_urls
+
+
+def angular_routes(prefix, view=serve, index='index.html', **kwargs):
+    """
+    Helper function to return a URL pattern for serving the index.html for angular routes in debug mode
+
+    Now serves the index file from document_root, both at the root route, and at every
+    route starting with prefix
+    """
+    if not settings.DEBUG or (prefix and '://' in prefix):
+        return []
+    elif not prefix:
+        raise ImproperlyConfigured("Empty angular prefix not permitted")
+
+    kwargs['path'] = '/%s' % (index,)
+
+    return [
+        url(r'^$', view, kwargs=kwargs),
+        url(r'^%s' % re.escape(prefix.lstrip('/')), view, kwargs=kwargs)
+    ]
 
 
 urlpatterns = [
@@ -37,15 +60,4 @@ urlpatterns = [
 
     #AUTRES URLS
     url(r'^admin/', admin.site.urls),
-
-    #ANGULAR
-    url(r'^ng/pokechon$', AngularApp.as_view(), name="angular_app"),
-    url(r'^ng/profile$', AngularApp.as_view(), name="angular_app"),
-    url(r'^ng/register$', AngularApp.as_view(), name="angular_app"),
-    url(r'^ng/mes-trophees$', AngularApp.as_view(), name="angular_app"),
-    url(r'^ng/classement$', AngularApp.as_view(), name="angular_app"),
-    url(r'^ng/tutoriel$', AngularApp.as_view(), name="angular_app"),
-    url(r'^ng/oauth_redirect$', AngularApp.as_view(), name="angular_oauth_redirect"),
-	url(r'^ng/$', AngularApp.as_view(), name="angular_app"),
-    url(r'^$', AngularApp.as_view(), name="angular_app"),
-] + static(settings.ANGULAR_URL, document_root=settings.ANGULAR_ROOT)
+] + angular_routes(settings.ANGULAR_URL, document_root=settings.ANGULAR_ROOT)

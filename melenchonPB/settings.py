@@ -86,22 +86,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'melenchonPB.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR), 'ngApp/dist/'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
 WSGI_APPLICATION = 'melenchonPB.wsgi.application'
 
 
@@ -158,11 +142,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = 'static/'
-
 ANGULAR_URL = '/ng'
 ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
+
+STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
+STATICFILES_DIRS = (
+    ANGULAR_ROOT,
+)
 
 # redis
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
@@ -218,7 +205,7 @@ SCOPE_SEPARATOR = ' '
 PROFILE_URL = env_required('PROFILE_URL')
 
 # where to redirect once logged in
-LOGIN_REDIRECT = 'angular_oauth_redirect'
+LOGIN_REDIRECT = '/ng/oauth_redirect$'
 
 # the base for the redirect_uri to use in the OAuth process
 REDIRECT_BASE = os.environ.get('REDIRECT_BASE', 'http://localhost:8000')

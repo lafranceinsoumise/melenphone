@@ -27,15 +27,6 @@ from callcenter.exceptions import CallerCreationError
 from melenchonPB.redis import redis_pool, format_date
 from callcenter.actions.score import update_scores
 
-#ANGULAR APP
-class AngularApp(TemplateView):
-    template_name = 'index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(AngularApp, self).get_context_data(**kwargs)
-        context['ANGULAR_URL'] = settings.ANGULAR_URL
-        return context
-
 #################### WEBHOOKS ################################
 
 # /api/simulate_call/
