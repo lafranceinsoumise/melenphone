@@ -1,7 +1,7 @@
 <div *ngIf="leaderboards" class="leaderboards clearfix">
   <md-card *ngIf="leaderboards.daily">
     <h2>Classement du jour</h2>
-    <div class="mine"><span>Mes appels :</span> {{ basic.infos.dailyCalls }}</div>
+    <div class="total">{{ basic.infos.dailyCalls }} appels aujourd'hui</div>
     <table>
       <thead>
         <tr>
@@ -25,7 +25,7 @@
   </md-card>
   <md-card *ngIf="leaderboards.weekly">
     <h2>Classement de la semaine</h2>
-    <div class="mine"><span>Mes appels :</span> {{ basic.infos.weeklyCalls }}</div>
+    <div class="total">{{ basic.infos.weeklyCalls }} appels cette semaine</div>
     <table>
       <thead>
         <tr>
@@ -49,7 +49,7 @@
   </md-card>
   <md-card *ngIf="leaderboards.alltime">
     <h2>Classement général</h2>
-    <div class="mine"><span>Mes appels :</span> {{ basic.infos.alltimeCalls }}</div>
+    <div class="total">{{ basic.infos.alltimeCalls }} appels au total</div>
     <table>
       <thead>
         <tr>

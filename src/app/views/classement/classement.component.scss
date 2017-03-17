@@ -17,19 +17,16 @@
   }
 }
 
-.mine {
+.total {
+  color: $jlm-blue;
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
   font-size: 18px;
   left: 0px;
   position: absolute;
   text-align: center;
   top: -48px;
   width: 100%;
-
-  span {
-    color: $jlm-blue;
-    font-family: 'Roboto Slab', serif;
-    font-weight: 700;
-  }
 }
 
 h2 {
