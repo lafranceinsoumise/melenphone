@@ -2,6 +2,7 @@
 
 import json
 import redis
+import random
 #Django imports
 from django.utils import timezone
 
@@ -90,7 +91,7 @@ class webhook_note(APIView):
             weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
             alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
-            ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
+            ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
             dailyLeaderboard = []
             for ranked in ranking:
                 username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
@@ -143,7 +144,9 @@ class api_test_simulatecall(APIView):
 
         r = redis.StrictRedis(connection_pool=redis_pool)
 
-        user = User.objects.all()[0]
+        users = User.objects.all()
+        nb = users.count()
+        user = users[random.randint(0, nb-1)]
         now = timezone.now().timestamp()
 
         callerLat, callerLng = randomLocation()
@@ -165,7 +168,7 @@ class api_test_simulatecall(APIView):
         weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
         alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
-        ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
+        ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
         dailyLeaderboard = []
         for ranked in ranking:
             username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
@@ -237,7 +240,7 @@ class api_leaderboard(APIView):
     def get(self, request):
         r = redis.StrictRedis(connection_pool=redis_pool)
 
-        ranking = r.zrange('melenphone:leaderboards:alltime',0,49,withscores=True)
+        ranking = r.zrevrange('melenphone:leaderboards:alltime',0,49,withscores=True)
         alltime = []
         for ranked in ranking:
             username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
@@ -245,7 +248,7 @@ class api_leaderboard(APIView):
             alltime.append({'username':username, 'calls':calls})
 
 
-        ranking = r.zrange('melenphone:leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
+        ranking = r.zrevrange('melenphone:leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
         weekly = []
         for ranked in ranking:
             username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
@@ -253,7 +256,7 @@ class api_leaderboard(APIView):
             weekly.append({'username':username, 'calls':calls})
 
 
-        ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
+        ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
         daily = []
         for ranked in ranking:
             username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
@@ -280,7 +283,7 @@ class api_basic_information(APIView):
         weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
         alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
-        ranking = r.zrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
+        ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
         dailyLeaderboard = []
         for ranked in ranking:
             username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername

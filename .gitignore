@@ -45,3 +45,5 @@ db.sqlite3
 
 static/
 static/*
+
+tests.py
