@@ -1,9 +1,12 @@
 import redis
+from redis.connection import UnixDomainSocketConnection
 from django.conf import settings
+
 
 if settings.REDIS_UNIX_SOCKET is not None:
     redis_pool = redis.ConnectionPool(
-        unix_socket_path=settings.REDIS_UNIX_SOCKET,
+        connection_class=UnixDomainSocketConnection,
+        path=settings.REDIS_UNIX_SOCKET,
         max_connections=settings.REDIS_MAX_CONNECTIONS
     )
 else:
