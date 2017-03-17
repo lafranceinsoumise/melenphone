@@ -15,7 +15,7 @@
             {{ i + 1 }}
           </span>
         </td>
-        <td>{{row.username}}</td>
+        <td>{{ (row.username.length > 15) ? row.username.slice(0, 15) + '...' : row.username }}</td>
         <td class="calls">{{row.calls}}</td>
       </tr>
     </tbody>

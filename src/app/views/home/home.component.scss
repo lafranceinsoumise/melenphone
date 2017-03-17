@@ -2,14 +2,14 @@
 
 jlm-topten {
   float: right;
-  width: 230px;
+  width: 250px;
 }
 
 [jlmFullscreen] {
   padding: 20px 0;
   position: relative;
   float: left;
-  width: calc(100% - 280px);
+  width: calc(100% - 300px);
 
   &:-webkit-full-screen {
     display: flex;
