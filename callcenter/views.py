@@ -196,7 +196,12 @@ class api_user_achievements(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
         user = request.user
-        unlockedAchievements = user.UserExtend.get_achievements()
+
+        try :
+            unlockedAchievements = user.UserExtend.get_achievements()
+
+        except UserExtend.DoesNotExist:
+            unlockedAchievements = []
 
         data = {}
 
