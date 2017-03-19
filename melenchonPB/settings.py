@@ -165,7 +165,7 @@ ANGULAR_URL = '/ng'
 ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(BASE_DIR, 'static'))
 STATICFILES_DIRS = (
     ANGULAR_ROOT,
 )
