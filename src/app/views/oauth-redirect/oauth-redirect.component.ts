@@ -16,6 +16,13 @@ export class OauthRedirectComponent implements OnInit {
   errorMessage = null;
   pendingRequest = false;
 
+  get shouldDisableSubmitButton() {
+    const res = this.pendingRequest ||
+        this.callhubUsername == null ||
+        (this.callhubUsername !== null && this.callhubUsername.length < 4);
+    return res;
+  }
+
   constructor(
     private auth: AuthenticationService,
     private callhub: CallhubService,
@@ -37,6 +44,10 @@ export class OauthRedirectComponent implements OnInit {
           }
         }
       });
+  }
+
+  log(msg) {
+    console.log(msg);
   }
 
   createCallhubAccount(callhubUsername: string): Promise<CallhubUser> {

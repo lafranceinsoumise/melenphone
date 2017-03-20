@@ -1,38 +1,51 @@
-<md-card *ngIf="shouldDisplayNormalMessage">
-    <md-card-header>
-        <md-card-title>
-            Vous êtes à présent connecté
-        </md-card-title>
-    </md-card-header>
-    <md-card-content>
-        vous allez être redirigé vers la page d'accueil du site
-    </md-card-content>
-    <md-card-actions fxlayoutAlign="end">
-        <a md-raised-button color="accent" routerLink="/">aller à l'accueil</a>
-    </md-card-actions>
-</md-card>
-
-<form *ngIf="shouldDisplayCallhubForm" (ngSubmit)="createCallhubAccount(callhubUsername)">
-    <md-card>
+<div fxFlex.gt-sm="0 1 500px" fxFlex.xs="1 1 100%" fxFlex.sm="1 1 80%">
+    <md-card *ngIf="shouldDisplayNormalMessage">
         <md-card-header>
-            Encore un petit effort et c'est bon !
+            <md-card-title>
+                Vous êtes à présent connecté
+            </md-card-title>
         </md-card-header>
         <md-card-content>
-            <p>
-                Bravo, tu as fait la moitié du chemin.
-                Et maintenant, dernière étape : il te faut un pseudo.
-                Sans ça, tu ne pourras pas passer d'appel (gratuitement) pour
-                la campagne 😱
-            </p>
-            <md-input-container fxFlexFill>
-                <input mdInput [(ngModel)]="callhubUsername" placeholder="pseudo" name="callhubUsername">
-            </md-input-container>
-            <p *ngIf="errorMessage" class="error-message">
-                {{ errorMessage | json:true }}
-            </p>
+            vous allez être redirigé vers la page d'accueil du site
         </md-card-content>
-        <md-card-actions fxLayoutAlign="end">
-            <button md-raised-button color="primary" type="submit" [disabled]="pendingRequest">J'enregistre mon pseudo</button>
+        <md-card-actions fxlayoutAlign="end">
+            <a md-raised-button color="accent" routerLink="/">aller à l'accueil</a>
         </md-card-actions>
     </md-card>
-</form>
+
+    <form #f="ngForm"
+            *ngIf="shouldDisplayCallhubForm"
+            (ngSubmit)="createCallhubAccount(callhubUsername)">
+        <md-card>
+            <md-card-header>
+                Encore un petit effort et c'est bon !
+            </md-card-header>
+            <md-card-content>
+                <p (click)="log(f)">
+                    Bravo, tu as fait la moitié du chemin.
+                    Et maintenant, dernière étape : il te faut un pseudo.
+                    Sans ça, tu ne pourras pas passer d'appel (gratuitement) pour
+                    la campagne 😱
+                </p>
+                <md-input-container fxFlexFill>
+                    <input mdInput [(ngModel)]="callhubUsername"
+                            type="text"
+                            placeholder="pseudo"
+                            name="callhubUsername"
+                            minlength="4"
+                            required>
+                </md-input-container>
+                <p *ngIf="errorMessage" class="error-message">
+                    {{ errorMessage | json:true }}
+                </p>
+            </md-card-content>
+            <md-card-actions fxLayoutAlign="end">
+                <button md-raised-button
+                        color="primary"
+                        type="submit"
+                        [disabled]="!f.valid">J'enregistre mon pseudo</button>
+            </md-card-actions>
+        </md-card>
+    </form>
+</div>
+
