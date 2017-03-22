@@ -8,7 +8,6 @@ from django.utils import timezone
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView
@@ -29,7 +28,6 @@ from callcenter.actions.score import update_scores
 
 #################### WEBHOOKS ################################
 
-# /api/simulate_call/
 class webhook_note(APIView):
     permission_classes = (permissions.AllowAny,)
 

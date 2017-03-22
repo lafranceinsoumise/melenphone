@@ -8,7 +8,7 @@ def create_agent(user, username):
 
     token = 'Token ' + settings.CALLHUB_API_KEY
     headers = {'Authorization': token}
-    callhubData = {'username': username, 'email': email, 'team': 'tout_le_monde'}
+    callhubData = {'username': username, 'email': email}
 
     r = requests.post('https://api.callhub.io/v1/agents/', data=callhubData,
                       headers=headers)
