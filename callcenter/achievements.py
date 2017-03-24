@@ -116,11 +116,11 @@ def callCount(user):
 def leaderboards(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
 
-    if int(r.zrank('melenphone:leaderboards:alltime', str(user.id))) == 0:
+    if int(r.zrevrank('melenphone:leaderboards:alltime', str(user.id))) == 0:
         unlockAchievement("leaderboard_alltime", user)
 
-    if int(r.zrank('melenphone:leaderboards:weekly:' + format_date(timezone.now()), str(user.id))) == 0:
+    if int(r.zrevrank('melenphone:leaderboards:weekly:' + format_date(timezone.now()), str(user.id))) == 0:
         unlockAchievement("leaderboard_weekly", user)
 
-    if int(r.zrank('melenphone:leaderboards:daily:' + format_date(timezone.now()), str(user.id))) == 0:
+    if int(r.zrevrank('melenphone:leaderboards:daily:' + format_date(timezone.now()), str(user.id))) == 0:
         unlockAchievement("leaderboard_daily", user)

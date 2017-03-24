@@ -1,7 +1,8 @@
-from rest_framework.serializers import ModelSerializer, SlugRelatedField
+from rest_framework.serializers import ModelSerializer, SlugRelatedField, Serializer
+from rest_framework import serializers
 
 from .models import UserExtend
-from .actions.callhub import create_agent
+from .actions.callhub import create_agent, verify_agent
 from accounts.models import User
 
 class UserSerializer(ModelSerializer):
@@ -34,4 +35,19 @@ class UserExtendSerializer(ModelSerializer):
         return UserExtend.objects.create(
             agentUsername=validated_data['agentUsername'],
             user=user
+        )
+
+class CallhubCredentialsSerializer(Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def create(self, validated_data):
+        username = validated_data['username']
+        password = validated_data['password']
+
+        verify_agent(username,password)
+
+        return UserExtend.objects.create(
+            agentUsername=validated_data['username'],
+            user=validated_data['user']
         )

@@ -10,7 +10,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework import permissions
-from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.mixins import CreateModelMixin
 from django.http import Http404
 
@@ -21,13 +21,15 @@ from callcenter.achievements import updateAchievements
 from callcenter.map import getCallerLocation, getCalledLocation, randomLocation
 from callcenter.phi import EarnPhi
 from callcenter.consumers import send_message
-from callcenter.serializers import UserSerializer, UserExtendSerializer
+from callcenter.serializers import UserSerializer, UserExtendSerializer, CallhubCredentialsSerializer
 from callcenter.exceptions import CallerCreationError
 from melenchonPB.redis import redis_pool, format_date
 from callcenter.actions.score import update_scores
 
 #################### WEBHOOKS ################################
 
+
+# /webhook/note
 class webhook_note(APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -325,3 +327,18 @@ class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
             raise CallerCreationError('Cannot create new agent if user already has one', code='already_exists')
         except UserExtend.DoesNotExist:
             return self.create(request, *args, **kwargs)
+
+class ValidateExistingCallerAgentAPI(CreateAPIView):
+    serializer_class = CallhubCredentialsSerializer
+
+    def perform_create(self, serializer):
+        serializer.validated_data['user'] = self.request.user
+        serializer.save()
+
+    def create(self, request, *args, **kwargs):
+        try:
+            # try accessing UserExtend related property to see if it exists
+            userExtend = request.user.UserExtend
+            raise CallerCreationError('Cannot create new agent if user already has one', code='already_exists')
+        except UserExtend.DoesNotExist:
+            return super(CreateAPIView, self).create(request, *args, **kwargs)

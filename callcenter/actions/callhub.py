@@ -1,7 +1,7 @@
 from django.conf import settings
 import requests
 
-from ..exceptions import CallerCreationError
+from ..exceptions import CallerCreationError, CallerValidationError
 
 def create_agent(user, username):
     email = user.email
@@ -19,3 +19,16 @@ def create_agent(user, username):
         raise CallerCreationError(detail='username already used on callhub')
     else:  # Autre erreur de callhub
         raise CallerCreationError
+
+def verify_agent(username, password):
+
+    callhubData = {"username": username, "password": password}
+
+    r = requests.post('https://api.callhub.io/v2/agent-key/', data=callhubData)
+
+    if r.status_code == requests.codes.ok:
+        return
+    elif r.status_code == 400:
+        raise CallerValidationError(detail="username and password doesn't match")
+    else:
+        raise CallerValidationError
