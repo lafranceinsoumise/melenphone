@@ -33,7 +33,15 @@ def unlockAchievement(codeName, user):
             userExtend = user.UserExtend
             userExtend.phi = userExtend.phi + (achievement.phi * userExtend.phi_multiplier)
             userExtend.save()
-            websocketMessage = json.dumps({'type': 'achievement',
+
+            #Pas de websocket si l'achievement est trop banal.
+            excluded_achievements = [
+                'count_initie',
+                'count_apprenti'
+            ]
+
+            if codeName not in excluded_achievements:
+                websocketMessage = json.dumps({'type': 'achievement',
                                            'values': {
                                                 'agentUsername':userExtend.agentUsername,
                                                 'achievement':{
@@ -43,7 +51,7 @@ def unlockAchievement(codeName, user):
                                                 }
                                            }
                                         })
-            send_message(websocketMessage)
+                send_message(websocketMessage)
 
 
 ########### ACHIEVEMENT CONDITIONS ################
