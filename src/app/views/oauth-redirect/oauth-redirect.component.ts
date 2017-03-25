@@ -46,23 +46,24 @@ export class OauthRedirectComponent implements OnInit {
       });
   }
 
-  log(msg) {
-    console.log(msg);
-  }
-
   createCallhubAccount(callhubUsername: string): Promise<CallhubUser> {
+    console.group('Callhub agent creation request');
     this.pendingRequest = true;
 
     return this.callhub.createCallhubAccount(callhubUsername)
       .then((user) => {
+        console.table(user);
         this.snackBar.open('Compte Callhub créé avec succès 🚀', undefined, { duration: 4000 });
         this.router.navigate(['/']);
+        console.groupEnd();
         return user;
       })
       .catch((err) => {
+        console.error(err);
         this.pendingRequest = false;
         this.errorMessage = err.detail;
         this.snackBar.open(this.errorMessage, undefined, { duration: 4000 });
+        console.groupEnd();
       });
   }
 
