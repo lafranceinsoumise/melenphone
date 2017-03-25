@@ -3,7 +3,7 @@
     <h2>{{ trophiesData?.unlocked?.length }} Trophées débloqués</h2>
     <ul>
       <li class="clearfix" *ngFor="let trophie of trophiesData?.unlocked">
-        <img [src]="'assets/img/achievements/' + trophie.codeName + '.png'" />
+        <img width=64 [src]="'assets/img/achievements/' + trophie.codeName + '.png'" />
         <div class="content">
           <div class="name">
             {{ trophie.name }}
