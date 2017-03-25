@@ -239,26 +239,40 @@ class api_leaderboard(APIView):
         ranking = r.zrevrange('melenphone:leaderboards:alltime',0,49,withscores=True)
         alltime = []
         for ranked in ranking:
-            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
-            calls = int(ranked[1])
-            alltime.append({'username':username, 'calls':calls})
+            try:
+                username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
+                calls = int(ranked[1])
+                alltime.append({'username':username, 'calls':calls})
+            except User.DoesNotExist:
+                pass
+            except UserExtend.DoesNotExist:
+                pass
 
 
         ranking = r.zrevrange('melenphone:leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
         weekly = []
         for ranked in ranking:
-            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
-            calls = int(ranked[1])
-            weekly.append({'username':username, 'calls':calls})
+            try:
+                username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
+                calls = int(ranked[1])
+                weekly.append({'username':username, 'calls':calls})
+            except User.DoesNotExist:
+                pass
+            except UserExtend.DoesNotExist:
+                pass
 
 
         ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
         daily = []
         for ranked in ranking:
-            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
-            calls = int(ranked[1])
-            daily.append({'username':username, 'calls':calls})
-
+            try:
+                username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
+                calls = int(ranked[1])
+                daily.append({'username':username, 'calls':calls})
+            except User.DoesNotExist:
+                pass
+            except UserExtend.DoesNotExist:
+                pass
 
         data = {
                 'alltime':alltime,
