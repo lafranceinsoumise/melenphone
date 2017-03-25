@@ -75,43 +75,37 @@ def callCount(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
     count = int(r.zscore('melenphone:leaderboards:alltime', str(user.id)))
     if count == 1:
-        unlockAchievement("count_insoumis_1", user)
+        unlockAchievement("count_initie", user)
     if count == 5:
-        unlockAchievement("count_insoumis_2", user)
+        unlockAchievement("count_apprenti", user)
     if count == 10:
-        unlockAchievement("count_insoumis_3", user)
+        unlockAchievement("count_fan_rdls", user)
     if count == 20:
-        unlockAchievement("count_insoumis_4", user)
+        unlockAchievement("count_militant", user)
     if count == 35:
-        unlockAchievement("count_insoumis_5", user)
+        unlockAchievement("count_top", user)
     if count == 50:
-        unlockAchievement("count_membre_appui", user)
+        unlockAchievement("count_messager", user)
     if count == 70:
-        unlockAchievement("count_createur_appui", user)
+        unlockAchievement("count_animateur", user)
     if count == 100:
-        unlockAchievement("count_conseiller_suppleant", user)
+        unlockAchievement("count_artiste", user)
     if count == 150:
-        unlockAchievement("count_conseiller_titulaire", user)
+        unlockAchievement("count_lanceur", user)
     if count == 250:
-        unlockAchievement("count_adjoint", user)
+        unlockAchievement("count_ambassadeur", user)
     if count == 375:
-        unlockAchievement("count_maire", user)
+        unlockAchievement("count_mage", user)
     if count == 500:
-        unlockAchievement("count_directeur", user)
+        unlockAchievement("count_justicier", user)
     if count == 700:
-        unlockAchievement("count_conseiller_departemental", user)
+        unlockAchievement("count_tribun", user)
     if count == 1000:
-        unlockAchievement("count_president_departemental", user)
+        unlockAchievement("count_heros", user)
     if count == 1500:
-        unlockAchievement("count_conseiller_regional", user)
+        unlockAchievement("count_laec", user)
     if count == 2000:
-        unlockAchievement("count_president_regional", user)
-    if count == 2750:
-        unlockAchievement("count_depute_5", user)
-    if count == 3750:
-        unlockAchievement("count_depute_constituante", user)
-    if count == 5000:
-        unlockAchievement("count_depute_6", user)
+        unlockAchievement("count_legendaire", user)
 
 def leaderboards(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
