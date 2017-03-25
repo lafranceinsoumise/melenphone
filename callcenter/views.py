@@ -338,7 +338,7 @@ class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
         try:
             # try accessing UserExtend related property to see if it exists
             userExtend = request.user.UserExtend
-            raise CallerCreationError('Cannot create new agent if user already has one', code='already_exists')
+            raise CallerCreationError("Impossible de créer un agent si l'utilisateur en possède déjà un", code='already_exists')
         except UserExtend.DoesNotExist:
             return self.create(request, *args, **kwargs)
 
@@ -353,6 +353,6 @@ class ValidateExistingCallerAgentAPI(CreateAPIView):
         try:
             # try accessing UserExtend related property to see if it exists
             userExtend = request.user.UserExtend
-            raise CallerCreationError('Cannot create new agent if user already has one', code='already_exists')
+            raise CallerCreationError("Impossible de créer un agent si l'utilisateur en possède déjà un", code='already_exists')
         except UserExtend.DoesNotExist:
             return super(CreateAPIView, self).create(request, *args, **kwargs)

@@ -16,7 +16,7 @@ def create_agent(user, username):
     if r.status_code == requests.codes.created:
         return
     elif r.status_code == 400:  # Bad request : le username existe déjà !
-        raise CallerCreationError(detail='username already used on callhub')
+        raise CallerCreationError(detail="Ce nom d'agent est déjà utilisé sur Callhub")
     else:  # Autre erreur de callhub
         raise CallerCreationError
 
