@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private http: Http,
-    private basic: BasicService
+    public basic: BasicService
   ) {}
 
   ngOnInit() {

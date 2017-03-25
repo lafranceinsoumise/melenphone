@@ -21,9 +21,9 @@ export class AppComponent implements OnInit {
 
   constructor(
     private scs: SocketConnectionService,
-    private auth: AuthenticationService,
+    public auth: AuthenticationService,
     private http: Http,
-    private basic: BasicService,
+    public basic: BasicService,
   ) {}
 
   ngOnInit() {

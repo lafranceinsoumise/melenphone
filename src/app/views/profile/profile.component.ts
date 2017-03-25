@@ -11,7 +11,7 @@ export class ProfileComponent {
 
   callhubUsername = '';
 
-  constructor(private auth: AuthenticationService, private callhubService: CallhubService) { }
+  constructor(public auth: AuthenticationService, private callhubService: CallhubService) { }
 
   createCallhubAccount(name: string) {
     return this.callhubService.createCallhubAccount(name);
