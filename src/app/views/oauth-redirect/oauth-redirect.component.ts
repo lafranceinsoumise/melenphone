@@ -10,16 +10,30 @@ import { AuthenticationService, CallhubService, User, CallhubUser } from '../../
   styleUrls: ['./oauth-redirect.component.scss']
 })
 export class OauthRedirectComponent implements OnInit {
-  shouldDisplayCallhubForm = false;
   message: string = null;
-  callhubUsername = null;
+  newAgent = {
+    credentials: {
+      username: null,
+      password: null
+    },
+    isPending: false,
+    errorMessage: null
+  };
+  existingAgent = {
+    credentials: {
+      username: null,
+      password: null
+    },
+    isPending: false,
+    errorMessage: null
+  };
   errorMessage = null;
   pendingRequest = false;
 
   get shouldDisableSubmitButton() {
     const res = this.pendingRequest ||
-        this.callhubUsername == null ||
-        (this.callhubUsername !== null && this.callhubUsername.length < 4);
+        this.newAgent.credentials.username == null ||
+        (this.newAgent.credentials.username !== null && this.newAgent.credentials.username.length < 4);
     return res;
   }
 
@@ -46,13 +60,14 @@ export class OauthRedirectComponent implements OnInit {
       });
   }
 
-  createCallhubAccount(callhubUsername: string): Promise<CallhubUser> {
+  createCallhubAccount(newAgentUserName: string): Promise<CallhubUser> {
     console.group('Callhub agent creation request');
-    this.pendingRequest = true;
+    this.newAgent.isPending = true;
 
-    return this.callhub.createCallhubAccount(callhubUsername)
+    return this.callhub.createCallhubAccount(newAgentUserName)
       .then((user) => {
         console.table(user);
+        this.newAgent.isPending = false;
         this.snackBar.open('Compte Callhub créé avec succès 🚀', undefined, { duration: 4000 });
         this.message = 'checkYourMailbox';
         console.groupEnd();
@@ -60,10 +75,24 @@ export class OauthRedirectComponent implements OnInit {
       })
       .catch((err) => {
         console.error(err);
-        this.pendingRequest = false;
-        this.errorMessage = err.json().detail;
-        this.snackBar.open(this.errorMessage, undefined, { duration: 4000 });
+        this.newAgent.isPending = false;
+        this.newAgent.errorMessage = err.json().detail;
+        this.snackBar.open(this.newAgent.errorMessage, undefined, { duration: 4000 });
         console.groupEnd();
+      });
+  }
+
+  associateExistingAgent(username: string, password: string) {
+    this.existingAgent.isPending = true;
+    return this.callhub.associateExistingAgent(username, password)
+      .then((result: any) => {
+        this.existingAgent.isPending = false;
+        console.log(result);
+        this.snackBar.open('le compte a été récupéré avec succès.');
+      })
+      .catch((err) => {
+        this.existingAgent.isPending = false;
+        console.log('erreur durant l\'association de compte');
       });
   }
 

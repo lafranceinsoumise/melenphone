@@ -30,4 +30,22 @@ export class CallhubService {
       });
   }
 
+  associateExistingAgent(username: string, password: string): Promise<any> {
+    return this.http.post('/api/current_user/associate_existing_agent', {username, password})
+      .toPromise()
+      .then((res: Response) => {
+        switch (res.status) {
+          case 200:
+            console.log(res.json());
+            return res.json();
+          default:
+            console.error(res);
+            return Promise.reject(res.json());
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
 }
