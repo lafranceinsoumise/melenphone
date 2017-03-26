@@ -11,7 +11,7 @@ import { AuthenticationService, CallhubService, User, CallhubUser } from '../../
 })
 export class OauthRedirectComponent implements OnInit {
   shouldDisplayCallhubForm = false;
-  shouldDisplayNormalMessage = false;
+  message: string = null;
   callhubUsername = null;
   errorMessage = null;
   pendingRequest = false;
@@ -34,9 +34,9 @@ export class OauthRedirectComponent implements OnInit {
       .then((user: User) => {
         if (user !== null) {
           if (user.agentUsername === null) {
-            this.shouldDisplayCallhubForm = true;
+            this.message = 'createCallhubAccount';
           } else {
-            this.shouldDisplayNormalMessage = true;
+            this.message = 'normal';
             this.snackBar.open('Connexion avec le QG de la France Insoumise établie 🚀', undefined, {
               duration: 4000
             });
@@ -54,7 +54,7 @@ export class OauthRedirectComponent implements OnInit {
       .then((user) => {
         console.table(user);
         this.snackBar.open('Compte Callhub créé avec succès 🚀', undefined, { duration: 4000 });
-        this.router.navigate(['/']);
+        this.message = 'checkYourMailbox';
         console.groupEnd();
         return user;
       })

@@ -1,20 +1,37 @@
-<div class="container" fxFlex.xs="1 1 100%" fxFlex.sm="1 1 80%" fxFlex.gt-sm="0 1 500px">
-    <md-card *ngIf="shouldDisplayNormalMessage">
+<div class="container" [ngSwitch]="message" fxFlex.xs="1 1 100%" fxFlex.sm="1 1 80%" fxFlex.gt-sm="0 1 500px">
+    <md-card *ngSwitchCase="'normal'">
         <md-card-header>
             <md-card-title>
                 Vous êtes à présent connecté
             </md-card-title>
         </md-card-header>
         <md-card-content>
-            vous allez être redirigé vers la page d'accueil du site
+            Tu vas être redirigé vers la page d'accueil du site
         </md-card-content>
         <md-card-actions fxlayoutAlign="end">
             <a md-raised-button color="accent" routerLink="/">aller à l'accueil</a>
         </md-card-actions>
     </md-card>
 
+    <md-card *ngSwitchCase="'checkYourMailbox'">
+        <md-card-header>
+            <md-card-title>
+                Verifie ta boîte mail
+            </md-card-title>
+        </md-card-header>
+        <md-card-content>
+            <p>
+                Tu as reçu un courriel d'activation dans ta boîte mail.
+            </p>
+            <p>
+                Une fois que tu auras cliqué sur le lien d'activation de ton compte callhub,
+                tu pourras passer des appels.
+            </p>
+        </md-card-content>
+    </md-card>
+
     <form #f="ngForm"
-            *ngIf="shouldDisplayCallhubForm"
+            *ngSwitchCase="'createCallhubAccount'"
             (ngSubmit)="createCallhubAccount(callhubUsername)">
         <md-card>
             <md-card-header>
@@ -22,8 +39,8 @@
             </md-card-header>
             <md-card-content>
                 <p>
-                    Bravo, tu as fait la moitié du chemin.
-                    Et maintenant, dernière étape : il te faut un pseudo.
+                    Bravo, tu as fait le tiers du chemin.
+                    Et maintenant, avant-dernière étape : il te faut un pseudo.
                     Sans ça, tu ne pourras pas passer d'appel (gratuitement) pour
                     la campagne 😱
                 </p>
