@@ -4,6 +4,9 @@ from rest_framework import serializers
 from .models import UserExtend
 from .actions.callhub import create_agent, verify_agent
 from accounts.models import User
+from callcenter.exceptions import CallerValidationError
+from django.db import IntegrityError
+
 
 class UserSerializer(ModelSerializer):
     agentUsername = SlugRelatedField(slug_field='agentUsername', source='UserExtend', read_only=True)
@@ -47,7 +50,12 @@ class CallhubCredentialsSerializer(Serializer):
 
         verify_agent(username,password)
 
-        return UserExtend.objects.create(
-            agentUsername=validated_data['username'],
-            user=validated_data['user']
-        )
+        try:
+            return UserExtend.objects.create(
+                agentUsername=validated_data['username'],
+                user=validated_data['user']
+            )
+        except IntegrityError as error:
+            if 'unique constraint' in error.message:
+                raise CallerValidationError("Ce compte callhub est déjà associé à un compte du Mélenphone !",
+                                          code='already_associated')
