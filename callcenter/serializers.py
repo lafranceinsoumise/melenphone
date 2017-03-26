@@ -55,7 +55,6 @@ class CallhubCredentialsSerializer(Serializer):
                 agentUsername=validated_data['username'],
                 user=validated_data['user']
             )
-        except IntegrityError as error:
-            if 'unique constraint' in error.message:
-                raise CallerValidationError("Ce compte callhub est déjà associé à un compte du Mélenphone !",
+        except IntegrityError:
+            raise CallerValidationError("Ce compte callhub est déjà associé à un compte du Mélenphone !",
                                           code='already_associated')
