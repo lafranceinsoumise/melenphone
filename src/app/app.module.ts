@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { MaterialModule } from '@angular/material';
@@ -66,6 +67,7 @@ export function xsrfStrategyFactory() {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     FormsModule,
     HttpModule,
