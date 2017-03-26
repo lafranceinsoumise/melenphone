@@ -6,9 +6,16 @@
   <h1><a routerLink="/">Mélenphone</a></h1>
 </header>
 <nav>
-  <div class="clearfix wrapper">
-    <jlm-gauge *ngIf="basic.infos" [min]="0" [max]="goal" [value]="basic.infos.dailyCalls"></jlm-gauge>
-    <jlm-nav-toolbar [user]="auth.currentUser"></jlm-nav-toolbar>
+  <div class="clearfix wrapper" fxLayout="row" fxLayoutGap="1em">
+    <a class="logo" routerLink="/">
+      <img src="assets/img/logo-min.svg" alt="retour à l'accueil'">
+    </a>
+    <jlm-gauge *ngIf="basic.infos"
+        fxFlex="1 1 auto"
+        [min]="0"
+        [max]="goal"
+        [value]="basic.infos.dailyCalls"></jlm-gauge>
+    <jlm-nav-toolbar fxFlex="0 1 auto" [user]="auth.currentUser"></jlm-nav-toolbar>
   </div>
 </nav>
 <main>

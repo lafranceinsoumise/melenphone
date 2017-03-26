@@ -52,9 +52,17 @@ nav {
   border-top: 1px solid darken($jlm-red, 5%);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 
+  .logo {
+    width: 30px;
+    margin-right: 1em;
+
+    img {
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+
   .wrapper {
-    background: url('../assets/img/logo-min.svg') 16px center no-repeat;
-    background-size: 30px;
     margin: auto;
     max-width: 1600px;
     padding: 12px 16px 12px 62px;
@@ -64,13 +72,13 @@ nav {
 
 jlm-gauge {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  float: left;
   overflow: hidden;
-  max-width: 50%;
-  width: calc(100% - 484px);
+  // width: calc(100% - 484px);
 }
 
-jlm-nav-toolbar {float: right;}
+jlm-nav-toolbar {
+  // float: right;
+}
 
 main {
   margin: 45px auto;
