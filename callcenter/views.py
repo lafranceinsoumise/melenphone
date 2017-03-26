@@ -22,7 +22,7 @@ from callcenter.map import getCallerLocation, getCalledLocation, randomLocation
 from callcenter.phi import EarnPhi
 from callcenter.consumers import send_message
 from callcenter.serializers import UserSerializer, UserExtendSerializer, CallhubCredentialsSerializer
-from callcenter.exceptions import CallerCreationError
+from callcenter.exceptions import CallerCreationError, CallerValidationError
 from melenchonPB.redis import redis_pool, format_date
 from callcenter.actions.score import update_scores
 
@@ -353,6 +353,6 @@ class AssociateExistingCallerAgentAPI(CreateAPIView):
         try:
             # try accessing UserExtend related property to see if it exists
             userExtend = request.user.UserExtend
-            raise CallerCreationError("Impossible de créer un agent si l'utilisateur en possède déjà un", code='already_exists')
+            raise CallerValidationError("Impossible de lier un agent si l'utilisateur en possède déjà un", code='already_exists')
         except UserExtend.DoesNotExist:
             return super(CreateAPIView, self).create(request, *args, **kwargs)
