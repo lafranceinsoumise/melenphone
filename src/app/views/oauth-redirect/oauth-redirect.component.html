@@ -16,16 +16,13 @@
     <md-card *ngSwitchCase="'checkYourMailbox'">
         <md-card-header>
             <md-card-title>
-                Verifie ta boîte mail
+                Compte Callhub créé avec succès !
             </md-card-title>
         </md-card-header>
         <md-card-content>
             <p>
-                Tu as reçu un courriel d'activation dans ta boîte mail.
-            </p>
-            <p>
-                Une fois que tu auras cliqué sur le lien d'activation de ton compte callhub,
-                tu pourras passer des appels.
+                <span class="checkmailbox">Vérifie ta boîte mail</span>, tu as reçu un <strong>courriel d'activation</strong>.<br/>
+                Un lien dans ce mail te permettra de finaliser ton inscription.
             </p>
         </md-card-content>
     </md-card>
@@ -35,36 +32,35 @@
             (ngSubmit)="createCallhubAccount(callhubUsername)">
         <md-card>
             <md-card-header>
-                Encore un petit effort et c'est bon !
+                Créer un agent Callhub
             </md-card-header>
             <md-card-content>
                 <p>
-                    Bravo, tu as fait le tiers du chemin.
-                    Et maintenant, avant-dernière étape : il te faut un pseudo.
-                    Sans ça, tu ne pourras pas passer d'appel (gratuitement) pour
-                    la campagne 😱
+                    Si tu n'as jamais passé d'appels pour la campagne, choisis un pseudo pour ton compte Callhub (notre centrale d'appels).
                 </p>
                 <md-input-container fxFlexFill>
                     <input mdInput [(ngModel)]="callhubUsername"
                             type="text"
-                            placeholder="pseudo"
+                            placeholder="Identifiant Callhub"
                             name="callhubUsername"
                             minlength="4"
                             required>
                 </md-input-container>
                 <p *ngIf="errorMessage" class="error-message">
-                    {{ errorMessage | json:true }}
+                    ✖️ {{ errorMessage }}
                 </p>
             </md-card-content>
             <md-card-actions fxLayoutAlign="end">
-                <div class="example-tooltip-host" mdTooltip="Tooltip!">
+                <div class="example-tooltip-host">
                     <button md-raised-button
                             color="primary"
                             type="submit"
-                            [disabled]="!f.valid && !auth.currentUser.agentUsername">J'enregistre mon pseudo</button>
+                            [disabled]="!f.valid && !auth.currentUser.agentUsername">Créer mon agent Callhub</button>
                 </div>
             </md-card-actions>
         </md-card>
     </form>
+
+
 </div>
 

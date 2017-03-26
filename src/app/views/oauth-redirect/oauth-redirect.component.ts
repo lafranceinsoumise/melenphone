@@ -61,7 +61,7 @@ export class OauthRedirectComponent implements OnInit {
       .catch((err) => {
         console.error(err);
         this.pendingRequest = false;
-        this.errorMessage = err.detail;
+        this.errorMessage = err.json().detail;
         this.snackBar.open(this.errorMessage, undefined, { duration: 4000 });
         console.groupEnd();
       });
