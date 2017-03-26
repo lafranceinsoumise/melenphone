@@ -11,6 +11,6 @@ urlpatterns = [
     # API - AUTH REQUIRED
     url(r'^current_user/profile$', views.UserAPI.as_view()),
     url(r'^current_user/caller_information$', views.CallerInformationAPI.as_view()),
-    url(r'^current_user/validate_existing_agent$', views.ValidateExistingCallerAgentAPI.as_view()),
+    url(r'^current_user/associate_existing_agent$', views.AssociateExistingCallerAgentAPI.as_view()),
     url(r'^current_user/achievements$', views.api_user_achievements.as_view()),
 ]

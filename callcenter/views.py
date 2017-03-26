@@ -342,7 +342,7 @@ class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
         except UserExtend.DoesNotExist:
             return self.create(request, *args, **kwargs)
 
-class ValidateExistingCallerAgentAPI(CreateAPIView):
+class AssociateExistingCallerAgentAPI(CreateAPIView):
     serializer_class = CallhubCredentialsSerializer
 
     def perform_create(self, serializer):
