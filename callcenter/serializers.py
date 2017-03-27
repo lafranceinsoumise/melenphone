@@ -42,23 +42,23 @@ class UserExtendSerializer(ModelSerializer):
 
 class CallhubCredentialsSerializer(Serializer):
     agentUsername = serializers.CharField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+    phi = serializers.IntegerField(read_only=True)
 
     def create(self, validated_data):
         agentUsername = validated_data['agentUsername']
         password = validated_data['password']
-
+        phi = 0
 
         verify_agent(agentUsername,password)
 
 
         try:
-            UserExtend.objects.create(
+            return UserExtend.objects.create(
                 agentUsername=validated_data['agentUsername'],
+                phi=phi,
                 user=validated_data['user']
             )
-            #Solves the problem 'UserExtend has no attribute password'
-            return {'agentUsername': agentUsername, 'password': password}
         except IntegrityError:
             raise CallerValidationError("Ce compte callhub est déjà associé à un compte du Mélenphone !",
                                           code='already_associated')
