@@ -75,6 +75,7 @@ export class OauthRedirectComponent implements OnInit {
         console.error(err);
         this.newAgent.isPending = false;
         this.newAgent.errorMessage = err.json().detail;
+        this.existingAgent.errorMessage = "";
         this.snackBar.open(this.newAgent.errorMessage, undefined, { duration: 4000 });
         console.groupEnd();
       });
@@ -95,6 +96,7 @@ export class OauthRedirectComponent implements OnInit {
         console.error(err);
         this.existingAgent.isPending = false;
         this.existingAgent.errorMessage = err.json().detail;
+        this.newAgent.errorMessage = "";
         this.snackBar.open(this.existingAgent.errorMessage, undefined, { duration: 4000 });
         console.groupEnd();
       });

@@ -48,7 +48,7 @@
     <div fxLayout="column" fxLayout.gt-sm="row" fxFlexFill fxFlexLayout="row" fxLayoutGap="1em" *ngSwitchCase="'needCallhubAccount'">
         <form #newAgentForm="ngForm"
                 fxFlex="grow"
-                (ngSubmit)="createCallhubAccount(newAgent.credentials.username, newAgent.credentials.password)">
+                (ngSubmit)="createCallhubAccount(newAgent.credentials.username)">
             <md-card>
                 <md-card-header>
                     <md-card-title>
@@ -118,10 +118,10 @@
                                     minlength="8"
                                     required>
                         </md-input-container>
-                        <p *ngIf="existingAgent.errorMessage" class="error-message">
-                            {{ existingAgent.errorMessage }}
-                        </p>
                     </div>
+                    <p *ngIf="existingAgent.errorMessage" class="error-message">
+                            {{ existingAgent.errorMessage }}
+                    </p>
                 </md-card-content>
                 <md-card-actions fxLayoutAlign="end">
                     <div class="example-tooltip-host">
