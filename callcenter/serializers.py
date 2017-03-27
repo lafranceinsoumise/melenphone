@@ -52,13 +52,14 @@ class CallhubCredentialsSerializer(Serializer):
 
         verify_agent(agentUsername,password)
 
-
         try:
             return UserExtend.objects.create(
                 agentUsername=validated_data['agentUsername'],
                 phi=phi,
                 user=validated_data['user']
             )
+            #Solves the problem 'UserExtend has no attribute password'
+            return {'agentUsername': agentUsername, 'password': password}
         except IntegrityError:
             raise CallerValidationError("Ce compte callhub est déjà associé à un compte du Mélenphone !",
                                           code='already_associated')
