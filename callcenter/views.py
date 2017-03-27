@@ -190,6 +190,30 @@ class api_test_simulatecall(APIView):
         send_message(websocketMessage)
         return HttpResponse(200)
 
+class api_test_simulateachievement(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        if settings.DEBUG == False:
+            raise Http404
+
+        achievements = Achievement.objects.all()
+        nb = achievements.count()
+        achievement = achievements[random.randint(0, nb - 1)]
+
+        websocketMessage = json.dumps({'type': 'achievement',
+                                       'value': {
+                                           'agentUsername': 'Jean-René',
+                                           'achievement': {
+                                               'name': achievement.name,
+                                               'condition': achievement.condition,
+                                               'phi': achievement.phi,
+                                               'codeName': achievement.codeName
+                                           }
+                                       }
+                                       })
+        send_message(websocketMessage)
+        return HttpResponse(200)
 
 # /api/current_user/achievements/
 class api_user_achievements(APIView):

@@ -6,6 +6,7 @@ urlpatterns = [
     # API - NO AUTH REQUIRED
     url(r'^test_websocket$', views.api_test_socket.as_view()),
     url(r'^simulate_call$', views.api_test_simulatecall.as_view()),
+    url(r'^simulate_achievement$', views.api_test_simulateachievement.as_view()),
     url(r'^basic_information$', views.api_basic_information.as_view()),
     url(r'^leaderboard$', views.api_leaderboard.as_view()),
     # API - AUTH REQUIRED
