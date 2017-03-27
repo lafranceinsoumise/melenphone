@@ -29,6 +29,6 @@ def verify_agent(username, password):
     if r.status_code == requests.codes.ok:
         return
     elif r.status_code == 400:
-        raise CallerValidationError(detail="L'identifiant et le mot de passe ne correspondent pas !")
+        raise CallerValidationError(detail="L'identifiant et le mot de passe ne correspondent pas")
     else:
         raise CallerValidationError
