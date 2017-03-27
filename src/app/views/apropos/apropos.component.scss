@@ -1,0 +1,29 @@
+@import '../../../_colors.scss';
+
+#logo_discord{
+  width:23%;
+  min-width:220px;
+  float:left;
+}
+
+h2{
+  margin-left:40%;
+  font-size:200%;
+  color: $jlm-red;
+}
+
+ul{
+  margin-top:0;
+  margin-left:25%;
+  li{
+    line-height: 140%;
+  }
+ }
+
+p{
+  margin-bottom:0;
+  line-height: 140%;
+  a{
+    color: $jlm-red;
+  }
+}
