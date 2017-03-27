@@ -1,10 +1,8 @@
 @import '../_colors.scss';
 
-header {
-  margin: auto;
-  max-width: 1600px;
-  position: relative;
-  width: 90%;
+:host {
+  display: block;
+  min-height: 100vh;
 }
 
 .top_right_block {
@@ -52,56 +50,85 @@ header {
     }
   }
 }
+.container {
+    header {
+        margin: auto;
+        max-width: 1600px;
+        position: relative;
+        width: 90%;
 
-h1 {
-  margin: 5px 0 8px;
+        .user-info {
+              position: absolute;
+              right: 16px;
+              text-align: right;
+              top: 25px;
 
-  a {
-    background: url('../assets/img/logo.svg') center;
-    background-size: cover;
-    display: inline-block;
-    height: 100px;
-    text-indent: -9000px;
-    width: 300px;
-  }
-}
+            .username {
+                color: $jlm-red;
+                font-family: 'Roboto Slab', serif;
+                font-size: 18px;
+                font-weight: 700;
+            }
 
-nav {
-  background: $jlm-red;
-  border-bottom: 1px solid darken($jlm-red, 5%);
-  border-top: 1px solid darken($jlm-red, 5%);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            .points {
+                background: url('../assets/img/phi.png') no-repeat right;
+                background-size: 20px auto;
+                display: inline-block;
+                font-size: 24px;
+                color: $jlm-blue;
+                line-height: 38px;
+                padding-right: 1.1em;
+                text-align: right;
+                vertical-align: middle;
+            }
+        }
 
-  .logo {
-    width: 30px;
-    margin-right: 1em;
+        h1 {
+            margin: 5px 0 8px;
 
-    img {
-      width: 100%;
-      object-fit: contain;
+            a {
+                background: url('../assets/img/logo.svg') center;
+                background-size: cover;
+                display: inline-block;
+                height: 100px;
+                text-indent: -9000px;
+                width: 300px;
+            }
+        }
     }
-  }
 
-  .wrapper {
-    margin: auto;
-    max-width: 1600px;
-    padding: 12px 16px 12px 62px;
-    width: 90%;
-  }
+    nav {
+        background: $jlm-red;
+        border-bottom: 1px solid darken($jlm-red, 5%);
+        border-top: 1px solid darken($jlm-red, 5%);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+
+        .logo {
+            width: 30px;
+            margin-right: 1em;
+
+            img {
+                width: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .wrapper {
+            margin: auto;
+            max-width: 1600px;
+            padding: 12px 16px 12px 62px;
+            width: 90%;
+        }
+    }
+
+    main {
+        margin: 45px auto;
+        max-width: 1600px;
+        width: 90%;
+    }
 }
 
 jlm-gauge {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  // width: calc(100% - 484px);
-}
-
-jlm-nav-toolbar {
-  // float: right;
-}
-
-main {
-  margin: 45px auto;
-  max-width: 1600px;
-  width: 90%;
 }

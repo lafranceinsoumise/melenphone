@@ -3,6 +3,7 @@ import { Routes, RouterModule, ExtraOptions, PreloadAllModules } from '@angular/
 
 import {
   HomeComponent,
+  AproposComponent,
   PokechonHomeComponent,
   ProfileComponent,
   MesTropheesComponent,
@@ -21,7 +22,8 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'classement', component: ClassementComponent },
       { path: 'mes-trophees', component: MesTropheesComponent },
-      { path: 'oauth_redirect', component: OauthRedirectComponent }
+      { path: 'oauth_redirect', component: OauthRedirectComponent },
+      { path: 'apropos', component: AproposComponent }
     ]
   }
 ];

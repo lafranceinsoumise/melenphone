@@ -14,7 +14,6 @@ import { SharedModule } from './shared';
 import { AppComponent } from './app.component';
 
 import {
-  AboutComponent,
   DynamicComponentComponent,
   GaugeComponent,
   CallMapComponent,
@@ -36,6 +35,7 @@ import {
 } from './shared';
 
 import {
+  AproposComponent,
   ClassementComponent,
   HomeComponent,
   MesTropheesComponent,
@@ -43,6 +43,7 @@ import {
   PokechonHomeComponent,
   ProfileComponent
 } from './views';
+import { FooterComponent } from './components/footer/footer.component';
 
 export function xsrfStrategyFactory() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -51,6 +52,7 @@ export function xsrfStrategyFactory() {
 @NgModule({
   declarations: [
     AppComponent,
+    AproposComponent,
     HomeComponent,
     DynamicComponentComponent,
     PokechonHomeComponent,
@@ -60,10 +62,11 @@ export function xsrfStrategyFactory() {
     AnimatedCallComponent,
     NavToolbarComponent,
     MesTropheesComponent,
-    AboutComponent,
     OauthRedirectComponent,
     ClassementComponent,
     ToptenComponent,
+    AproposComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

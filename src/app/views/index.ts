@@ -1,3 +1,4 @@
+export * from './apropos/apropos.component';
 export * from './classement/classement.component';
 export * from './profile/profile.component';
 export * from './home/home.component';
