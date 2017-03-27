@@ -42,7 +42,7 @@ def unlockAchievement(codeName, user):
 
             if codeName not in excluded_achievements:
                 websocketMessage = json.dumps({'type': 'achievement',
-                                           'values': {
+                                           'value': {
                                                 'agentUsername':userExtend.agentUsername,
                                                 'achievement':{
                                                     'name':achievement.name,
