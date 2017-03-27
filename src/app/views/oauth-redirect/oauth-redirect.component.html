@@ -34,7 +34,7 @@
     <div fxLayout="column" fxLayout.gt-sm="row" fxFlexFill fxFlexLayout="row" fxLayoutGap="1em">
         <form #newAgentForm="ngForm"
                 fxFlex="grow"
-                *ngSwitchCase="'createCallhubAccount'"
+                *ngSwitchCase="'needCallhubAccount'"
                 (ngSubmit)="createCallhubAccount(newAgent.credentials.username, newAgent.credentials.password)">
             <md-card>
                 <md-card-header>
@@ -69,9 +69,13 @@
             </md-card>
         </form>
 
+        <div *ngSwitchCase="'needCallhubAccount'" fxFlex="none" class="ou">
+            <span>OU</span>
+        </div>
+
         <form #associationForm="ngForm"
                 fxFlex="grow"
-                *ngSwitchCase="'createCallhubAccount'"
+                *ngSwitchCase="'needCallhubAccount'"
                 (ngSubmit)="associateExistingAgent(existingAgent.credentials.username,existingAgent.credentials.password)">
             <md-card>
                 <md-card-header>
@@ -109,8 +113,8 @@
                         <button md-raised-button
                                 color="primary"
                                 type="submit"
-                                [disabled]="!associationForm.valid && !auth.currentUser.agentUsername">
-                                Créer mon agent Callhub
+                                [disabled]="existingAgent.isPending">
+                                Récupérer le compte
                         </button>
                     </div>
                 </md-card-actions>

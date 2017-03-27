@@ -1,3 +1,5 @@
+@import "../../../_colors.scss";
+
 .container {
   margin: auto;
 }
@@ -10,4 +12,14 @@
 .checkmailbox {
   font-weight: bold;
   color: #f00;
+}
+
+.ou {
+  margin: auto;
+  // margin-right: 0;
+  color: $jlm-blue;
+
+  span {
+    font-size: 3em;
+  }
 }

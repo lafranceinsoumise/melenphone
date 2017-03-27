@@ -27,11 +27,9 @@ export class OauthRedirectComponent implements OnInit {
     isPending: false,
     errorMessage: null
   };
-  errorMessage = null;
-  pendingRequest = false;
 
   get shouldDisableSubmitButton() {
-    const res = this.pendingRequest ||
+    const res = this.newAgent.isPending ||
         this.newAgent.credentials.username == null ||
         (this.newAgent.credentials.username !== null && this.newAgent.credentials.username.length < 4);
     return res;
@@ -48,7 +46,7 @@ export class OauthRedirectComponent implements OnInit {
       .then((user: User) => {
         if (user !== null) {
           if (user.agentUsername === null) {
-            this.message = 'createCallhubAccount';
+            this.message = 'needCallhubAccount';
           } else {
             this.message = 'normal';
             this.snackBar.open('Connexion avec le QG de la France Insoumise établie 🚀', undefined, {
@@ -88,7 +86,7 @@ export class OauthRedirectComponent implements OnInit {
       .then((result: any) => {
         this.existingAgent.isPending = false;
         console.log(result);
-        this.snackBar.open('le compte a été récupéré avec succès.');
+        this.snackBar.open('le compte a été récupéré avec succès. Rafraîchis la page', undefined, 4000);
       })
       .catch((err) => {
         this.existingAgent.isPending = false;
