@@ -22,6 +22,7 @@ export class CallhubService {
         } else if (res.status === 201) {
           this.currentUser = res.json() as CallhubUser;
           this.auth.currentUser.agentUsername = this.currentUser.agentUsername;
+          this.auth.currentUser.phi = this.currentUser.phi;
           return this.currentUser;
         }
       })
@@ -30,21 +31,21 @@ export class CallhubService {
       });
   }
 
-  associateExistingAgent(username: string, password: string): Promise<any> {
-    return this.http.post('/api/current_user/associate_existing_agent', {username, password})
+  associateExistingAgent(agentUsername: string, password: string): Promise<CallhubUser> {
+    return this.http.post('/api/current_user/associate_existing_agent', {agentUsername, password})
       .toPromise()
       .then((res: Response) => {
-        switch (res.status) {
-          case 200:
-            console.log(res.json());
-            return res.json();
-          default:
-            console.error(res);
-            return Promise.reject(res.json());
+        if (res.status === 400) {
+          throw res.json();
+        } else if (res.status === 201) {
+          this.currentUser = res.json() as CallhubUser;
+          this.auth.currentUser.agentUsername = this.currentUser.agentUsername;
+          this.auth.currentUser.phi = this.currentUser.phi;
+          return this.currentUser;
         }
       })
       .catch(err => {
-        console.error(err);
+        throw err;
       });
   }
 

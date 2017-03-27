@@ -83,14 +83,20 @@ export class OauthRedirectComponent implements OnInit {
   associateExistingAgent(username: string, password: string) {
     this.existingAgent.isPending = true;
     return this.callhub.associateExistingAgent(username, password)
-      .then((result: any) => {
+      .then((user) => {
+        console.table(user);
         this.existingAgent.isPending = false;
-        console.log(result);
-        this.snackBar.open('le compte a été récupéré avec succès. Rafraîchis la page', undefined, 4000);
+        this.snackBar.open('Compte Callhub associé avec succès 🚀', undefined, { duration: 4000 });
+        this.message = 'accountAssociated';
+        console.groupEnd();
+        return user;
       })
       .catch((err) => {
+        console.error(err);
         this.existingAgent.isPending = false;
-        console.log('erreur durant l\'association de compte');
+        this.existingAgent.errorMessage = err.json().detail;
+        this.snackBar.open(this.existingAgent.errorMessage, undefined, { duration: 4000 });
+        console.groupEnd();
       });
   }
 

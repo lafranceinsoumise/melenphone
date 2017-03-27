@@ -31,10 +31,23 @@
         </md-card-content>
     </md-card>
 
-    <div fxLayout="column" fxLayout.gt-sm="row" fxFlexFill fxFlexLayout="row" fxLayoutGap="1em">
+    <md-card *ngSwitchCase="'accountAssociated'">
+        <md-card-header>
+            <md-card-title>
+                Compte Callhub associé avec Succès !
+            </md-card-title>
+        </md-card-header>
+        <md-card-content>
+            <p>
+                Ton compte Callhub <strong>a bien été associé à ton compte Mélenphone</strong>.<br/>
+                Tu peux commencer à passer des appels !
+            </p>
+        </md-card-content>
+    </md-card>
+
+    <div fxLayout="column" fxLayout.gt-sm="row" fxFlexFill fxFlexLayout="row" fxLayoutGap="1em" *ngSwitchCase="'needCallhubAccount'">
         <form #newAgentForm="ngForm"
                 fxFlex="grow"
-                *ngSwitchCase="'needCallhubAccount'"
                 (ngSubmit)="createCallhubAccount(newAgent.credentials.username, newAgent.credentials.password)">
             <md-card>
                 <md-card-header>
@@ -71,24 +84,22 @@
             </md-card>
         </form>
 
-        <div *ngSwitchCase="'needCallhubAccount'" fxFlex="none" class="ou">
+        <div fxFlex="none" class="ou">
             <span>OU</span>
         </div>
 
         <form #associationForm="ngForm"
                 fxFlex="grow"
-                *ngSwitchCase="'needCallhubAccount'"
                 (ngSubmit)="associateExistingAgent(existingAgent.credentials.username,existingAgent.credentials.password)">
             <md-card>
                 <md-card-header>
                     <md-card-title>
-                        Associer un compte callhub déjà existant
+                        J'ai déjà un compte Callhub
                     </md-card-title>
                 </md-card-header>
                 <md-card-content>
                     <p>
-                        Si tu possèdes déjà un compte callhub, tu peux le lier en remplissant les
-                        champs ci-dessous
+                        Si tu as déjà passé des appels pour la campagne, tu peux réutiliser ton compte Callhub.
                     </p>
                     <div fxLayout="column" fxLayoutGap="1em" fxLayout.gt-xs="row">
                         <md-input-container fxFlex>
@@ -102,7 +113,7 @@
                         <md-input-container fxFlex>
                             <input mdInput [(ngModel)]="existingAgent.credentials.password"
                                     type="password"
-                                    placeholder="mot de passe"
+                                    placeholder="Mot de passe"
                                     name="password"
                                     minlength="8"
                                     required>
@@ -118,7 +129,7 @@
                                 color="primary"
                                 type="submit"
                                 [disabled]="existingAgent.isPending">
-                                Récupérer le compte
+                                Associer mon compte Callhub
                         </button>
                     </div>
                 </md-card-actions>
