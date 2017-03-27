@@ -1,7 +1,13 @@
 <header class="subnav clearfix">
-  <div *ngIf="auth.currentUser && auth.currentUser.phi > -1" class="user-info">
-    <div class="username">{{ auth.currentUser.agentUsername }}</div>
-    <div class="points">{{ auth.currentUser?.phi }}</div>
+  <div class="top_right_block">
+      <div class="top_menu">
+      <a md-button href="//discord.gg/ymyhQsS" target="_blank"><i class="material-icons">help_outline</i> À l'aide !</a>
+      <a md-button routerLink=""><i class="material-icons">info_outline</i> À propos</a>
+    </div>
+      <div *ngIf="auth.currentUser && auth.currentUser.phi > -1">
+        <div class="username">{{ auth.currentUser.agentUsername }}</div>
+        <div class="points">{{ auth.currentUser?.phi }}</div>
+      </div>
   </div>
   <h1><a routerLink="/">Mélenphone</a></h1>
 </header>

@@ -7,17 +7,17 @@ header {
   width: 90%;
 }
 
-.user-info {
+.top_right_block {
   position: absolute;
   right: 16px;
   text-align: right;
-  top: 25px;
 
   .username {
     color: $jlm-red;
     font-family: 'Roboto Slab', serif;
     font-size: 18px;
     font-weight: 700;
+    margin-top:10px;
   }
 
   .points {
@@ -30,6 +30,26 @@ header {
     padding-right: 1.1em;
     text-align: right;
     vertical-align: middle;
+  }
+
+  .top_menu {
+
+    margin-top:-2px;
+
+    .mat-button {
+      background: $jlm-red;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 30px;
+
+      i {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 28px;
+      }
+    }
   }
 }
 
