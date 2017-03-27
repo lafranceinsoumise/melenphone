@@ -45,7 +45,7 @@
         </md-card-content>
     </md-card>
 
-    <div fxLayout="column" fxLayout.gt-sm="row" fxFlexFill fxFlexLayout="row" fxLayoutGap="1em" *ngSwitchCase="'needCallhubAccount'">
+    <div fxLayout="row" fxLayout.gt-sm="column" fxFlexFill fxFlexLayout="column" fxLayoutGap="1em" *ngSwitchCase="'needCallhubAccount'">
         <form #newAgentForm="ngForm"
                 fxFlex="grow"
                 (ngSubmit)="createCallhubAccount(newAgent.credentials.username)">
