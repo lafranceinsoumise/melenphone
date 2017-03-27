@@ -47,7 +47,8 @@ def unlockAchievement(codeName, user):
                                                 'achievement':{
                                                     'name':achievement.name,
                                                     'condition':achievement.condition,
-                                                    'phi':achievement.phi
+                                                    'phi':achievement.phi,
+                                                    'codeName':achievement.codeName
                                                 }
                                            }
                                         })
