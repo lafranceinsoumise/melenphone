@@ -27,6 +27,7 @@
     "@angular/platform-browser-dynamic": ">=4.0.0-rc",
     "@angular/platform-server": ">=4.0.0-rc",
     "@angular/router": ">=4.0.0-rc",
+    "angular2-notifications": "^0.4.53",
     "core-js": "^2.4.1",
     "rxjs": "^5.0.1",
     "ts-helpers": "^1.1.1",

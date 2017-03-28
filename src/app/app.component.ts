@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MdSnackBar, MdSnackBarConfig, MdSnackBarRef } from '@angular/material';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { CallNoteDescription } from './core';
@@ -7,12 +8,19 @@ import {
   AuthenticationService,
   BasicService,
   BasicInformationApiData,
+  Achievement,
+  AchievementNotification
 } from './shared';
+
+import {
+  AchievementComponent
+} from './components';
 
 @Component({
   selector: 'jlm-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  entryComponents: [ AchievementComponent ]
 })
 export class AppComponent implements OnInit {
   get goal() {
@@ -24,6 +32,7 @@ export class AppComponent implements OnInit {
     public auth: AuthenticationService,
     private http: Http,
     public basic: BasicService,
+    private snack: MdSnackBar,
   ) {}
 
   ngOnInit() {
@@ -54,8 +63,19 @@ export class AppComponent implements OnInit {
         }
       break;
       case 'achievement':
+        const trophyNotification = parsed as AchievementNotification;
+        const trophy = trophyNotification.value.achievement;
+        const winnerUsername = trophyNotification.value.agentUsername;
+        const ref = this.snack.openFromComponent(AchievementComponent, {duration: 40000});
+        ref.instance.trophy = trophy;
       break;
     }
+  }
+
+  mockAchievement() {
+    this.http.post('/api/simulate_achievement', {})
+      .toPromise()
+      .then(res => console.log(res.json()));
   }
 
   chooseCallGoal(callCount) {

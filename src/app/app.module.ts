@@ -44,6 +44,7 @@ import {
   ProfileComponent
 } from './views';
 import { FooterComponent } from './components/footer/footer.component';
+import { AchievementComponent } from './components/achievement/achievement.component';
 
 export function xsrfStrategyFactory() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -67,6 +68,7 @@ export function xsrfStrategyFactory() {
     ToptenComponent,
     AproposComponent,
     FooterComponent,
+    AchievementComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +81,7 @@ export function xsrfStrategyFactory() {
     AppRoutingModule,
     SharedModule
   ],
+  entryComponents: [ AchievementComponent ],
   providers: [
     FullscreenService,
     {
