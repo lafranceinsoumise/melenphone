@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { MdSnackBar, MdSnackBarConfig, MdSnackBarRef } from '@angular/material';
 import { NotificationsService } from 'angular2-notifications';
 import { Http, Response } from '@angular/http';
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   }
   public notificationConfig = {
     position: ['bottom', 'right'],
-    timeOut: 5000,
+    timeOut: 500000,
     maxStack: 4,
     lastOnBottom: true,
     animate: 'fromRight',
@@ -96,9 +96,12 @@ export class AppComponent implements OnInit {
   }
 
   triggerAchievement() {
+    if (! isDevMode) {
+      return;
+    }
     this.http.post('/api/simulate_achievement', {})
-      .toPromise()
-      .then(res => console.log(res.json()));
+        .toPromise()
+        .then(res => console.log(res.json()));
   }
 
   chooseCallGoal(callCount) {

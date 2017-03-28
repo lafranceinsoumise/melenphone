@@ -1,5 +1,5 @@
 .simple-notification-wrapper {
-    width: 470px !important;
+    width: 420px !important;
 }
 
 .trophy-notification {
@@ -7,7 +7,7 @@
     display: flex;
     font-size: .9em;
     flex-direction: row;
-    width: 450px;
+    width: 400px;
     border-radius: 60px;
 
     .trophy-picture {
@@ -19,6 +19,7 @@
 
     .trophy-content {
         padding: .5em;
+        padding-right: 1.1em;
         flex: 1;
         
         .trophy-title {
