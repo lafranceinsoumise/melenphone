@@ -8,7 +8,8 @@ import {
   ProfileComponent,
   MesTropheesComponent,
   OauthRedirectComponent,
-  ClassementComponent
+  ClassementComponent,
+  TutorielComponent,
 } from './views';
 
 import { AuthGuarg } from './_guards';
@@ -23,7 +24,8 @@ const routes: Routes = [
       { path: 'classement', component: ClassementComponent },
       { path: 'mes-trophees', component: MesTropheesComponent },
       { path: 'oauth_redirect', component: OauthRedirectComponent },
-      { path: 'apropos', component: AproposComponent }
+      { path: 'apropos', component: AproposComponent },
+      { path: 'tutoriel', component: TutorielComponent },
     ]
   }
 ];

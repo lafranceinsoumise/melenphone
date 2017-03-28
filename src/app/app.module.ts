@@ -45,6 +45,7 @@ import {
 } from './views';
 import { FooterComponent } from './components/footer/footer.component';
 import { AchievementComponent } from './components/achievement/achievement.component';
+import { TutorielComponent } from './views/tutoriel/tutoriel.component';
 
 export function xsrfStrategyFactory() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -69,6 +70,7 @@ export function xsrfStrategyFactory() {
     AproposComponent,
     FooterComponent,
     AchievementComponent,
+    TutorielComponent,
   ],
   imports: [
     BrowserModule,
