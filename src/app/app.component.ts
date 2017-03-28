@@ -66,8 +66,11 @@ export class AppComponent implements OnInit {
         const trophyNotification = parsed as AchievementNotification;
         const trophy = trophyNotification.value.achievement;
         const winnerUsername = trophyNotification.value.agentUsername;
-        const ref = this.snack.openFromComponent(AchievementComponent, {duration: 40000});
+        let config = new MdSnackBarConfig();
+        config.duration = 5000;
+        const ref = this.snack.openFromComponent(AchievementComponent, config);
         ref.instance.trophy = trophy;
+        ref.instance.winnerUsername = winnerUsername;
       break;
     }
   }
