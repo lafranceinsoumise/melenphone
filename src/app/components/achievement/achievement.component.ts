@@ -13,8 +13,9 @@ export class AchievementComponent implements OnInit {
     condition: 'faire 29 lorem ipsum ipso facto bla bla bla Vladimir Poutine',
     name: 'name of the Achievement',
     phi: 20
-  };
+  }
 
+  @Input() winnerUsername: string;
   constructor() { }
 
   ngOnInit() {
