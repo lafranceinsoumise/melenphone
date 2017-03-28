@@ -1,0 +1,44 @@
+.simple-notification-wrapper {
+    width: 470px !important;
+}
+
+.trophy-notification {
+    background-color: hsla(0, 5%, 31%, 1);
+    display: flex;
+    font-size: .9em;
+    flex-direction: row;
+    width: 450px;
+    border-radius: 60px;
+
+    .trophy-picture {
+        padding: .5em;
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+    }
+
+    .trophy-content {
+        padding: .5em;
+        flex: 1;
+        
+        .trophy-title {
+            font-size: 1em;
+            margin-top: 0;
+            font-weight: normal;
+            margin-bottom: 0;
+            
+            .username {
+                color: firebrick;
+                font-weight: bold;
+            }
+            .trophy-name {
+                color: goldenrod;
+                font-weight: bold;
+            }
+        }
+        .trophy-condition {
+            margin: .4em 0;
+            font-style: italic;
+        }
+    }
+}

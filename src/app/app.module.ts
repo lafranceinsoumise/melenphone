@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SimpleNotificationsModule } from 'angular2-notifications';
+
 import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -80,6 +82,7 @@ export function xsrfStrategyFactory() {
     HttpModule,
     MaterialModule.forRoot(),
     FlexLayoutModule.forRoot(),
+    SimpleNotificationsModule.forRoot(),
     AppRoutingModule,
     SharedModule
   ],

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MdSnackBar, MdSnackBarConfig, MdSnackBarRef } from '@angular/material';
+import { NotificationsService } from 'angular2-notifications';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { CallNoteDescription } from './core';
@@ -26,6 +27,14 @@ export class AppComponent implements OnInit {
   get goal() {
     return this.chooseCallGoal(this.basic.infos.dailyCalls || 0);
   }
+  public notificationConfig = {
+    position: ['bottom', 'right'],
+    timeOut: 5000,
+    maxStack: 4,
+    lastOnBottom: true,
+    animate: 'fromRight',
+    showProgressBar: false
+  };
 
   constructor(
     private scs: SocketConnectionService,
@@ -33,6 +42,7 @@ export class AppComponent implements OnInit {
     private http: Http,
     public basic: BasicService,
     private snack: MdSnackBar,
+    private notificationService: NotificationsService
   ) {}
 
   ngOnInit() {
@@ -63,18 +73,29 @@ export class AppComponent implements OnInit {
         }
       break;
       case 'achievement':
-        const trophyNotification = parsed as AchievementNotification;
-        const trophy = trophyNotification.value.achievement;
-        const winnerUsername = trophyNotification.value.agentUsername;
-        const config: MdSnackBarConfig = { duration: 5000 };
-        const ref = this.snack.openFromComponent(AchievementComponent, config);
-        ref.instance.trophy = trophy;
-        ref.instance.winnerUsername = winnerUsername;
+        const trophyMessage = parsed as AchievementNotification;
+        const {agentUsername, achievement} = trophyMessage.value;
+
+        const template = `
+          <div class="trophy-notification">
+            <img class="trophy-picture" src="assets/img/achievements/${achievement.codeName}.png">
+            <div class="trophy-content">
+              <h4 class="trophy-title">
+                <span class="username">${agentUsername}</span>
+                a débloqué le trophée
+                <span class="trophy-name">${achievement.name}</span>
+              </h4>
+              <p class="trophy-condition">${achievement.condition}</p>
+            </div>
+          </div>
+        `;
+
+        this.notificationService.html( template, 'bare' );
       break;
     }
   }
 
-  mockAchievement() {
+  triggerAchievement() {
     this.http.post('/api/simulate_achievement', {})
       .toPromise()
       .then(res => console.log(res.json()));
@@ -87,7 +108,7 @@ export class AppComponent implements OnInit {
           return value;
       }
     }
-    return (1000000000000);
+    return (10 ** 10);
   }
 
 }

@@ -56,6 +56,11 @@
         position: relative;
         width: 90%;
 
+        simple-notifications {
+            position: relative;
+            z-index: 2;
+        }
+
         .user-info {
               position: absolute;
               right: 16px;
