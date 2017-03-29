@@ -30,9 +30,9 @@ export class AppComponent implements OnInit {
   public notificationConfig = {
     position: ['bottom', 'right'],
     timeOut: 2000,
-    maxStack: 4,
+    maxStack: 3,
     lastOnBottom: true,
-    animate: 'fromRight',
+    animate: 'scale',
     showProgressBar: false
   };
 

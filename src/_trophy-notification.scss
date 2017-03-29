@@ -2,6 +2,7 @@
 
 .simple-notification-wrapper {
     width: 420px !important;
+    padding-top:0;
 }
 
 .trophy-notification {
@@ -20,6 +21,7 @@
     }
 
     .trophy-content {
+        margin-top: 0.3em;
         padding: .5em;
         padding-right: 1.1em;
         flex: 1;
