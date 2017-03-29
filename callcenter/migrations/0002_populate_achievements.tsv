@@ -2,7 +2,7 @@
 2	Initié·e	Avoir effectué 1 appel.	10	count_initie
 3	Apprenti·e	Avoir effectué 5 appels.	20	count_apprenti
 4	Fan de la revue de la semaine	Avoir effectué 10 appels.	30	count_fan_rdls
-6	Militant·e confirmé.e	Avoir effectué 20 appels.	50	count_militant
+6	Militant·e confirmé·e	Avoir effectué 20 appels.	50	count_militant
 7	Insoumis·e qualité Top+	Avoir effectué 35 appels.	100	count_top
 8	Messager.ère insoumis·e	Avoir effectué 50 appels.	120	count_messager
 9	Animateur·trice du Discord insoumis	Avoir effectué 70 appels.	135	count_animateur
@@ -12,12 +12,12 @@
 13	Grand Mage Noir	Avoir effectué 375 appels.	220	count_mage
 14	Justicier.ère du peuple	Avoir effectué 500 appels.	250	count_justicier
 15	Tribun du Mélenphone	Avoir effectué 700 appels.	300	count_tribun
-16	Héros.ïne de la nation	Avoir effectué 1000 appels.	350	count_heros
+16	Héros·ïne de la nation	Avoir effectué 1000 appels.	350	count_heros
 17	Érudit·e de LAEC.fr	Avoir effectué 1500 appels.	400	count_laec
-18	Insoumis·e légendaire	Avoir effectué 2000 appels.	500	count_legendaire
-19	À fond à fond à fond !	Passer 30 appels en une journée !	100	daily_a_fond
-20	Acharné.e	Passer 50 appels en une journée !	200	daily_acharne
-21	Il est temps d'aller dormir !	Passer 100 appels en une journée !	500	daily_dodo
+18	Insoumis·e légendaire	Avoir effectué 5000 appels.	700	count_legendaire
+19	À fond à fond à fond !	Passer 50 appels en une journée !	100	daily_a_fond
+20	Acharné·e	Passer 100 appels en une journée !	200	daily_acharne
+21	Il est temps d'aller dormir !	Passer 200 appels en une journée !	500	daily_dodo
 22	J'y étais !	Avoir été parmis les 100 premiers à utiliser la plateforme.	50	early_y_etais
 23	Champion·ne !	Avoir été au sommet du classement.	500	leaderboard_alltime
 24	Meneur·se de troupes	Avoir été au sommet du classement hebdomadaire.	200	leaderboard_weekly

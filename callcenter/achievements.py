@@ -72,11 +72,11 @@ def earlyAdopters(user):
 def dailyCalls(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
     dailyCalls = int(r.zscore('melenphone:leaderboards:daily:' + format_date(timezone.now()), str(user.id)))
-    if dailyCalls == 30:
-        unlockAchievement("daily_a_fond", user)
     if dailyCalls == 50:
-        unlockAchievement("daily_acharne", user)
+        unlockAchievement("daily_a_fond", user)
     if dailyCalls == 100:
+        unlockAchievement("daily_acharne", user)
+    if dailyCalls == 200:
         unlockAchievement("daily_dodo", user)
 
 
@@ -113,7 +113,7 @@ def callCount(user):
         unlockAchievement("count_heros", user)
     if count == 1500:
         unlockAchievement("count_laec", user)
-    if count == 2000:
+    if count == 5000:
         unlockAchievement("count_legendaire", user)
 
 def leaderboards(user):
