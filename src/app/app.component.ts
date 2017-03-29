@@ -85,7 +85,6 @@ export class AppComponent implements OnInit {
                 a débloqué le trophée<br/>
                 <span class="trophy-name">${achievement.name}</span>
               </h4>
-              <p class="trophy-condition">(${achievement.condition})</p>
             </div>
           </div>
         `;

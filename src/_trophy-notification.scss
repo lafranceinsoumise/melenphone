@@ -14,8 +14,8 @@
 
     .trophy-picture {
         padding: .5em;
-        width: 90px;
-        height: 90px;
+        width: 64px;
+        height: 64px;
         object-fit: contain;
     }
 
@@ -38,10 +38,6 @@
                 color: $jlm-blue;
                 font-weight: bold;
             }
-        }
-        .trophy-condition {
-            margin: .4em 0;
-            font-style: italic;
         }
     }
 }
