@@ -1,3 +1,5 @@
+@import '_colors.scss';
+
 .simple-notification-wrapper {
     width: 420px !important;
 }
@@ -21,19 +23,19 @@
         padding: .5em;
         padding-right: 1.1em;
         flex: 1;
-        
+
         .trophy-title {
             font-size: 1em;
             margin-top: 0;
             font-weight: normal;
             margin-bottom: 0;
-            
+
             .username {
-                color: firebrick;
+                color: $jlm-red;
                 font-weight: bold;
             }
             .trophy-name {
-                color: goldenrod;
+                color: $jlm-blue;
                 font-weight: bold;
             }
         }

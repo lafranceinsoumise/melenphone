@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   }
   public notificationConfig = {
     position: ['bottom', 'right'],
-    timeOut: 500000,
+    timeOut: 2000,
     maxStack: 4,
     lastOnBottom: true,
     animate: 'fromRight',
@@ -82,10 +82,10 @@ export class AppComponent implements OnInit {
             <div class="trophy-content">
               <h4 class="trophy-title">
                 <span class="username">${agentUsername}</span>
-                a débloqué le trophée
+                a débloqué le trophée<br/>
                 <span class="trophy-name">${achievement.name}</span>
               </h4>
-              <p class="trophy-condition">${achievement.condition}</p>
+              <p class="trophy-condition">(${achievement.condition})</p>
             </div>
           </div>
         `;
