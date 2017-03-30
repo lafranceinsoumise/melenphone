@@ -1,0 +1,54 @@
+@import '../../../_colors.scss';
+
+.mat-card {
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  color: $main-text;
+  margin-top: 80px;
+}
+
+h2 {
+  color: $jlm-red;
+  font-family: 'Roboto Slab', serif;
+  font-size: 28px;
+  margin: 20px !important;
+}
+
+ul {
+  border-top: 1px solid $border;
+  list-style: none;
+  margin: 30px 30px 60px !important;
+  padding: 0;
+}
+
+li {
+  border-bottom: 1px solid $border;
+  height: 84px;
+  padding: 8px 10px;
+}
+
+img {
+  float: left;
+  margin-right: 20px;
+}
+
+.content {float: left;}
+
+.name {
+  font-size: 1.2em;
+  margin: 8px 0 5px;
+}
+
+.description {color: $secondary-text;}
+
+.trophee_phi {
+  background: url('../../../assets/img/phi.png') no-repeat right;
+  background-size: 20px auto;
+  display: inline-block;
+  float: right;
+  font-size: 18px;
+  color: $jlm-blue;
+  line-height: 67px;
+  padding-right: 1.3em;
+  text-align: right;
+}

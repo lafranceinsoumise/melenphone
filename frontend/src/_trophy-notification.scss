@@ -1,0 +1,45 @@
+@import '_colors.scss';
+
+.simple-notification-wrapper {
+    width: 420px !important;
+    padding-top:0;
+}
+
+.trophy-notification {
+    background-color: hsla(0, 5%, 31%, 1);
+    display: flex;
+    font-size: .9em;
+    flex-direction: row;
+    width: 400px;
+    border-radius: 60px;
+
+    .trophy-picture {
+        padding: .5em;
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+    }
+
+    .trophy-content {
+        margin-top: 0.3em;
+        padding: .5em;
+        padding-right: 1.1em;
+        flex: 1;
+
+        .trophy-title {
+            font-size: 1em;
+            margin-top: 0;
+            font-weight: normal;
+            margin-bottom: 0;
+
+            .username {
+                color: $jlm-red;
+                font-weight: bold;
+            }
+            .trophy-name {
+                color: $jlm-blue;
+                font-weight: bold;
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+<h4 class="card-title">{{ cardInfo.pokechon.name }}</h4>
+<img class="card-picture" *ngIf="cardInfo.pictureSource" [alt]="cardInfo.pokechon.name" [src]="'assets/img/pokechon/' + cardInfo.pictureSource">
+<div class="card-description">
+  <div class="card-type"></div>
+  <p *ngFor="let paragraph of cardInfo.pokechon.descriptionText">{{ paragraph }}</p>
+</div>

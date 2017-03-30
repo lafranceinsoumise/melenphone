@@ -1,0 +1,99 @@
+@import '../../../_colors.scss';
+
+:host {padding: 0 8px;}
+
+jlm-topten {
+  float: right;
+  width: 250px;
+}
+
+[jlmFullscreen] {
+  padding: 20px 0;
+  position: relative;
+  float: left;
+  width: calc(100% - 300px);
+
+  &:-webkit-full-screen {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
+    }
+  }
+  &:-moz-full-screen {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
+    }
+  }
+  &:-ms-full-screen {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
+    }
+  }
+  &:fullscreen {
+    display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
+    }
+  }
+
+  .mat-button {
+    color: $jlm-red;
+    display: none;
+    position: absolute;
+  }
+
+  .controls {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+
+    button {
+      border: 0;
+      background: transparent;
+      color: $jlm-red;
+      min-width: auto;
+
+      &:focus {outline: 0;}
+    }
+
+    .material-icons {font-size: 42px;}
+  }
+}

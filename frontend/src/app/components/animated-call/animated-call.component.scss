@@ -1,0 +1,45 @@
+@import '../../../_colors.scss';
+
+.call {
+    fill: transparent;
+    stroke: $jlm-red;
+    vector-effect: non-scaling-stroke;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+
+circle {
+    stroke: $jlm-red;
+    stroke-width: 2px;
+    fill: rgba(0,0,0,0);
+    animation: zoomIn 1s;
+    transform-origin: center;
+    animation-name: zoomIn;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+
+    &.caller1 { animation-delay: 0s; }
+    &.caller2 { animation-delay: 1s; }
+    &.caller3 { animation-delay: 2s; }
+    &.caller4 { animation-delay: 2.25s; }
+    &.caller5 { animation-delay: 2.5s; }
+    &.caller6 { animation-delay: 2.75s; }
+
+    &.callee1 { animation-delay: 2.25s; }
+    &.callee2 { animation-delay: 2.5s; }
+    &.callee3 { animation-delay: 2.75s; }
+    &.callee4 { animation-delay: 3s; }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0);
+    }
+    80% {
+        opacity:1
+    }
+    to {
+        transform: scale(1);
+        opacity:0
+    }
+}

@@ -1,0 +1,148 @@
+<div class="container" [ngSwitch]="message"
+        fxLayout="row"
+        fxFlex.xs="1 1 100%"
+        fxFlex.sm="1 1 80%"
+        fxFlex.gt-sm="0 1 700px">
+    <md-card *ngSwitchCase="'normal'">
+        <md-card-header>
+            <md-card-title>
+                Vous êtes à présent connecté
+            </md-card-title>
+        </md-card-header>
+        <md-card-content>
+            Tu vas être redirigé vers la page d'accueil du site
+        </md-card-content>
+        <md-card-actions fxlayoutAlign="end">
+            <a md-raised-button color="accent" routerLink="/">aller à l'accueil</a>
+        </md-card-actions>
+    </md-card>
+
+    <md-card *ngSwitchCase="'checkYourMailbox'">
+        <md-card-header>
+            <md-card-title>
+                Compte Callhub créé avec succès !
+            </md-card-title>
+        </md-card-header>
+        <md-card-content>
+            <p>
+                <span class="checkmailbox">Vérifie ta boîte mail</span>, tu as reçu un <strong>courriel d'activation</strong>.<br/>
+                Un lien dans ce mail te permettra de finaliser ton inscription.
+            </p>
+        </md-card-content>
+    </md-card>
+
+    <md-card *ngSwitchCase="'accountAssociated'">
+        <md-card-header>
+            <md-card-title>
+                Compte Callhub associé avec Succès !
+            </md-card-title>
+        </md-card-header>
+        <md-card-content>
+            <p>
+                Ton compte Callhub <strong>a bien été associé à ton compte Mélenphone</strong>.<br/>
+                Tu peux commencer à passer des appels !
+            </p>
+        </md-card-content>
+        <md-card-actions>
+            <a md-raised-button color="accent"
+                    target="_blank"
+                    href="http://app.callhub.io/v2/agent-console/">Passer mon premier appel</a>
+        </md-card-actions>
+    </md-card>
+
+    <div fxLayout="row" fxLayout.gt-sm="column" fxFlexFill fxFlexLayout="column" fxLayoutGap="1em" *ngSwitchCase="'needCallhubAccount'">
+        <form #newAgentForm="ngForm"
+                fxFlex="grow"
+                (ngSubmit)="createCallhubAccount(newAgent.credentials.username)">
+            <md-card>
+                <md-card-header>
+                    <md-card-title>
+                        Je n'ai pas de compte callhub
+                    </md-card-title>
+                </md-card-header>
+                <md-card-content>
+                    <p>
+                        Choisis un pseudo pour créer ton compte Callhub (notre centrale d'appels).
+                    </p>
+                    <md-input-container fxFlexFill>
+                        <input mdInput [(ngModel)]="newAgent.credentials.username"
+                                type="text"
+                                placeholder="Identifiant Callhub"
+                                name="username"
+                                minlength="4"
+                                required>
+                    </md-input-container>
+                    <p *ngIf="newAgent.errorMessage" class="error-message">
+                        {{ newAgent.errorMessage }}
+                    </p>
+                </md-card-content>
+                <md-card-actions fxLayoutAlign="end">
+                    <div class="example-tooltip-host">
+                        <button md-raised-button
+                                color="primary"
+                                type="submit"
+                                [disabled]="!newAgentForm.valid && !auth.currentUser.agentUsername">
+                            Créer mon agent Callhub
+                        </button>
+                    </div>
+                </md-card-actions>
+            </md-card>
+        </form>
+
+        <div fxFlex="none" class="ou">
+            <span>OU</span>
+        </div>
+
+        <form #associationForm="ngForm"
+                fxFlex="grow"
+                (ngSubmit)="associateExistingAgent(existingAgent.credentials.username,existingAgent.credentials.password)">
+            <md-card>
+                <md-card-header>
+                    <md-card-title>
+                        J'ai déjà un compte Callhub
+                    </md-card-title>
+                </md-card-header>
+                <md-card-content>
+                    <p>
+                        Si tu as déjà passé des appels pour la campagne, tu peux réutiliser ton compte Callhub.
+                    </p>
+                    <div fxLayout="column" fxLayoutGap="1em" fxLayout.gt-xs="row">
+                        <md-input-container fxFlex>
+                            <input mdInput [(ngModel)]="existingAgent.credentials.username"
+                                    type="text"
+                                    placeholder="Identifiant Callhub"
+                                    name="username"
+                                    minlength="4"
+                                    required>
+                        </md-input-container>
+                        <md-input-container fxFlex>
+                            <input mdInput [(ngModel)]="existingAgent.credentials.password"
+                                    type="password"
+                                    placeholder="Mot de passe"
+                                    name="password"
+                                    minlength="8"
+                                    required>
+                        </md-input-container>
+                    </div>
+                    <p *ngIf="existingAgent.errorMessage" class="error-message">
+                            {{ existingAgent.errorMessage }}
+                    </p>
+                </md-card-content>
+                <md-card-actions fxLayoutAlign="end">
+                    <div class="example-tooltip-host">
+                        <button md-raised-button
+                                color="primary"
+                                type="submit"
+                                [disabled]="existingAgent.isPending">
+                                Associer mon compte Callhub
+                        </button>
+                    </div>
+                </md-card-actions>
+            </md-card>
+        </form>
+    </div>
+
+
+
+</div>
+

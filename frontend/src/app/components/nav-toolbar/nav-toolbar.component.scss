@@ -1,0 +1,15 @@
+@import '../../../_colors.scss';
+
+.mat-button {
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: $jlm-blue;
+  font-size: 13px;
+  line-height: 30px;
+
+  i {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 29px;
+  }
+}

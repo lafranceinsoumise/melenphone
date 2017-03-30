@@ -1,0 +1,14 @@
+<div class="clearfix">
+  <div jlmFullscreen #fullscreenController="fullscreen">
+    <button md-button *ngIf="isDevMode" color="warn" (click)="makeBackendRequest()">Make backend request</button>
+    <jlm-call-map [timeout]="5000">
+      <div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
+        <button *ngSwitchCase="false"
+        (click)="fullscreenController.toggle(true)"><i class="material-icons">fullscreen</i></button>
+        <button *ngSwitchCase="true"
+        (click)="fullscreenController.exitFullscreen()"><i class="material-icons">fullscreen_exit</i></button>
+      </div>
+    </jlm-call-map>
+  </div>
+  <jlm-topten [dailyLeaderboard]="basic.infos?.dailyLeaderboard"></jlm-topten>  
+</div>

@@ -1,0 +1,44 @@
+<div class="container">
+  <header class="subnav clearfix">
+    <simple-notifications [options]="notificationConfig"></simple-notifications>
+    <div class="top_right_block">
+      <div class="top_menu">
+        <a md-button routerLink="tutoriel">
+            <i class="material-icons">play_arrow</i>
+            Tutoriel
+        </a>
+        <a md-button href="//discord.gg/ymyhQsS" target="_blank">
+          <i class="material-icons">help_outline</i>
+          À l'aide !
+        </a>
+        <a md-button routerLink="apropos">
+            <i class="material-icons">info_outline</i>
+            À propos
+        </a>
+      </div>
+      <div *ngIf="auth.currentUser && auth.currentUser.phi > -1">
+        <div class="username">{{ auth.currentUser.agentUsername }}</div>
+        <div class="points">{{ auth.currentUser?.phi }}</div>
+      </div>
+    </div>
+    <h1><a routerLink="/">Mélenphone</a></h1>
+  </header>
+  <nav>
+    <div class="clearfix wrapper" fxLayout="row" fxLayoutGap="1em">
+      <a class="logo" routerLink="/">
+        <img src="assets/img/logo-min.svg" alt="retour à l'accueil'">
+      </a>
+      <jlm-gauge *ngIf="basic.infos"
+          fxFlex="1 1 auto"
+          (click)="triggerAchievement()"
+          fxFlexAlign="start"
+          [min]="0"
+          [max]="goal"
+          [value]="basic.infos.dailyCalls"></jlm-gauge>
+      <jlm-nav-toolbar fxFlex="0 1 auto" [user]="auth.currentUser"></jlm-nav-toolbar>
+    </div>
+  </nav>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

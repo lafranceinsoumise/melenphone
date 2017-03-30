@@ -1,0 +1,74 @@
+<div *ngIf="leaderboards" class="leaderboards clearfix">
+  <md-card *ngIf="leaderboards.daily">
+    <h2>Classement du jour</h2>
+    <div class="total">{{ basic.infos.dailyCalls }} appels aujourd'hui</div>
+    <table>
+      <thead>
+        <tr>
+          <th class="rank">#</th>
+          <th>Pseudo</th>
+          <th>Appels</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of leaderboards.daily; let i = index">
+          <td class="rank">
+            <span [class]=" (i === 0) ? 'first' : ( (i === 1) ? 'second' : ( (i === 2) ? 'third' : '' ))">
+              {{ i + 1 }}
+            </span>
+          </td>
+          <td>{{ (row.username.length > 15) ? row.username.slice(0, 15) + '...' : row.username }}</td>
+          <td class="calls">{{row.calls}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card>
+  <md-card *ngIf="leaderboards.weekly">
+    <h2>Classement de la semaine</h2>
+    <div class="total">{{ basic.infos.weeklyCalls }} appels cette semaine</div>
+    <table>
+      <thead>
+        <tr>
+          <th class="rank">#</th>
+          <th>Pseudo</th>
+          <th>Appels</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of leaderboards.weekly; let i = index">
+          <td class="rank">
+            <span [class]=" (i === 0) ? 'first' : ( (i === 1) ? 'second' : ( (i === 2) ? 'third' : '' ))">
+              {{ i + 1 }}
+            </span>
+          </td>
+          <td>{{ (row.username.length > 15) ? row.username.slice(0, 15) + '...' : row.username }}</td>
+          <td class="calls">{{row.calls}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card>
+  <md-card *ngIf="leaderboards.alltime">
+    <h2>Classement général</h2>
+    <div class="total">{{ basic.infos.alltimeCalls }} appels au total</div>
+    <table>
+      <thead>
+        <tr>
+          <th class="rank">#</th>
+          <th>Pseudo</th>
+          <th>Appels</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of leaderboards.alltime; let i = index">
+          <td class="rank">
+            <span [class]=" (i === 0) ? 'first' : ( (i === 1) ? 'second' : ( (i === 2) ? 'third' : '' ))">
+              {{ i + 1 }}
+            </span>
+          </td>
+          <td>{{ (row.username.length > 15) ? row.username.slice(0, 15) + '...' : row.username }}</td>
+          <td class="calls">{{row.calls}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card>
+</div>

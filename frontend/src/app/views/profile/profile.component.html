@@ -1,0 +1,29 @@
+<md-card>
+    <md-card-content>
+        <ng-container *ngIf="auth.currentUser === null">
+            <p>Connectez-vous via jlm2017.fr</p>
+        </ng-container>
+        <ng-container *ngIf="auth.currentUser !== null">
+            <ng-container *ngIf="auth.currentUser.agentUsername !== null">
+                <p>
+                    Vous êtes connecté en tant que
+                    <strong>{{auth.currentUser.email}}</strong>
+                </p>
+                <p>
+                    Votre nom d‘utilisateur callhub est <strong>
+                    {{ auth.currentUser.agentUsername }}</strong>
+                </p>
+            </ng-container>
+        </ng-container>
+    </md-card-content>
+    <md-card-actions fxLayoutAlign="end">
+        <ng-container *ngIf="auth.currentUser === null">
+            <a md-raised-button color="primary" href="/connexion/">Connexion</a>
+        </ng-container>
+        <ng-container *ngIf="auth.currentUser !== null && auth.currentUser.agentUsername !== null">
+            <a class="deco" md-button href="/deconnexion/">Déconnexion</a>
+        </ng-container>
+    </md-card-actions>
+</md-card>
+
+<jlm-mes-trophees></jlm-mes-trophees>

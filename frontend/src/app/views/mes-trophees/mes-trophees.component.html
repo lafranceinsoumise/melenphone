@@ -1,0 +1,36 @@
+<md-card>
+  <ng-container *ngIf="trophiesData?.unlocked.length">
+    <h2>{{ trophiesData?.unlocked?.length }} Trophées débloqués</h2>
+    <ul>
+      <li class="clearfix" *ngFor="let trophie of trophiesData?.unlocked">
+        <img width=64 [src]="'assets/img/achievements/' + trophie.codeName + '.png'" />
+        <div class="content">
+          <div class="name">
+            {{ trophie.name }}
+          </div>
+          <div class="description">
+            {{ trophie.condition }}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </ng-container>
+
+  <h2>{{ trophiesData?.locked?.length }} Trophées verrouillés</h2>
+  <ul>
+    <li class="clearfix" *ngFor="let trophie of trophiesData?.locked">
+      <img src="assets/img/achievements/locked.png" />
+      <div class="content">
+        <div class="name">
+          {{ trophie.name }}
+        </div>
+        <div class="description">
+          {{ trophie.condition }}
+        </div>
+      </div>
+      <div class="trophee_phi">
+      {{ trophie.phi }}
+      </div>
+    </li>
+  </ul>
+</md-card>

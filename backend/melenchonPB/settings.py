@@ -162,7 +162,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 ANGULAR_URL = '/ng'
-ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngApp/dist/')
+ANGULAR_ROOT = os.path.join(BASE_DIR, '../frontend/dist/')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(BASE_DIR, 'static'))

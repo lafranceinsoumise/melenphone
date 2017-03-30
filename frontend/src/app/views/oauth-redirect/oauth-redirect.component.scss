@@ -1,0 +1,24 @@
+@import "../../../_colors.scss";
+
+.container {
+  margin: auto;
+}
+
+.error-message {
+  font-weight: bold;
+  color: #f00;
+}
+
+.checkmailbox {
+  font-weight: bold;
+  color: #f00;
+}
+
+.ou {
+  margin: auto;
+  color: $jlm-blue;
+
+  span {
+    font-size: 2em;
+  }
+}
