@@ -1,7 +1,7 @@
 <ng-container [ngSwitch]="user === null">
     <ng-container *ngSwitchCase="true">
       <a md-button routerLink="/classement"><i class="material-icons">show_chart</i> Classement</a>
-      <a md-button href="/connexion/">Connexion (via jlm2017.fr)</a>
+      <a md-button routerLink="/connexion/">Connexion (via jlm2017.fr)</a>
     </ng-container>
     <ng-container *ngSwitchCase="false">
         <a md-button *ngIf="user.agentUsername !== null" href="//app.callhub.io/v2/agent-console/" target="_blank"><i class="material-icons">phone</i> Appeler</a>
