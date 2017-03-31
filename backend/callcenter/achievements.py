@@ -59,7 +59,7 @@ def unlockAchievement(codeName, user):
 
 
 def leet(user):
-    now = timezone.now()
+    now = timezone.now().astimezone(timezone.get_default_timezone())
     if(now.hour == 13 and now.minute == 37):
         unlockAchievement("leet", user)
 
