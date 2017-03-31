@@ -44,3 +44,4 @@ Thumbs.db
 db.sqlite3
 
 static/
+virtualenv/
