@@ -213,6 +213,7 @@ REST_FRAMEWORK = {
 
 # callhub parameters
 CALLHUB_API_KEY = env_required('CALLHUB_API_KEY')
+CALLHUB_WEBHOOK_DOMAIN = os.environ.get('CALLHUB_WEBHOOK_DOMAIN')
 
 # jlm-auth parameters
 AUTHORIZATION_URL = env_required('AUTHORIZATION_URL')
