@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   }
   public notificationConfig = {
     position: ['bottom', 'right'],
-    timeOut: 2000,
+    timeOut: 3250,
     maxStack: 3,
     lastOnBottom: true,
     animate: 'scale',
