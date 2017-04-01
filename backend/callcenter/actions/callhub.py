@@ -2,6 +2,7 @@ from django.conf import settings
 import requests
 from requests.auth import AuthBase
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.http import urlquote
 
 from ..exceptions import CallerCreationError, CallerValidationError
 
@@ -51,11 +52,20 @@ def verify_agent(username, password):
         raise CallerValidationError
 
 
+def get_webhook_target():
+    return 'webhook/{}'.format(
+        urlquote(settings.CALLHUB_WEBHOOK_TOKEN)
+    )
+
+
 def verify_wehbook():
     if settings.REDIRECT_BASE is None:
         raise ImproperlyConfigured('Missing REDIRECT_BASE setting')
 
-    target = '{}/webhook/note'.format(settings.REDIRECT_BASE.rstrip('/'))
+    target = '{}/{}'.format(
+        settings.REDIRECT_BASE.rstrip('/'),
+        get_webhook_target()
+    )
     event = 'cc.notes'
 
     r = requests.get(WEBHOOKS_ENDPOINT, auth=CallhubAuth(settings.CALLHUB_API_KEY))
@@ -72,7 +82,7 @@ def verify_wehbook():
         if 'target' not in webhook and 'event' not in webhook:
             continue
 
-        if webhook['target'] == target and webhook['event']:
+        if webhook['target'] == target and webhook['event'] == event:
             return True
 
     return False
@@ -82,7 +92,10 @@ def create_webhook():
     if settings.REDIRECT_BASE is None:
         raise ImproperlyConfigured('Missing REDIRECT_BASE setting')
 
-    target = '{}/webhook/note'.format(settings.REDIRECT_BASE.rstrip('/'))
+    target = '{}/{}'.format(
+        settings.REDIRECT_BASE.rstrip('/'),
+        get_webhook_target()
+    )
     event = 'cc.notes'
 
     data = {
