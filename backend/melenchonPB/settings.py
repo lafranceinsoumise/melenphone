@@ -227,7 +227,7 @@ LOGIN_REDIRECT = '/ng/oauth_redirect'
 
 # the base uri to use to access this server from the outside world
 # used for oauth2 and callhub webhooks
-REDIRECT_BASE = os.environ.get('REDIRECT_BASE')
+REDIRECT_BASE = os.environ.get('REDIRECT_BASE', 'http://localhost:8000')
 
 # OAuth client parameters
 CLIENT_ID = env_required('CLIENT_ID')
