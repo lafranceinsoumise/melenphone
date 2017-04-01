@@ -26,33 +26,35 @@ def updateAchievements(user):
             f(user)
 
 def unlockAchievement(codeName, user):
-    if Achievement.objects.filter(codeName=codeName).exists():
-        achievement = Achievement.objects.filter(codeName=codeName)[0]
-        achievementUnlock, created = AchievementUnlock.objects.get_or_create(userExtend=user.UserExtend, achievement=achievement)
-        if created: #Si l'achievement est débloqué, on crédite les phis associés
-            userExtend = user.UserExtend
-            userExtend.phi = userExtend.phi + (achievement.phi * userExtend.phi_multiplier)
-            userExtend.save()
+    try:
+        achievement = Achievement.objects.get(codeName=codeName)
+    except Achievement.DoesNotExist:
+        pass
+    achievementUnlock, created = AchievementUnlock.objects.get_or_create(userExtend=user.UserExtend, achievement=achievement)
+    if created: #Si l'achievement est débloqué, on crédite les phis associés
+        userExtend = user.UserExtend
+        userExtend.phi = userExtend.phi + (achievement.phi * userExtend.phi_multiplier)
+        userExtend.save()
 
-            #Pas de websocket si l'achievement est trop banal.
-            excluded_achievements = [
-                'count_initie',
-                'count_apprenti'
-            ]
+        #Pas de websocket si l'achievement est trop banal.
+        excluded_achievements = [
+            'count_initie',
+            'count_apprenti'
+        ]
 
-            if codeName not in excluded_achievements:
-                websocketMessage = json.dumps({'type': 'achievement',
-                                           'value': {
-                                                'agentUsername':userExtend.agentUsername,
-                                                'achievement':{
-                                                    'name':achievement.name,
-                                                    'condition':achievement.condition,
-                                                    'phi':achievement.phi,
-                                                    'codeName':achievement.codeName
-                                                }
-                                           }
-                                        })
-                send_message(websocketMessage)
+        if codeName not in excluded_achievements:
+            websocketMessage = json.dumps({'type': 'achievement',
+                                       'value': {
+                                            'agentUsername':userExtend.agentUsername,
+                                            'achievement':{
+                                                'name':achievement.name,
+                                                'condition':achievement.condition,
+                                                'phi':achievement.phi,
+                                                'codeName':achievement.codeName
+                                            }
+                                       }
+                                    })
+            send_message(websocketMessage)
 
 
 ########### ACHIEVEMENT CONDITIONS ################

@@ -85,7 +85,10 @@ class webhook_note(APIView):
             ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
             dailyLeaderboard = []
             for ranked in ranking:
-                username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+                try:
+                    username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
+                except User.DoesNotExist:
+                    username = "Unknown"
                 calls = int(ranked[1])
                 dailyLeaderboard.append({'username': username, 'calls': calls})
 
@@ -320,7 +323,10 @@ class api_basic_information(APIView):
         ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
         dailyLeaderboard = []
         for ranked in ranking:
-            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
+            try:
+                username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
+            except User.DoesNotExist:
+                username = "Unknown"
             calls = int(ranked[1])
             dailyLeaderboard.append({'username': username, 'calls': calls})
 
