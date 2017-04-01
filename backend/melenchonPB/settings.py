@@ -213,7 +213,6 @@ REST_FRAMEWORK = {
 
 # callhub parameters
 CALLHUB_API_KEY = env_required('CALLHUB_API_KEY')
-CALLHUB_WEBHOOK_DOMAIN = os.environ.get('CALLHUB_WEBHOOK_DOMAIN')
 
 # jlm-auth parameters
 AUTHORIZATION_URL = env_required('AUTHORIZATION_URL')
@@ -225,8 +224,9 @@ PROFILE_URL = env_required('PROFILE_URL')
 # where to redirect once logged in
 LOGIN_REDIRECT = '/ng/oauth_redirect'
 
-# the base for the redirect_uri to use in the OAuth process
-REDIRECT_BASE = os.environ.get('REDIRECT_BASE', 'http://localhost:8000')
+# the base uri to use to access this server from the outside world
+# used for oauth2 and callhub webhooks
+REDIRECT_BASE = os.environ.get('REDIRECT_BASE')
 
 # OAuth client parameters
 CLIENT_ID = env_required('CLIENT_ID')

@@ -52,10 +52,10 @@ def verify_agent(username, password):
 
 
 def verify_wehbook():
-    if settings.CALLHUB_WEBHOOK_DOMAIN is None:
-        raise ImproperlyConfigured('Missing CALLHUB_WEBHOOK_DOMAIN setting')
+    if settings.REDIRECT_BASE is None:
+        raise ImproperlyConfigured('Missing REDIRECT_BASE setting')
 
-    target = '{}/webhook/note'.format(settings.CALLHUB_WEBHOOK_DOMAIN)
+    target = '{}/webhook/note'.format(settings.REDIRECT_BASE.rstrip('/'))
     event = 'cc.notes'
 
     r = requests.get(WEBHOOKS_ENDPOINT, auth=CallhubAuth(settings.CALLHUB_API_KEY))
@@ -79,10 +79,10 @@ def verify_wehbook():
 
 
 def create_webhook():
-    if settings.CALLHUB_WEBHOOK_DOMAIN is None:
-        raise ImproperlyConfigured('Missing CALLHUB_WEBHOOK_DOMAIN setting')
+    if settings.REDIRECT_BASE is None:
+        raise ImproperlyConfigured('Missing REDIRECT_BASE setting')
 
-    target = '{}/webhook/note'.format(settings.CALLHUB_WEBHOOK_DOMAIN)
+    target = '{}/webhook/note'.format(settings.REDIRECT_BASE.rstrip('/'))
     event = 'cc.notes'
 
     data = {
