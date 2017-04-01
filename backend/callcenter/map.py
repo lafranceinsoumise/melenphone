@@ -16,6 +16,9 @@ def setupLocationUser(user):
     country_code = user.country_code
     userExtend = user.UserExtend
 
+    location_lat = "None"
+    location_long = "None"
+
     # pour les belges
     if country_code == 'BE':
         location_lat = "51.229353"
@@ -39,12 +42,6 @@ def setupLocationUser(user):
             if geocoding_data: # Si on a au moins 1 résultat
                 location_lat = geocoding_data[0]['lat']
                 location_long = geocoding_data[0]['lon']
-            else: #Si on n'a pas de résultats, on ne connait pas la localisation
-                location_lat="None"
-                location_long="None"
-        else: #Si on a pas une réponse, on ne connait pas la localisation
-            location_lat="None"
-            location_long="None"
 
     userExtend.location_lat = location_lat
     userExtend.location_long = location_long
