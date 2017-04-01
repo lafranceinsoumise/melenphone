@@ -107,6 +107,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CACHES = {
+   'default': {
+      'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+      'LOCATION': 'cache',
+   }
+}
+
 ROOT_URLCONF = 'melenchonPB.urls'
 
 WSGI_APPLICATION = 'melenchonPB.wsgi.application'

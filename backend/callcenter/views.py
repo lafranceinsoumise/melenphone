@@ -4,8 +4,8 @@ import json
 import redis
 import random
 #Django imports
-from django.utils import timezone
 
+from django.utils import timezone
 from django.conf import settings
 from django.http import HttpResponse
 from rest_framework.views import APIView
@@ -13,6 +13,8 @@ from rest_framework import permissions
 from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.mixins import CreateModelMixin
 from django.http import Http404
+from django.views.decorators.cache import cache_page, never_cache
+from django.utils.decorators import method_decorator
 
 #Project imports
 from callcenter.models import *
@@ -25,6 +27,7 @@ from callcenter.serializers import UserSerializer, UserExtendSerializer, Callhub
 from callcenter.exceptions import CallerCreationError, CallerValidationError
 from melenchonPB.redis import redis_pool, format_date
 from callcenter.actions.score import update_scores
+from callcenter.leaderboard import generateLeaderboards
 
 #################### WEBHOOKS ################################
 
@@ -260,46 +263,11 @@ class api_user_achievements(APIView):
 # /api/leaderboard/X/ avec X = alltime ou weekly ou daily
 class api_leaderboard(APIView):
     permission_classes = (permissions.AllowAny,)
+
+    @method_decorator(cache_page(60))
     def get(self, request):
-        r = redis.StrictRedis(connection_pool=redis_pool)
 
-        ranking = r.zrevrange('melenphone:leaderboards:alltime',0,49,withscores=True)
-        alltime = []
-        for ranked in ranking:
-            try:
-                username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
-                calls = int(ranked[1])
-                alltime.append({'username':username, 'calls':calls})
-            except User.DoesNotExist:
-                pass
-            except UserExtend.DoesNotExist:
-                pass
-
-
-        ranking = r.zrevrange('melenphone:leaderboards:weekly:' + format_date(timezone.now()),0,49,withscores=True)
-        weekly = []
-        for ranked in ranking:
-            try:
-                username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
-                calls = int(ranked[1])
-                weekly.append({'username':username, 'calls':calls})
-            except User.DoesNotExist:
-                pass
-            except UserExtend.DoesNotExist:
-                pass
-
-
-        ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()),0,49,withscores=True)
-        daily = []
-        for ranked in ranking:
-            try:
-                username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
-                calls = int(ranked[1])
-                daily.append({'username':username, 'calls':calls})
-            except User.DoesNotExist:
-                pass
-            except UserExtend.DoesNotExist:
-                pass
+        alltime, weekly,daily = generateLeaderboards(50)
 
         data = {
                 'alltime':alltime,
@@ -308,12 +276,15 @@ class api_leaderboard(APIView):
                 }
         data = json.dumps(data)
 
+        print("recalculated")
+
         return HttpResponse(data)
 
 
 # /api/basic_information/
 class api_basic_information(APIView):
     permission_classes = (permissions.AllowAny,)
+
     def get(self, request):
         r = redis.StrictRedis(connection_pool=redis_pool)
         dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
