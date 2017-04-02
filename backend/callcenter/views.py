@@ -19,6 +19,7 @@ from accounts.models import User
 from callcenter.actions.leaderboard import generate_leaderboards
 from callcenter.actions.map import getCallerLocation, getCalledLocation, randomLocation
 from callcenter.actions.phi import EarnPhi
+from callcenter.actions.score import get_global_scores
 from callcenter.consumers import send_message
 from callcenter.exceptions import CallerCreationError, CallerValidationError
 from callcenter.models import *
@@ -38,11 +39,11 @@ class webhook_note(APIView):
         jsondata = request.body.decode('utf-8')
         data = json.loads(jsondata)
 
-        #Latitude et longitude de l'appelant
+        # Latitude et longitude de l'appelant
         callerAgentUsername = data['data']['agent']['username']
         callerLat, callerLng = getCallerLocation(callerAgentUsername)
 
-        #Latitude et longitude de l'appellé
+        # Latitude et longitude de l'appellé
         calledNumber = data['data']['contact']
         calledLat, calledLng = getCalledLocation(calledNumber)
 
@@ -51,18 +52,18 @@ class webhook_note(APIView):
         now = timezone.now().timestamp()
 
         try:
-            user = UserExtend.objects.get(agentUsername=callerAgentUsername).user #On le récupère
+            user = UserExtend.objects.get(agentUsername=callerAgentUsername).user  # On le récupère
             lastCall = float(r.getset('lastcall:user:' + str(user.id), now) or 0)
         except UserExtend.DoesNotExist:
             user = None
             lastCall = None
 
         if lastCall is None or (now - lastCall > settings.MIN_DELAY):
-            #On crédite les phis que gagne le user
+            # On crédite les phis que gagne le user
             EarnPhi(user, lastCall)
             Call.objects.create(user=user)
 
-            #On envoie les positions au websocket pour l'animation
+            # On envoie les positions au websocket pour l'animation
             if user is None:
                 id = None
                 agentUsername = None
@@ -70,41 +71,27 @@ class webhook_note(APIView):
                 id = user.id
                 agentUsername = user.UserExtend.agentUsername
 
-            dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
-            weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
-            alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
+            global_scores = get_global_scores()
 
-            ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
-            dailyLeaderboard = []
-            for ranked in ranking:
-                try:
-                    username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
-                except User.DoesNotExist:
-                    username = "Unknown"
-                calls = int(ranked[1])
-                dailyLeaderboard.append({'username': username, 'calls': calls})
+            message = {
+                'type': 'call',
+                'value': {
+                    'call': {
+                        'caller': {
+                            'lat': callerLat,
+                            'lng': callerLng,
+                            'id': id,
+                            'agentUsername': agentUsername},
+                        'target': {
+                            'lat': calledLat,
+                            'lng': calledLng}
+                    },
+                    'updatedData': global_scores
 
-            websocketMessage = json.dumps({ 'type':'call',
-                                            'value':{
-                                                 'call': {
-                                                    'caller': {
-                                                        'lat':callerLat,
-                                                        'lng':callerLng,
-                                                        'id':id,
-                                                        'agentUsername':agentUsername},
-                                                    'target': {
-                                                        'lat':calledLat,
-                                                        'lng':calledLng}
-                                                    },
-                                                'updatedData': {
-                                                    'dailyCalls':dailyCalls,
-                                                    'weeklyCalls':weeklyCalls,
-                                                    'alltimeCalls':alltimeCalls,
-                                                    'dailyLeaderboard': dailyLeaderboard
-                                                    }
-                                            }
-                                        })
-            send_message(websocketMessage)
+                }
+            }
+
+            send_message(json.dumps(message))
 
         return HttpResponse(status=200)
 
@@ -114,6 +101,7 @@ class webhook_note(APIView):
 # /api/test_websocket/
 class api_test_socket(APIView):
     permission_classes = (permissions.AllowAny,)
+
     def post(self, request):
         if settings.DEBUG == False:
             raise Http404
@@ -124,6 +112,7 @@ class api_test_socket(APIView):
 # /api/simulate_call/
 class api_test_simulatecall(APIView):
     permission_classes = (permissions.AllowAny,)
+
     def post(self, request):
         if settings.DEBUG == False:
             raise Http404
@@ -132,7 +121,7 @@ class api_test_simulatecall(APIView):
 
         users = User.objects.all()
         nb = users.count()
-        user = users[random.randint(0, nb-1)]
+        user = users[random.randint(0, nb - 1)]
         now = timezone.now().timestamp()
 
         callerLat, callerLng = randomLocation()
@@ -144,16 +133,7 @@ class api_test_simulatecall(APIView):
         # On ajoute l'appel à la bdd pour pouvoir reconstruire redis si besoin
         Call.objects.create(user=user)
 
-        dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
-        weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
-        alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
-
-        ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
-        dailyLeaderboard = []
-        for ranked in ranking:
-            username = User.objects.filter(id=int(ranked[0]))[0].UserExtend.agentUsername
-            calls = int(ranked[1])
-            dailyLeaderboard.append({'username': username, 'calls': calls})
+        global_scores = get_global_scores()
 
         websocketMessage = json.dumps({'type': 'call',
                                        'value': {
@@ -167,12 +147,7 @@ class api_test_simulatecall(APIView):
                                                    'lat': calledLat,
                                                    'lng': calledLng}
                                            },
-                                           'updatedData': {
-                                               'dailyCalls': dailyCalls,
-                                               'weeklyCalls': weeklyCalls,
-                                               'alltimeCalls': alltimeCalls,
-                                               'dailyLeaderboard':dailyLeaderboard
-                                           }
+                                           'updatedData': global_scores
                                        }
                                        })
 
@@ -205,13 +180,15 @@ class api_test_simulateachievement(APIView):
         send_message(websocketMessage)
         return HttpResponse(200)
 
+
 # /api/current_user/achievements/
 class api_user_achievements(APIView):
     permission_classes = (permissions.IsAuthenticated,)
+
     def get(self, request):
         user = request.user
 
-        try :
+        try:
             unlockedAchievements = user.UserExtend.get_achievements()
 
         except UserExtend.DoesNotExist:
@@ -219,23 +196,24 @@ class api_user_achievements(APIView):
 
         data = {}
 
-        #Recuperation des achivements débloqués
+        # Recuperation des achivements débloqués
         dataUnlockedAchievements = []
         idList = []
         for achievement in unlockedAchievements:
-            dataUnlockedAchievements.append({'name':achievement.name,
-                                             'condition':achievement.condition,
-                                             'phi':achievement.phi,
-                                             'codeName':achievement.codeName
+            dataUnlockedAchievements.append({'name': achievement.name,
+                                             'condition': achievement.condition,
+                                             'phi': achievement.phi,
+                                             'codeName': achievement.codeName
                                              })
             idList.append(achievement.id)
 
-        #Recuperation des achivements restants
+        # Recuperation des achivements restants
         lockedAchievements = Achievement.objects.all().exclude(id__in=idList)
 
         dataLockedAchievements = []
         for achievement in lockedAchievements:
-            dataLockedAchievements.append({'name':achievement.name, 'condition':achievement.condition, 'phi':achievement.phi})
+            dataLockedAchievements.append(
+                {'name': achievement.name, 'condition': achievement.condition, 'phi': achievement.phi})
 
         data['unlocked'] = dataUnlockedAchievements[::-1]
         data['locked'] = dataLockedAchievements
@@ -250,14 +228,13 @@ class api_leaderboard(APIView):
 
     @method_decorator(cache_page(60))
     def get(self, request):
-
-        alltime, weekly,daily = generate_leaderboards(50)
+        alltime, weekly, daily = generate_leaderboards(50)
 
         data = {
-                'alltime':alltime,
-                'weekly':weekly,
-                'daily':daily
-                }
+            'alltime': alltime,
+            'weekly': weekly,
+            'daily': daily
+        }
         data = json.dumps(data)
 
         print("recalculated")
@@ -271,29 +248,10 @@ class api_basic_information(APIView):
 
     def get(self, request):
         r = redis.StrictRedis(connection_pool=redis_pool)
-        dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
-        weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
-        alltimeCalls = int(r.get('melenphone:call_count:alltime') or 0)
 
-        ranking = r.zrevrange('melenphone:leaderboards:daily:' + format_date(timezone.now()), 0, 9, withscores=True)
-        dailyLeaderboard = []
-        for ranked in ranking:
-            try:
-                username = User.objects.get(id=int(ranked[0])).UserExtend.agentUsername
-            except User.DoesNotExist:
-                username = "Unknown"
-            calls = int(ranked[1])
-            dailyLeaderboard.append({'username': username, 'calls': calls})
+        global_scores = get_global_scores()
 
-        data = {
-                'dailyCalls':dailyCalls,
-                'weeklyCalls':weeklyCalls,
-                'alltimeCalls':alltimeCalls,
-                'dailyLeaderboard': dailyLeaderboard
-                }
-        data = json.dumps(data)
-
-        return HttpResponse(data)
+        return HttpResponse(json.dumps(global_scores))
 
 
 class UserAPI(RetrieveUpdateAPIView):
@@ -323,9 +281,11 @@ class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
         try:
             # try accessing UserExtend related property to see if it exists
             userExtend = request.user.UserExtend
-            raise CallerCreationError("Impossible de créer un agent si l'utilisateur en possède déjà un", code='already_exists')
+            raise CallerCreationError("Impossible de créer un agent si l'utilisateur en possède déjà un",
+                                      code='already_exists')
         except UserExtend.DoesNotExist:
             return self.create(request, *args, **kwargs)
+
 
 class AssociateExistingCallerAgentAPI(CreateAPIView):
     serializer_class = CallhubCredentialsSerializer
@@ -338,6 +298,7 @@ class AssociateExistingCallerAgentAPI(CreateAPIView):
         try:
             # try accessing UserExtend related property to see if it exists
             userExtend = request.user.UserExtend
-            raise CallerValidationError("Impossible de lier un agent si l'utilisateur en possède déjà un", code='already_exists')
+            raise CallerValidationError("Impossible de lier un agent si l'utilisateur en possède déjà un",
+                                        code='already_exists')
         except UserExtend.DoesNotExist:
             return super(CreateAPIView, self).create(request, *args, **kwargs)

@@ -41,7 +41,7 @@ def generate_leaderboard(period, top):
 
 def get_leaderboard(period, top):
     r = redis.StrictRedis(connection_pool=redis_pool)
-    if type == 'alltime':
+    if period == 'alltime':
         return r.zrevrange('melenphone:leaderboards:alltime',
                            0,
                            top-1,

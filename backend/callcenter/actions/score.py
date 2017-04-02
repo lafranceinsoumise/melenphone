@@ -3,6 +3,9 @@ from melenchonPB.redis import redis_pool, format_date
 import datetime
 import redis
 
+from .leaderboard import generate_leaderboard
+
+
 def update_scores(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
     pipe = r.pipeline(transaction=False)
@@ -24,8 +27,6 @@ def update_scores(user):
 
     pipe.incr('melenphone:call_count:daily:' + today)
 
-
-
     # Leaderboards
     if not(user is None):
         pipe.zincrby('melenphone:leaderboards:alltime',str(user.id))
@@ -36,3 +37,18 @@ def update_scores(user):
         pipe.zincrby('melenphone:leaderboards:daily:' + today, str(user.id))
 
     pipe.execute()
+
+
+def get_global_scores():
+    r = redis.StrictRedis(connection_pool=redis_pool)
+    daily_calls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
+    weekly_calls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
+    alltime_calls = int(r.get('melenphone:call_count:alltime') or 0)
+    daily_leaderboard = generate_leaderboard('daily', 10)
+
+    return {
+        'dailyCalls': daily_calls,
+        'weeklyCalls': weekly_calls,
+        'alltimeCalls': alltime_calls,
+        'dailyLeaderboard': daily_leaderboard
+    }
