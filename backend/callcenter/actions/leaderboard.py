@@ -1,13 +1,11 @@
 from melenchonPB import redis
 from accounts.models import User
 from callcenter.models import UserExtend
-from django.utils import timezone
 
 def generateLeaderboards(top):
 
-    weekly = generateLeaderboard('weekly', top)
     alltime = generateLeaderboard('alltime', top)
-
+    weekly = generateLeaderboard('weekly', top)
     daily = generateLeaderboard('daily', top)
 
     return alltime, weekly, daily
@@ -30,6 +28,8 @@ def generateLeaderboard(type, top):
         except User.DoesNotExist:
             pass
         except UserExtend.DoesNotExist:
+            pass
+        except StopIteration:
             pass
 
     return leaderboard

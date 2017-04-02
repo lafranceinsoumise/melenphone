@@ -1,33 +1,32 @@
 # -*- coding: utf-8 -*-
 
 import json
-import redis
 import random
-#Django imports
 
-from django.utils import timezone
+import redis
 from django.conf import settings
+from django.http import Http404
 from django.http import HttpResponse
-from rest_framework.views import APIView
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import permissions
 from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.mixins import CreateModelMixin
-from django.http import Http404
-from django.views.decorators.cache import cache_page, never_cache
-from django.utils.decorators import method_decorator
+from rest_framework.views import APIView
 
-#Project imports
-from callcenter.models import *
 from accounts.models import User
-from callcenter.achievements import updateAchievements
-from callcenter.map import getCallerLocation, getCalledLocation, randomLocation
-from callcenter.phi import EarnPhi
-from callcenter.consumers import send_message
-from callcenter.serializers import UserSerializer, UserExtendSerializer, CallhubCredentialsSerializer
-from callcenter.exceptions import CallerCreationError, CallerValidationError
-from melenchonPB.redis import redis_pool, format_date
+from callcenter.actions.achievements import updateAchievements
+from callcenter.actions.leaderboard import generateLeaderboards
+from callcenter.actions.map import getCallerLocation, getCalledLocation, randomLocation
+from callcenter.actions.phi import EarnPhi
 from callcenter.actions.score import update_scores
-from callcenter.leaderboard import generateLeaderboards
+from callcenter.consumers import send_message
+from callcenter.exceptions import CallerCreationError, CallerValidationError
+from callcenter.models import *
+from callcenter.serializers import UserSerializer, UserExtendSerializer, CallhubCredentialsSerializer
+from melenchonPB.redis import redis_pool, format_date
+
 
 #################### WEBHOOKS ################################
 
