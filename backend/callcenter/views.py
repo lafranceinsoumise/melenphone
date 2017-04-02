@@ -103,8 +103,6 @@ class TestSocketView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        if settings.DEBUG == False:
-            raise Http404
         send_message(request.body)
         return Response(status=200)
 
@@ -114,9 +112,6 @@ class SimulateCallView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        if settings.DEBUG == False:
-            raise Http404
-
         r = redis.StrictRedis(connection_pool=redis_pool)
 
         users = User.objects.all()
@@ -159,9 +154,6 @@ class SimulateAchievementView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        if settings.DEBUG == False:
-            raise Http404
-
         achievements = Achievement.objects.all()
         nb = achievements.count()
         achievement = achievements[random.randint(0, nb - 1)]

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 #Python imports
-from django.utils import timezone
 from decimal import Decimal
 from django.utils import timezone
 from django.conf import settings
