@@ -259,7 +259,7 @@ CLIENT_ID = env_required('CLIENT_ID')
 CLIENT_SECRET = env_required('CLIENT_SECRET')
 
 # minimum lenght of call so that it is counted, in seconds
-MIN_DELAY = 30
+MIN_DELAY = 23
 
 # parameters for calculating phi earnings
 from decimal import Decimal
