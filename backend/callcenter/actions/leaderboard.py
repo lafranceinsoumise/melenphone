@@ -18,14 +18,14 @@ def generate_leaderboard(period, top):
 
     redis_leaderboard = get_leaderboard(period, top)
 
-    idList = [item[0] for item in redis_leaderboard]
+    id_list = [item[0] for item in redis_leaderboard]
 
-    users = User.objects.filter(id__in=idList)
+    users = User.objects.filter(id__in=id_list)
 
     leaderboard = []
     for ranked in redis_leaderboard:
         try:
-            user = next(user for user in users if user.id==int(ranked[0]))
+            user = next(user for user in users if user.id == int(ranked[0]))
             username = user.UserExtend.agentUsername
             calls = int(ranked[1])
             leaderboard.append({'username': username, 'calls': calls})
@@ -39,9 +39,15 @@ def generate_leaderboard(period, top):
     return leaderboard
 
 
-def get_leaderboard(type, top):
+def get_leaderboard(period, top):
     r = redis.StrictRedis(connection_pool=redis_pool)
     if type == 'alltime':
-        return r.zrevrange('melenphone:leaderboards:alltime', 0, top-1, withscores=True)
+        return r.zrevrange('melenphone:leaderboards:alltime',
+                           0,
+                           top-1,
+                           withscores=True)
     else:
-        return r.zrevrange('melenphone:leaderboards:' + type + ':' + format_date(timezone.now()), 0, top-1, withscores=True)
+        return r.zrevrange('melenphone:leaderboards:' + period + ':' + format_date(timezone.now()),
+                           0,
+                           top-1,
+                           withscores=True)
