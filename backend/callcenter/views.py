@@ -16,11 +16,9 @@ from rest_framework.mixins import CreateModelMixin
 from rest_framework.views import APIView
 
 from accounts.models import User
-from callcenter.actions.achievements import updateAchievements
 from callcenter.actions.leaderboard import generate_leaderboards
 from callcenter.actions.map import getCallerLocation, getCalledLocation, randomLocation
 from callcenter.actions.phi import EarnPhi
-from callcenter.actions.score import update_scores
 from callcenter.consumers import send_message
 from callcenter.exceptions import CallerCreationError, CallerValidationError
 from callcenter.models import *
@@ -62,15 +60,7 @@ class webhook_note(APIView):
         if lastCall is None or (now - lastCall > settings.MIN_DELAY):
             #On crédite les phis que gagne le user
             EarnPhi(user, lastCall)
-
-            #On ajoute l'appel au serveur redis
-            update_scores(user)
-
-            #On ajoute l'appel à la bdd pour pouvoir reconstruire redis si besoin
             Call.objects.create(user=user)
-
-            #On met à jour les achievements
-            updateAchievements(user)
 
             #On envoie les positions au websocket pour l'animation
             if user is None:
@@ -151,14 +141,8 @@ class api_test_simulatecall(APIView):
         lastCall = float(r.getset('lastcall:user:' + str(user.id), now) or 0)
         EarnPhi(user, lastCall)
 
-        # On ajoute l'appel au serveur redis
-        update_scores(user)
-
         # On ajoute l'appel à la bdd pour pouvoir reconstruire redis si besoin
         Call.objects.create(user=user)
-
-        # On met à jour les achievements
-        updateAchievements(user)
 
         dailyCalls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
         weeklyCalls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
@@ -194,6 +178,7 @@ class api_test_simulatecall(APIView):
 
         send_message(websocketMessage)
         return HttpResponse(200)
+
 
 class api_test_simulateachievement(APIView):
     permission_classes = (permissions.AllowAny,)
