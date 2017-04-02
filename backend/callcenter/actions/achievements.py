@@ -13,7 +13,7 @@ from melenchonPB.redis import redis_pool, format_date
 from callcenter.consumers import send_message
 
 #Fonction principale
-def updateAchievements(user):
+def update_achievements(user):
     if not(user is None):
         #Appeler les autres fonctions de validation
         functions = [   leet,
@@ -25,7 +25,7 @@ def updateAchievements(user):
         for f in functions:
             f(user)
 
-def unlockAchievement(codeName, user):
+def unlock_achievement(codeName, user):
     try:
         achievement = Achievement.objects.get(codeName=codeName)
     except Achievement.DoesNotExist:
@@ -43,7 +43,7 @@ def unlockAchievement(codeName, user):
         ]
 
         if codeName not in excluded_achievements:
-            websocketMessage = json.dumps({'type': 'achievement',
+            websocket_message = json.dumps({'type': 'achievement',
                                        'value': {
                                             'agentUsername':userExtend.agentUsername,
                                             'achievement':{
@@ -54,7 +54,39 @@ def unlockAchievement(codeName, user):
                                             }
                                        }
                                     })
-            send_message(websocketMessage)
+            send_message(websocket_message)
+
+def get_achievements(user):
+    try:
+        unlocked_achievements = user.UserExtend.get_achievements()
+    except UserExtend.DoesNotExist:
+        unlocked_achievements = []
+
+    data = {}
+
+    # Recuperation des achivements débloqués
+    data_unlocked_achievements = []
+    id_list = []
+    for achievement in unlocked_achievements:
+        data_unlocked_achievements.append({'name': achievement.name,
+                                         'condition': achievement.condition,
+                                         'phi': achievement.phi,
+                                         'codeName': achievement.codeName
+                                         })
+        id_list.append(achievement.id)
+
+    # Recuperation des achivements restants
+    locked_achievements = Achievement.objects.all().exclude(id__in=id_list)
+
+    data_locked_achievements = []
+    for achievement in locked_achievements:
+        data_locked_achievements.append(
+            {'name': achievement.name, 'condition': achievement.condition, 'phi': achievement.phi})
+
+    data['unlocked'] = data_unlocked_achievements[::-1]
+    data['locked'] = data_locked_achievements
+
+    return data
 
 
 ########### ACHIEVEMENT CONDITIONS ################
@@ -63,69 +95,69 @@ def unlockAchievement(codeName, user):
 def leet(user):
     now = timezone.now().astimezone(timezone.get_default_timezone())
     if(now.hour == 13 and now.minute == 37):
-        unlockAchievement("leet", user)
+        unlock_achievement("leet", user)
 
 def earlyAdopters(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
     callersCount = r.scard('leaderbords:alltime')
     if callersCount < 100:
-        unlockAchievement("early_y_etais", user)
+        unlock_achievement("early_y_etais", user)
 
 def dailyCalls(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
     dailyCalls = int(r.zscore('melenphone:leaderboards:daily:' + format_date(timezone.now()), str(user.id)))
     if dailyCalls == 50:
-        unlockAchievement("daily_a_fond", user)
+        unlock_achievement("daily_a_fond", user)
     if dailyCalls == 100:
-        unlockAchievement("daily_acharne", user)
+        unlock_achievement("daily_acharne", user)
     if dailyCalls == 200:
-        unlockAchievement("daily_dodo", user)
+        unlock_achievement("daily_dodo", user)
 
 
 def callCount(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
     count = int(r.zscore('melenphone:leaderboards:alltime', str(user.id)))
     if count == 1:
-        unlockAchievement("count_initie", user)
+        unlock_achievement("count_initie", user)
     if count == 5:
-        unlockAchievement("count_apprenti", user)
+        unlock_achievement("count_apprenti", user)
     if count == 10:
-        unlockAchievement("count_fan_rdls", user)
+        unlock_achievement("count_fan_rdls", user)
     if count == 20:
-        unlockAchievement("count_militant", user)
+        unlock_achievement("count_militant", user)
     if count == 35:
-        unlockAchievement("count_top", user)
+        unlock_achievement("count_top", user)
     if count == 50:
-        unlockAchievement("count_messager", user)
+        unlock_achievement("count_messager", user)
     if count == 70:
-        unlockAchievement("count_animateur", user)
+        unlock_achievement("count_animateur", user)
     if count == 100:
-        unlockAchievement("count_artiste", user)
+        unlock_achievement("count_artiste", user)
     if count == 150:
-        unlockAchievement("count_lanceur", user)
+        unlock_achievement("count_lanceur", user)
     if count == 250:
-        unlockAchievement("count_ambassadeur", user)
+        unlock_achievement("count_ambassadeur", user)
     if count == 375:
-        unlockAchievement("count_mage", user)
+        unlock_achievement("count_mage", user)
     if count == 500:
-        unlockAchievement("count_justicier", user)
+        unlock_achievement("count_justicier", user)
     if count == 700:
-        unlockAchievement("count_tribun", user)
+        unlock_achievement("count_tribun", user)
     if count == 1000:
-        unlockAchievement("count_heros", user)
+        unlock_achievement("count_heros", user)
     if count == 1500:
-        unlockAchievement("count_laec", user)
+        unlock_achievement("count_laec", user)
     if count == 5000:
-        unlockAchievement("count_legendaire", user)
+        unlock_achievement("count_legendaire", user)
 
 def leaderboards(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
 
     if int(r.zrevrank('melenphone:leaderboards:alltime', str(user.id))) == 0:
-        unlockAchievement("leaderboard_alltime", user)
+        unlock_achievement("leaderboard_alltime", user)
 
     if int(r.zrevrank('melenphone:leaderboards:weekly:' + format_date(timezone.now()), str(user.id))) == 0:
-        unlockAchievement("leaderboard_weekly", user)
+        unlock_achievement("leaderboard_weekly", user)
 
     if int(r.zrevrank('melenphone:leaderboards:daily:' + format_date(timezone.now()), str(user.id))) == 0:
-        unlockAchievement("leaderboard_daily", user)
+        unlock_achievement("leaderboard_daily", user)

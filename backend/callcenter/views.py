@@ -20,11 +20,12 @@ from callcenter.actions.leaderboard import generate_leaderboards
 from callcenter.actions.map import getCallerLocation, getCalledLocation, randomLocation
 from callcenter.actions.phi import EarnPhi
 from callcenter.actions.score import get_global_scores
+from callcenter.actions.achievements import get_achievements
 from callcenter.consumers import send_message
 from callcenter.exceptions import CallerCreationError, CallerValidationError
 from callcenter.models import *
 from callcenter.serializers import UserSerializer, UserExtendSerializer, CallhubCredentialsSerializer
-from melenchonPB.redis import redis_pool, format_date
+from melenchonPB.redis import redis_pool
 
 
 #################### WEBHOOKS ################################
@@ -178,37 +179,9 @@ class UserAchievementsView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
+
         user = request.user
-
-        try:
-            unlockedAchievements = user.UserExtend.get_achievements()
-
-        except UserExtend.DoesNotExist:
-            unlockedAchievements = []
-
-        data = {}
-
-        # Recuperation des achivements débloqués
-        dataUnlockedAchievements = []
-        idList = []
-        for achievement in unlockedAchievements:
-            dataUnlockedAchievements.append({'name': achievement.name,
-                                             'condition': achievement.condition,
-                                             'phi': achievement.phi,
-                                             'codeName': achievement.codeName
-                                             })
-            idList.append(achievement.id)
-
-        # Recuperation des achivements restants
-        lockedAchievements = Achievement.objects.all().exclude(id__in=idList)
-
-        dataLockedAchievements = []
-        for achievement in lockedAchievements:
-            dataLockedAchievements.append(
-                {'name': achievement.name, 'condition': achievement.condition, 'phi': achievement.phi})
-
-        data['unlocked'] = dataUnlockedAchievements[::-1]
-        data['locked'] = dataLockedAchievements
+        data = get_achievements(user)
 
         return Response(data)
 

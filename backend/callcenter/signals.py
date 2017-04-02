@@ -2,7 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from .models import Call
-from .actions.achievements import updateAchievements
+from .actions.achievements import update_achievements
 from .actions.score import update_scores
 
 
@@ -22,6 +22,6 @@ def call_post_save(instance, created, raw, **kwargs):
         user = instance.user
 
         update_scores(user)
-        updateAchievements(user)
+        update_achievements(user)
 
     pass
