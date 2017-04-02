@@ -6,10 +6,10 @@ import random
 import redis
 from django.conf import settings
 from django.http import Http404
-from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.mixins import CreateModelMixin
@@ -31,7 +31,7 @@ from melenchonPB.redis import redis_pool, format_date
 
 
 # /webhook/note
-class webhook_note(APIView):
+class CallhubWebhookView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
@@ -93,24 +93,24 @@ class webhook_note(APIView):
 
             send_message(json.dumps(message))
 
-        return HttpResponse(status=200)
+        return Response(status=200)
 
 
 #################### REST API ################################
 
 # /api/test_websocket/
-class api_test_socket(APIView):
+class TestSocketView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
         if settings.DEBUG == False:
             raise Http404
         send_message(request.body)
-        return HttpResponse(200)
+        return Response(status=200)
 
 
 # /api/simulate_call/
-class api_test_simulatecall(APIView):
+class SimulateCallView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
@@ -152,10 +152,10 @@ class api_test_simulatecall(APIView):
                                        })
 
         send_message(websocketMessage)
-        return HttpResponse(200)
+        return Response(status=200)
 
 
-class api_test_simulateachievement(APIView):
+class SimulateAchievementView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
@@ -178,11 +178,11 @@ class api_test_simulateachievement(APIView):
                                        }
                                        })
         send_message(websocketMessage)
-        return HttpResponse(200)
+        return Response(status=200)
 
 
 # /api/current_user/achievements/
-class api_user_achievements(APIView):
+class UserAchievementsView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
@@ -217,13 +217,12 @@ class api_user_achievements(APIView):
 
         data['unlocked'] = dataUnlockedAchievements[::-1]
         data['locked'] = dataLockedAchievements
-        data = json.dumps(data)
 
-        return HttpResponse(data)
+        return Response(data)
 
 
 # /api/leaderboard/X/ avec X = alltime ou weekly ou daily
-class api_leaderboard(APIView):
+class LeaderboardsView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     @method_decorator(cache_page(60))
@@ -235,36 +234,31 @@ class api_leaderboard(APIView):
             'weekly': weekly,
             'daily': daily
         }
-        data = json.dumps(data)
 
         print("recalculated")
 
-        return HttpResponse(data)
+        return Response(data)
 
 
 # /api/basic_information/
-class api_basic_information(APIView):
+class BasicInformationView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
-        r = redis.StrictRedis(connection_pool=redis_pool)
-
-        global_scores = get_global_scores()
-
-        return HttpResponse(json.dumps(global_scores))
+        return Response(get_global_scores())
 
 
-class UserAPI(RetrieveUpdateAPIView):
+class UserView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
 
     def get_serializer(self, *args, **kwargs):
-        return super(UserAPI, self).get_serializer(*args, **kwargs)
+        return super(UserView, self).get_serializer(*args, **kwargs)
 
     def get_object(self):
         return self.request.user
 
 
-class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
+class CallerInformationView(RetrieveAPIView, CreateModelMixin):
     serializer_class = UserExtendSerializer
 
     def get_object(self):
@@ -287,7 +281,7 @@ class CallerInformationAPI(RetrieveAPIView, CreateModelMixin):
             return self.create(request, *args, **kwargs)
 
 
-class AssociateExistingCallerAgentAPI(CreateAPIView):
+class AssociateExistingCallerAgentView(CreateAPIView):
     serializer_class = CallhubCredentialsSerializer
 
     def perform_create(self, serializer):

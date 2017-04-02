@@ -22,7 +22,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.views.static import serve
 from django.utils.http import urlquote
 
-from callcenter.views import webhook_note
+from callcenter.views import CallhubWebhookView
 from accounts import urls as accounts_urls
 from callcenter import urls as callcenter_urls
 from callcenter.actions.callhub import get_webhook_target
@@ -51,7 +51,7 @@ def angular_routes(prefix, view=serve, index='index.html', **kwargs):
 urlpatterns = [
 
     #WEBHOOKS
-    url(r'^%s' % get_webhook_target(), webhook_note.as_view()),
+    url(r'^%s' % get_webhook_target(), CallhubWebhookView.as_view()),
 
     #Accounts URLs
     url(r'^', include(accounts_urls, namespace='accounts')),
