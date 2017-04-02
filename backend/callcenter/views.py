@@ -17,7 +17,7 @@ from rest_framework.views import APIView
 
 from accounts.models import User
 from callcenter.actions.achievements import updateAchievements
-from callcenter.actions.leaderboard import generateLeaderboards
+from callcenter.actions.leaderboard import generate_leaderboards
 from callcenter.actions.map import getCallerLocation, getCalledLocation, randomLocation
 from callcenter.actions.phi import EarnPhi
 from callcenter.actions.score import update_scores
@@ -266,7 +266,7 @@ class api_leaderboard(APIView):
     @method_decorator(cache_page(60))
     def get(self, request):
 
-        alltime, weekly,daily = generateLeaderboards(50)
+        alltime, weekly,daily = generate_leaderboards(50)
 
         data = {
                 'alltime':alltime,
