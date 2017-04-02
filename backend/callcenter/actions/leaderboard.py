@@ -15,15 +15,15 @@ def generate_leaderboards(top):
 
 def generate_leaderboard(period, top):
     redis_leaderboard = get_leaderboard_from_redis(period, top)
-    user_pks = [item[0] for item in redis_leaderboard]
+    user_pks = [int(pk_as_str) for pk_as_str, score_as_str in redis_leaderboard]
     users = User.objects.filter(pk__in=user_pks)
     users_map = {u.pk: u for u in users}
 
     leaderboard = []
 
-    for pk, score_as_str in redis_leaderboard:
+    for pk_as_str, score_as_str in redis_leaderboard:
         try:
-            username = users_map[pk].UserExtend.agentUsername
+            username = users_map[int(pk_as_str)].UserExtend.agentUsername
         except (KeyError, UserExtend.DoesNotExist):
             username = "???"
         score = int(score_as_str)
