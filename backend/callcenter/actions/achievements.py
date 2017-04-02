@@ -1,60 +1,65 @@
 # -*- coding: utf-8 -*-
 
-#Python imports
+# Python imports
 import redis
-import json
 
-#Django imports
+# Django imports
 from django.utils import timezone
+from channels import Channel
 
-#Project import
+# Project import
 from callcenter.models import *
 from melenchonPB.redis import redis_pool, format_date
-from callcenter.consumers import send_message
 
-#Fonction principale
+
+# Fonction principale
 def update_achievements(user):
-    if not(user is None):
-        #Appeler les autres fonctions de validation
-        functions = [   leet,
-                        callCount,
-                        dailyCalls,
-                        earlyAdopters,
-                        leaderboards
-                    ]
+    if not (user is None):
+        # Appeler les autres fonctions de validation
+        functions = [
+            leet,
+            callCount,
+            dailyCalls,
+            earlyAdopters,
+            leaderboards
+        ]
         for f in functions:
             f(user)
+
 
 def unlock_achievement(codeName, user):
     try:
         achievement = Achievement.objects.get(codeName=codeName)
     except Achievement.DoesNotExist:
         pass
-    achievementUnlock, created = AchievementUnlock.objects.get_or_create(userExtend=user.UserExtend, achievement=achievement)
-    if created: #Si l'achievement est débloqué, on crédite les phis associés
+    achievementUnlock, created = AchievementUnlock.objects.get_or_create(userExtend=user.UserExtend,
+                                                                         achievement=achievement)
+    if created:  # Si l'achievement est débloqué, on crédite les phis associés
         userExtend = user.UserExtend
         userExtend.phi = userExtend.phi + (achievement.phi * userExtend.phi_multiplier)
         userExtend.save()
 
-        #Pas de websocket si l'achievement est trop banal.
+        # Pas de websocket si l'achievement est trop banal.
         excluded_achievements = [
             'count_initie',
             'count_apprenti'
         ]
 
         if codeName not in excluded_achievements:
-            websocket_message = json.dumps({'type': 'achievement',
-                                       'value': {
-                                            'agentUsername':userExtend.agentUsername,
-                                            'achievement':{
-                                                'name':achievement.name,
-                                                'condition':achievement.condition,
-                                                'phi':achievement.phi,
-                                                'codeName':achievement.codeName
-                                            }
-                                       }
-                                    })
-            send_message(websocket_message)
+            message = {
+                'type': 'achievement',
+                'value': {
+                    'agentUsername': userExtend.agentUsername,
+                    'achievement': {
+                        'name': achievement.name,
+                        'condition': achievement.condition,
+                        'phi': achievement.phi,
+                        'codeName': achievement.codeName
+                    }
+                }
+            }
+            Channel('send_message').send(message)
+
 
 def get_achievements(user):
     try:
@@ -68,11 +73,12 @@ def get_achievements(user):
     data_unlocked_achievements = []
     id_list = []
     for achievement in unlocked_achievements:
-        data_unlocked_achievements.append({'name': achievement.name,
-                                         'condition': achievement.condition,
-                                         'phi': achievement.phi,
-                                         'codeName': achievement.codeName
-                                         })
+        data_unlocked_achievements.append({
+            'name': achievement.name,
+            'condition': achievement.condition,
+            'phi': achievement.phi,
+            'codeName': achievement.codeName
+        })
         id_list.append(achievement.id)
 
     # Recuperation des achivements restants
@@ -94,14 +100,16 @@ def get_achievements(user):
 
 def leet(user):
     now = timezone.now().astimezone(timezone.get_default_timezone())
-    if(now.hour == 13 and now.minute == 37):
+    if (now.hour == 13 and now.minute == 37):
         unlock_achievement("leet", user)
+
 
 def earlyAdopters(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
     callersCount = r.scard('leaderbords:alltime')
     if callersCount < 100:
         unlock_achievement("early_y_etais", user)
+
 
 def dailyCalls(user):
     r = redis.StrictRedis(connection_pool=redis_pool)
@@ -149,6 +157,7 @@ def callCount(user):
         unlock_achievement("count_laec", user)
     if count == 5000:
         unlock_achievement("count_legendaire", user)
+
 
 def leaderboards(user):
     r = redis.StrictRedis(connection_pool=redis_pool)

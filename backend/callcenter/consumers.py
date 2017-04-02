@@ -1,3 +1,5 @@
+import json
+
 # In consumers.py
 from channels import Group
 
@@ -14,4 +16,4 @@ def ws_disconnect(message):
     Group("all-clients").discard(message.reply_channel)
 
 def send_message(message):
-    Group("all-clients").send({"text": message})
+    Group("all-clients").send({"text": json.dumps(message.content)})

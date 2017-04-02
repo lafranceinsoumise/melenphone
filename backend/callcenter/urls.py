@@ -16,7 +16,7 @@ urlpatterns = [
 
 if settings.DEBUG == True:
     urlpatterns += [
-    url(r'^test_websocket$', views.TestSocketView.as_view()),
-    url(r'^simulate_call$', views.SimulateCallView.as_view()),
-    url(r'^simulate_achievement$', views.SimulateAchievementView.as_view())
+        url(r'^test_websocket$', views.TestSocketView.as_view()),
+        url(r'^simulate_call$', views.SimulateCallView.as_view()),
+        url(r'^simulate_achievement$', views.SimulateAchievementView.as_view())
     ]

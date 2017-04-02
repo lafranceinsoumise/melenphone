@@ -14,6 +14,7 @@ from rest_framework import permissions
 from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.views import APIView
+from channels import Channel
 
 from accounts.models import User
 from callcenter.actions.leaderboard import generate_leaderboards
@@ -21,7 +22,6 @@ from callcenter.actions.map import getCallerLocation, getCalledLocation, randomL
 from callcenter.actions.phi import EarnPhi
 from callcenter.actions.score import get_global_scores
 from callcenter.actions.achievements import get_achievements
-from callcenter.consumers import send_message
 from callcenter.exceptions import CallerCreationError, CallerValidationError
 from callcenter.models import *
 from callcenter.serializers import UserSerializer, UserExtendSerializer, CallhubCredentialsSerializer
@@ -92,7 +92,7 @@ class CallhubWebhookView(APIView):
                 }
             }
 
-            send_message(json.dumps(message))
+            Channel('send_message').send(message)
 
         return Response(status=200)
 
@@ -104,7 +104,7 @@ class TestSocketView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        send_message(request.body)
+        Channel('send_message').send({'body': request.body})
         return Response(status=200)
 
 
@@ -131,23 +131,24 @@ class SimulateCallView(APIView):
 
         global_scores = get_global_scores()
 
-        websocketMessage = json.dumps({'type': 'call',
-                                       'value': {
-                                           'call': {
-                                               'caller': {
-                                                   'lat': callerLat,
-                                                   'lng': callerLng,
-                                                   'id': user.id,
-                                                   'agentUsername': user.UserExtend.agentUsername},
-                                               'target': {
-                                                   'lat': calledLat,
-                                                   'lng': calledLng}
-                                           },
-                                           'updatedData': global_scores
-                                       }
-                                       })
+        message = {
+            'type': 'call',
+            'value': {
+                'call': {
+                    'caller': {
+                        'lat': callerLat,
+                        'lng': callerLng,
+                        'id': user.id,
+                        'agentUsername': user.UserExtend.agentUsername},
+                    'target': {
+                        'lat': calledLat,
+                        'lng': calledLng}
+                },
+                'updatedData': global_scores
+            }
+        }
 
-        send_message(websocketMessage)
+        Channel('send_message').send(message)
         return Response(status=200)
 
 
@@ -159,18 +160,19 @@ class SimulateAchievementView(APIView):
         nb = achievements.count()
         achievement = achievements[random.randint(0, nb - 1)]
 
-        websocketMessage = json.dumps({'type': 'achievement',
-                                       'value': {
-                                           'agentUsername': 'Jean-René',
-                                           'achievement': {
-                                               'name': achievement.name,
-                                               'condition': achievement.condition,
-                                               'phi': achievement.phi,
-                                               'codeName': achievement.codeName
-                                           }
-                                       }
-                                       })
-        send_message(websocketMessage)
+        message = {
+            'type': 'achievement',
+            'value': {
+                'agentUsername': 'Jean-René',
+                'achievement': {
+                    'name': achievement.name,
+                    'condition': achievement.condition,
+                    'phi': achievement.phi,
+                    'codeName': achievement.codeName
+                }
+            }
+        }
+        Channel('send_message').send(message)
         return Response(status=200)
 
 
