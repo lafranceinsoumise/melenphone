@@ -20,8 +20,9 @@ from accounts.models import User
 from callcenter.actions.leaderboard import generate_leaderboards
 from callcenter.actions.map import getCallerLocation, getCalledLocation, randomLocation
 from callcenter.actions.phi import EarnPhi
-from callcenter.actions.score import get_global_scores
-from callcenter.actions.achievements import get_achievements
+from callcenter.actions.score import get_global_scores, update_scores
+from callcenter.actions.achievements import get_achievements, update_achievements
+
 from callcenter.exceptions import CallerCreationError, CallerValidationError
 from callcenter.models import *
 from callcenter.serializers import UserSerializer, UserExtendSerializer, CallhubCredentialsSerializer
@@ -63,6 +64,8 @@ class CallhubWebhookView(APIView):
             # On crédite les phis que gagne le user
             EarnPhi(user, lastCall)
             Call.objects.create(user=user)
+            update_scores(user)
+            update_achievements(user)
 
             # On envoie les positions au websocket pour l'animation
             if user is None:
@@ -128,6 +131,8 @@ class SimulateCallView(APIView):
 
         # On ajoute l'appel à la bdd pour pouvoir reconstruire redis si besoin
         Call.objects.create(user=user)
+        update_scores(user)
+        update_achievements(user)
 
         global_scores = get_global_scores()
 
