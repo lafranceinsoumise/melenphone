@@ -1,4 +1,4 @@
-from melenchonPB.redis import redis_pool, format_date
+from melenchonPB.redis import get_redis_instance, format_date
 from accounts.models import User
 from callcenter.models import UserExtend
 import redis
@@ -37,7 +37,7 @@ def generate_leaderboard(period, top):
 
 
 def get_leaderboard_from_redis(period, top):
-    r = redis.StrictRedis(connection_pool=redis_pool)
+    r = get_redis_instance()
     if period == 'alltime':
         return r.zrevrange(
             'melenphone:leaderboards:alltime',

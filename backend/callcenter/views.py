@@ -25,7 +25,7 @@ from callcenter.actions.achievements import get_achievements
 from callcenter.exceptions import CallerCreationError, CallerValidationError
 from callcenter.models import *
 from callcenter.serializers import UserSerializer, UserExtendSerializer, CallhubCredentialsSerializer
-from melenchonPB.redis import redis_pool
+from melenchonPB.redis import get_redis_instance
 
 
 #################### WEBHOOKS ################################
@@ -48,7 +48,7 @@ class CallhubWebhookView(APIView):
         calledNumber = data['data']['contact']
         calledLat, calledLng = getCalledLocation(calledNumber)
 
-        r = redis.StrictRedis(connection_pool=redis_pool)
+        r = get_redis_instance()
 
         now = timezone.now().timestamp()
 
@@ -113,7 +113,7 @@ class SimulateCallView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        r = redis.StrictRedis(connection_pool=redis_pool)
+        r = get_redis_instance()
 
         users = User.objects.all()
         nb = users.count()

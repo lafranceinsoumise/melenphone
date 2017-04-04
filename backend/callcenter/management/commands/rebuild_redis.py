@@ -1,13 +1,13 @@
 from django.core.management.base import BaseCommand, CommandError
 from callcenter.models import Call
 from callcenter.actions.score import update_scores
-from melenchonPB.redis import redis_pool
-import redis
+from melenchonPB.redis import get_redis_instance
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
-        r = redis.StrictRedis(connection_pool=redis_pool)
+        r = get_redis_instance()
         keys = r.keys('melenphone:*')
 
         pipe = r.pipeline(transaction=False)

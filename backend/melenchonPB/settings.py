@@ -59,6 +59,9 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
+# redis
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+
 if DEBUG == False:
     LOGGING = {
         'version': 1,
@@ -108,16 +111,20 @@ MIDDLEWARE = [
 ]
 
 CACHES = {
-   'default': {
-      'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-      'LOCATION': 'cache',
-   }
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': REDIS_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PARSER_CLASS': 'redis.connection.HiredisParser',
+        },
+        'KEY_PREFIX': 'melenphone_cache'
+    }
 }
 
 ROOT_URLCONF = 'melenchonPB.urls'
 
 WSGI_APPLICATION = 'melenchonPB.wsgi.application'
-
 
 # template conf
 TEMPLATES = [
@@ -195,11 +202,6 @@ STATICFILES_DIRS = (
     ANGULAR_ROOT,
 )
 
-# redis
-REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-REDIS_PORT = int(os.environ.get('REDIS_PORT', 6379))
-REDIS_UNIX_SOCKET = os.environ.get('REDIS_UNIX_SOCKET')
-REDIS_MAX_CONNECTIONS = 4
 
 # channels
 
@@ -217,7 +219,7 @@ elif CHANNEL_BACKEND == 'redis':
         "default": {
             "BACKEND": "asgi_redis.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [(REDIS_HOST, REDIS_PORT)],
+                "hosts": [REDIS_URL],
             },
             "ROUTING": "callcenter.routing.channel_routing",
         },

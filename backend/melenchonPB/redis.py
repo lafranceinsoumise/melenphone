@@ -1,19 +1,8 @@
-import redis
-from redis.connection import UnixDomainSocketConnection
-from django.conf import settings
-from django.utils import timezone
+from django_redis import get_redis_connection
 
 
-if settings.REDIS_UNIX_SOCKET is not None:
-    redis_pool = redis.ConnectionPool(
-        connection_class=UnixDomainSocketConnection,
-        path=settings.REDIS_UNIX_SOCKET,
-        max_connections=settings.REDIS_MAX_CONNECTIONS
-    )
-else:
-    redis_pool = redis.ConnectionPool(
-        host=settings.REDIS_HOST, port=settings.REDIS_PORT, max_connections=settings.REDIS_MAX_CONNECTIONS
-    )
+def get_redis_instance():
+    return get_redis_connection()
 
 
 def format_date(date):

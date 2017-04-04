@@ -9,7 +9,7 @@ from channels import Channel
 
 # Project import
 from callcenter.models import *
-from melenchonPB.redis import redis_pool, format_date
+from melenchonPB.redis import get_redis_instance, format_date
 
 
 # Fonction principale
@@ -105,14 +105,14 @@ def leet(user):
 
 
 def earlyAdopters(user):
-    r = redis.StrictRedis(connection_pool=redis_pool)
+    r = get_redis_instance()
     callersCount = r.scard('leaderbords:alltime')
     if callersCount < 100:
         unlock_achievement("early_y_etais", user)
 
 
 def dailyCalls(user):
-    r = redis.StrictRedis(connection_pool=redis_pool)
+    r = get_redis_instance()
     dailyCalls = int(r.zscore('melenphone:leaderboards:daily:' + format_date(timezone.now()), str(user.id)))
     if dailyCalls == 50:
         unlock_achievement("daily_a_fond", user)
@@ -123,7 +123,7 @@ def dailyCalls(user):
 
 
 def callCount(user):
-    r = redis.StrictRedis(connection_pool=redis_pool)
+    r = get_redis_instance()
     count = int(r.zscore('melenphone:leaderboards:alltime', str(user.id)))
     if count == 1:
         unlock_achievement("count_initie", user)
@@ -160,7 +160,7 @@ def callCount(user):
 
 
 def leaderboards(user):
-    r = redis.StrictRedis(connection_pool=redis_pool)
+    r = get_redis_instance()
 
     if int(r.zrevrank('melenphone:leaderboards:alltime', str(user.id))) == 0:
         unlock_achievement("leaderboard_alltime", user)

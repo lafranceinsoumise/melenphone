@@ -1,5 +1,5 @@
 from django.utils import timezone
-from melenchonPB.redis import redis_pool, format_date
+from melenchonPB.redis import get_redis_instance, format_date
 import datetime
 import redis
 
@@ -7,7 +7,7 @@ from .leaderboard import generate_leaderboard
 
 
 def update_scores(user):
-    r = redis.StrictRedis(connection_pool=redis_pool)
+    r = get_redis_instance()
     pipe = r.pipeline(transaction=False)
 
     # Cles necessaires :
@@ -40,7 +40,7 @@ def update_scores(user):
 
 
 def get_global_scores():
-    r = redis.StrictRedis(connection_pool=redis_pool)
+    r = get_redis_instance()
     daily_calls = int(r.get('melenphone:call_count:daily:' + format_date(timezone.now())) or 0)
     weekly_calls = int(r.get('melenphone:call_count:weekly:' + format_date(timezone.now())) or 0)
     alltime_calls = int(r.get('melenphone:call_count:alltime') or 0)
