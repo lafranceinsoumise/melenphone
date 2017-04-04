@@ -18,6 +18,6 @@ class Command(BaseCommand):
         pipe.execute()
 
         for call in Call.objects.all():
-            update_scores(call.user)
+            update_scores(call.user, call.date)
 
         print('Base redis reconstruite !')

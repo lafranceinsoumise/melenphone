@@ -6,12 +6,13 @@ import redis
 from .leaderboard import generate_leaderboard
 
 
-def update_scores(user):
+def update_scores(user, tzdate=None):
     r = get_redis_instance()
     pipe = r.pipeline(transaction=False)
 
     # Cles necessaires :
-    tzdate = timezone.now()
+    if tzdate is None:
+        tzdate = timezone.now()
     today = format_date(tzdate)
 
     sevenPreviousDays = [today]
