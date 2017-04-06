@@ -1,0 +1,5 @@
+26	De retour !	Avoir effectué des appels 2 jours de suite.	50	consecutive_retour
+27	Fidèle au poste	Avoir effectué des appels 3 jours de suite.	150	consecutive_fidele
+28	Infatigable	Avoir effectué des appels 5 jours de suite.	250	consecutive_infatigable
+29	Mélenphonophile	Avoir effectué des appels 10 jours de suite.	400	consecutive_melenphonophile
+30	Holochon	Passer 300 appels en une journée !	700	daily_holochon
