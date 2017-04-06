@@ -22,7 +22,8 @@ def update_achievements(user):
             callCount,
             dailyCalls,
             earlyAdopters,
-            leaderboards
+            leaderboards,
+            consecutive
         ]
         for f in functions:
             f(user)
