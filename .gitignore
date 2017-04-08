@@ -1,9 +1,18 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
+######################################################
+# here are the exclusions specific to this project : #
+######################################################
 *.pyc
+/dump.rdb
+
+########################################
+# end of project-specific instructions #
+########################################
 
 # compiled output
 dist/
 tmp/
+dump.rdb
 .env/
 
 # dependencies

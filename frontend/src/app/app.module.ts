@@ -7,6 +7,7 @@ import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { StoreModule } from '@ngrx/store';
 
 import { environment } from '../environments/environment';
 
@@ -22,6 +23,8 @@ import {
   AnimatedCallComponent,
   NavToolbarComponent,
   ToptenComponent,
+  FooterComponent,
+  AchievementComponent
 } from './components';
 
 import {
@@ -44,11 +47,11 @@ import {
   MesTropheesComponent,
   OauthRedirectComponent,
   PokechonHomeComponent,
-  ProfileComponent
+  ProfileComponent,
+  TutorielComponent
 } from './views';
-import { FooterComponent } from './components/footer/footer.component';
-import { AchievementComponent } from './components/achievement/achievement.component';
-import { TutorielComponent } from './views/tutoriel/tutoriel.component';
+
+import { reducer } from './rx/reducers';
 
 export function xsrfStrategyFactory() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -84,6 +87,7 @@ export function xsrfStrategyFactory() {
     HttpModule,
     MaterialModule.forRoot(),
     FlexLayoutModule.forRoot(),
+    StoreModule.provideStore(reducer),
     SimpleNotificationsModule.forRoot(),
     AppRoutingModule,
     SharedModule

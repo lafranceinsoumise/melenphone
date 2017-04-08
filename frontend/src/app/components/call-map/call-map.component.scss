@@ -1,5 +1,7 @@
 @import '../../../_colors.scss';
 
+$stroke-color: hsl(190, 65%, 38%);
+
 :host {
     display: block;
 }
@@ -8,20 +10,22 @@
     stroke: $jlm-blue;
     stroke-width: 1;
     fill: transparent;
+    will-change: fill, stroke;
     transition: fill 2.4s 4s, stroke 2.5s 4s;
 
     &.transition-start {
         fill: $jlm-blue;
-        stroke: hsla(190, 65%, 38%, 1);
+        stroke: $stroke-color;
     }
     &.transition-end {
         transition: fill 2.4s, stroke 2.5s;
         fill: $jlm-blue;
-        stroke: hsla(190, 65%, 38%, 1);
+        stroke: $stroke-color;
     }
 }
 
 .monde {
+    will-change: transform, opacity;
     animation-fill-mode: both;
     animation: appear 6s ease-in;
 
@@ -32,7 +36,7 @@
 
     .department {
         fill: $jlm-blue;
-        stroke: hsla(190, 65%, 38%, 1);
+        stroke: $stroke-color;
     }
 }
 

@@ -4,9 +4,17 @@
     <jlm-call-map [timeout]="5000">
       <div class="controls" [ngSwitch]="fullscreenController.isFullscreen">
         <button *ngSwitchCase="false"
-        (click)="fullscreenController.toggle(true)"><i class="material-icons">fullscreen</i></button>
+            md-icon-button
+            alt="Passer en mode plein écran"
+            (click)="fullscreenController.toggle(true)">
+          <md-icon>fullscreen</md-icon>
+        </button>
         <button *ngSwitchCase="true"
-        (click)="fullscreenController.exitFullscreen()"><i class="material-icons">fullscreen_exit</i></button>
+            md-icon-button
+            alt="Sortir du mode plein écran"
+            (click)="fullscreenController.exitFullscreen()">
+          <md-icon>fullscreen_exit</md-icon>
+        </button>
       </div>
     </jlm-call-map>
   </div>

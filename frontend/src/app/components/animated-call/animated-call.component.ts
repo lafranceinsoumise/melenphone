@@ -1,128 +1,106 @@
-import { Component, OnInit, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { WsCallNotification } from '../../core';
+import {
+  Component,
+  Input,
+  ViewEncapsulation,
+  ChangeDetectionStrategy
+} from '@angular/core';
+
+import { CallLocationDescription, Point } from '../../shared/_models';
 
 @Component({
   selector: 'g[jlmAnimatedCall]',
   template: `
-    <svg:g>
+    <svg:g *ngIf="pathInstructions">
       <svg:g class="call"
-          *ngIf="pathInstructions"
           [jlmAnimatedPath]="pathInstructions"
-          [transitionTiming]="'1s 2.5s'"
+          [transitionTiming]="'4s 0s'"
           [to]="1"/>
 
-      <svg:circle class="caller1"
-          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
-          [attr.cx]="jlmAnimatedCall.caller.svg.x"
-          [attr.cy]="jlmAnimatedCall.caller.svg.y"
-          r="1em"/>
+      <svg:circle *ngFor="let circleClassName of callerCircles; index as i"
+          [attr.class]="'caller' + i"
+          [style.transform-origin]="callerTransformOrigin"
+          [attr.cx]="callerSvgCoordinates.x"
+          [attr.cy]="callerSvgCoordinates.y"
+          r="2em"/>
 
-      <svg:circle class="caller2"
-          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
-          [attr.cx]="jlmAnimatedCall.caller.svg.x"
-          [attr.cy]="jlmAnimatedCall.caller.svg.y"
-          r="1em"/>
-
-      <svg:circle class="caller3"
-          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
-          [attr.cx]="jlmAnimatedCall.caller.svg.x"
-          [attr.cy]="jlmAnimatedCall.caller.svg.y"
-          r="0.75em"/>
-
-      <svg:circle class="caller4"
-          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
-          [attr.cx]="jlmAnimatedCall.caller.svg.x"
-          [attr.cy]="jlmAnimatedCall.caller.svg.y"
-          r="1em"/>
-
-      <svg:circle class="caller5"
-          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
-          [attr.cx]="jlmAnimatedCall.caller.svg.x"
-          [attr.cy]="jlmAnimatedCall.caller.svg.y"
-          r="1.25em"/>
-
-      <svg:circle class="caller6"
-          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.caller.svg)"
-          [attr.cx]="jlmAnimatedCall.caller.svg.x"
-          [attr.cy]="jlmAnimatedCall.caller.svg.y"
-          r="1.5em"/>
-
-      <svg:circle class="callee1"
-          [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
-          [attr.cx]="jlmAnimatedCall.callee.svg.x"
-          [attr.cy]="jlmAnimatedCall.callee.svg.y"
-          r="0.75em"/>
-
-      <svg:circle class="callee2"
-            [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
-            [attr.cx]="jlmAnimatedCall.callee.svg.x"
-            [attr.cy]="jlmAnimatedCall.callee.svg.y"
-            r="1em"/>
-
-      <svg:circle class="callee3"
-            [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
-            [attr.cx]="jlmAnimatedCall.callee.svg.x"
-            [attr.cy]="jlmAnimatedCall.callee.svg.y"
-            r="1.25em"/>
-
-      <svg:circle class="callee4"
-            [style.transform-origin]="getTransformOrigin(jlmAnimatedCall.callee.svg)"
-            [attr.cx]="jlmAnimatedCall.callee.svg.x"
-            [attr.cy]="jlmAnimatedCall.callee.svg.y"
-            r="1.5em"/>
+      <svg:circle *ngFor="let circleClassName of calleeCircles; index as i"
+          [attr.class]="'callee' + i"
+          [style.transform-origin]="calleeTransformOrigin"
+          [attr.cx]="calleeSvgCoordinates.x"
+          [attr.cy]="calleeSvgCoordinates.y"
+          r="2em"/>
     </g>
   `,
   styleUrls: ['./animated-call.component.scss']
 })
-export class AnimatedCallComponent implements OnInit {
+export class AnimatedCallComponent {
 
   pathInstructions: string;
 
+  callerSvgCoordinates: Point;
+  calleeSvgCoordinates: Point;
+
+  callerTransformOrigin: string;
+  calleeTransformOrigin: string;
+
+  callerCircles = new Array(4);
+  calleeCircles = new Array(4);
+
   @Input()
-  jlmAnimatedCall: WsCallNotification;
+  get jlmAnimatedCall(): CallLocationDescription {
+    return this._animatedCall;
+  }
+  set jlmAnimatedCall(call: CallLocationDescription) {
+    this._animatedCall = call;
+    this.pathInstructions = this.getPathInstructions(this.jlmAnimatedCall, 'curve');
+    this.callerSvgCoordinates = call.caller.svg;
+    this.calleeSvgCoordinates = call.callee.svg;
+    this.callerTransformOrigin = this.getTransformOrigin(this.callerSvgCoordinates);
+    this.calleeTransformOrigin = this.getTransformOrigin(this.calleeSvgCoordinates);
+  }
+  private _animatedCall: CallLocationDescription;
 
-  constructor() { }
-
-  getPathInstructions(desc: WsCallNotification, pathType: 'line' | 'curve') {
+  getPathInstructions(desc: CallLocationDescription, pathType: 'line' | 'curve') {
     const callerSvg = desc.caller.svg,
           calleeSvg = desc.callee.svg,
-          delta = {
+          delta     = {
             x: calleeSvg.x - callerSvg.x,
             y: calleeSvg.y - callerSvg.y
           };
 
     switch (pathType) {
       case 'line':
-        return `
-          M ${callerSvg.x}, ${callerSvg.y}
-          L ${calleeSvg.x}, ${calleeSvg.y}
-          `;
+        return getLineCurve(callerSvg, calleeSvg);
       case 'curve':
-        return getQuadraticCurve(callerSvg.x, callerSvg.y, calleeSvg.x, calleeSvg.y, .2);
+        return getQuadraticCurve(callerSvg, calleeSvg, .2);
     }
 
-    function getQuadraticCurve(x1: number, y1: number, x2: number, y2: number, multiplier = .5): string {
-      const [vecX, vecY] = [x2 - x1, y2 - y1];
+    function getLineCurve(origin: Point, destination: Point): string {
+      const curvePath = `
+          M ${origin.x}, ${origin.y}
+          L ${destination.x}, ${destination.y}
+          `;
+      return curvePath;
+    }
+
+    function getQuadraticCurve(origin: Point, destination: Point, multiplier = .5): string {
+      const [vecX, vecY] = [destination.x - origin.x, destination.y - origin.y];
       const [orthX, orthY] = [-vecY, vecX];
       const [deviationX, deviationY] = [orthX * multiplier, orthY * multiplier];
-      const [step0x, step0y] = [x1, y1];
+      const [step0x, step0y] = [origin.x, origin.y];
       const [vec1x, vec1y] = [vecX / 2 + deviationX, vecY / 2 + deviationY];
 
       const curvePath = `
         M ${step0x} ${step0y}
-        Q ${step0x + vec1x} ${step0y + vec1y} ${x2} ${y2}
+        Q ${step0x + vec1x} ${step0y + vec1y} ${destination.x} ${destination.y}
       `;
 
       return curvePath;
     }
   }
 
-  getTransformOrigin(center: {x: number, y: number}) {
+  getTransformOrigin(center: Point) {
     return `${ center.x }px ${ center.y }px`;
-  }
-
-  ngOnInit() {
-    this.pathInstructions = this.getPathInstructions(this.jlmAnimatedCall, 'curve');
   }
 
 }

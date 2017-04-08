@@ -7,6 +7,22 @@ jlm-topten {
   width: 250px;
 }
 
+@mixin fullscreenStyles {
+  display: flex;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+
+    jlm-call-map {
+      flex: 1;
+      margin: auto;
+    }
+}
+
 [jlmFullscreen] {
   padding: 20px 0;
   position: relative;
@@ -14,70 +30,20 @@ jlm-topten {
   width: calc(100% - 300px);
 
   &:-webkit-full-screen {
-    display: flex;
-    background-color: white;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-
-    jlm-call-map {
-      flex: 1;
-      margin: auto;
-    }
+    @include fullscreenStyles();
   }
   &:-moz-full-screen {
-    display: flex;
-    background-color: white;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-
-    jlm-call-map {
-      flex: 1;
-      margin: auto;
-    }
+    @include fullscreenStyles();
   }
   &:-ms-full-screen {
-    display: flex;
-    background-color: white;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-
-    jlm-call-map {
-      flex: 1;
-      margin: auto;
-    }
+    @include fullscreenStyles();
   }
   &:fullscreen {
-    display: flex;
-    background-color: white;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-
-    jlm-call-map {
-      flex: 1;
-      margin: auto;
-    }
+    @include fullscreenStyles();
   }
 
   .mat-button {
     color: $jlm-red;
-    display: none;
-    position: absolute;
   }
 
   .controls {
@@ -87,13 +53,11 @@ jlm-topten {
 
     button {
       border: 0;
-      background: transparent;
       color: $jlm-red;
-      min-width: auto;
+      cursor: pointer;
+      zoom: 1.4;
 
       &:focus {outline: 0;}
     }
-
-    .material-icons {font-size: 42px;}
   }
 }

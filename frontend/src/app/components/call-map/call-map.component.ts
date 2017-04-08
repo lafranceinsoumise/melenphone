@@ -1,16 +1,41 @@
-import { Component, Input, OnInit, AfterViewInit, ViewContainerRef, ViewRef, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ViewContainerRef,
+  ViewRef,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
 
-import { SocketConnectionService, CoordinatesConverterService, MapService } from '../../shared';
-import { WsCallNotification, CallNoteDescription } from '../../core';
+import {
+  SocketConnectionService,
+  CoordinatesConverterService,
+  MapService,
+  CallLocationDescription,
+  WebSocketCallMessage
+} from '../../shared';
+
+import { RootState, getCallsState } from '../../rx/reducers';
+import * as fromCall from '../../rx/reducers/call.reducer';
 
 @Component({
   selector: 'jlm-call-map',
   templateUrl: './call-map.component.html',
   styleUrls: ['./call-map.component.scss']
 })
-export class CallMapComponent implements OnInit, AfterViewInit {
+export class CallMapComponent implements OnInit, OnDestroy, AfterViewInit {
+  newCall$: Observable<fromCall.State>;
+  newCall$Subscription: Subscription;
+  displayedCalls$: Observable<WebSocketCallMessage[]>;
+
   @ViewChild('svgDocument') svgRef: ElementRef;
-  notifications: { call: WsCallNotification, options: any}[] = [];
+  notifications: { call: CallLocationDescription, options: any}[] = [];
   shouldAnimate = false;
 
   @Input() timeout = 3000;
@@ -18,11 +43,20 @@ export class CallMapComponent implements OnInit, AfterViewInit {
   constructor(
     private scs: SocketConnectionService,
     private mapService: MapService,
+    private rootStore: Store<RootState>,
     private coordsCvrtr: CoordinatesConverterService) {}
 
   ngOnInit() {
+    this.newCall$ = this.rootStore.select(getCallsState);
     this.shouldAnimate = this.mapService.firstTime;
-    this.scs.room.addEventListener('message', (event) => this.onCallNotification(event), false);
+    this.newCall$Subscription = this.newCall$.subscribe((state: fromCall.State) => {
+      if (!state.lastCall) return;
+      this.pushCall(state.lastCall);
+    });
+  }
+
+  ngOnDestroy() {
+    this.newCall$Subscription.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -34,20 +68,8 @@ export class CallMapComponent implements OnInit, AfterViewInit {
     return {width: 1366, height: 768};
   }
 
-  onCallNotification(event: MessageEvent) {
-    const parsed = JSON.parse(event.data);
-    switch (parsed.type) {
-      case 'call':
-        this.pushCall(parsed.value as CallNoteDescription);
-      break;
-      case 'achievement':
-      break;
-    }
-
-  }
-
-  pushCall(rawNotification: CallNoteDescription) {
-    const call: WsCallNotification = {
+  pushCall(rawNotification: WebSocketCallMessage) {
+    const call: CallLocationDescription = {
       caller: {
         gps: {
             lat: +rawNotification.call.caller.lat,
