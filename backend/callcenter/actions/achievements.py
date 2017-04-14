@@ -41,26 +41,19 @@ def unlock_achievement(codeName, user):
         userExtend.phi = userExtend.phi + (achievement.phi * userExtend.phi_multiplier)
         userExtend.save()
 
-        # Pas de websocket si l'achievement est trop banal.
-        excluded_achievements = [
-            'count_initie',
-            'count_apprenti'
-        ]
-
-        if codeName not in excluded_achievements:
-            message = {
-                'type': 'achievement',
-                'value': {
-                    'agentUsername': userExtend.agentUsername,
-                    'achievement': {
-                        'name': achievement.name,
-                        'condition': achievement.condition,
-                        'phi': achievement.phi,
-                        'codeName': achievement.codeName
-                    }
+        message = {
+            'type': 'achievement',
+            'value': {
+                'agentUsername': userExtend.agentUsername,
+                'achievement': {
+                    'name': achievement.name,
+                    'condition': achievement.condition,
+                    'phi': achievement.phi,
+                    'codeName': achievement.codeName
                 }
             }
-            Channel('send_message').send(message)
+        }
+        Channel('send_message').send(message)
 
 
 def get_achievements(user):
@@ -180,9 +173,8 @@ def consecutive(user):
     time = timezone.now()
     days = 0
 
-    while int(r.sismember('melenphone:leaderboards:daily:' + format_date(time), str(user.id))) == 1:
+    while r.zscore('melenphone:leaderboards:daily:' + format_date(time), str(user.id)) != None:
         days += 1
-
         if days == 2:
             unlock_achievement("consecutive_retour", user)
         elif days == 3:
@@ -191,5 +183,4 @@ def consecutive(user):
             unlock_achievement("consecutive_infatigable", user)
         elif days == 10:
             unlock_achievement("consecutive_melenphonophile", user)
-
         time -= datetime.timedelta(days=1)
