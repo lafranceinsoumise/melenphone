@@ -21,7 +21,6 @@ def update_achievements(user):
             leet,
             callCount,
             dailyCalls,
-            earlyAdopters,
             leaderboards,
             consecutive
         ]
