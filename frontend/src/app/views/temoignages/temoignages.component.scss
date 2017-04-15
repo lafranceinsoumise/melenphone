@@ -1,0 +1,25 @@
+:host {
+    article {
+        background-color: white;
+        padding: 1em;
+        margin-bottom: 1em;
+        box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.4);
+        max-width: 700px;
+        margin-right: auto;
+        margin-left: auto;
+
+        small {
+            font-size: .8em;
+            color: grey;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .author {
+            color: firebrick;
+            font-weight: bold;
+        }
+    }
+}

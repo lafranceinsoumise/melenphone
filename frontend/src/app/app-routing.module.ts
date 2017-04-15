@@ -10,6 +10,7 @@ import {
   AvertissementComponent,
   OauthRedirectComponent,
   ClassementComponent,
+  TemoignagesComponent,
   TutorielComponent,
 } from './views';
 
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'connexion', component: AvertissementComponent },
       { path: 'oauth_redirect', component: OauthRedirectComponent },
       { path: 'apropos', component: AproposComponent },
+      { path: 'temoignages', component: TemoignagesComponent },
       { path: 'tutoriel', component: TutorielComponent },
     ]
   }

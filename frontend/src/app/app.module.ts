@@ -52,6 +52,7 @@ import {
 } from './views';
 
 import { reducer } from './rx/reducers';
+import { TemoignagesComponent } from './views/temoignages/temoignages.component';
 
 export function xsrfStrategyFactory() {
   return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
@@ -78,6 +79,7 @@ export function xsrfStrategyFactory() {
     FooterComponent,
     AchievementComponent,
     TutorielComponent,
+    TemoignagesComponent,
   ],
   imports: [
     BrowserModule,
