@@ -8,16 +8,12 @@
             Tutoriel
         </a>
         <a md-button href="//discord.gg/ymyhQsS" target="_blank">
-          <i class="material-icons">help_outline</i>
-          À l'aide !
+          <i class="material-icons">chat</i>
+          Discuter / Demander de l'aide
         </a>
         <a md-button routerLink="apropos">
             <i class="material-icons">info_outline</i>
             À propos
-        </a>
-        <a md-button routerLink="temoignages" title="tu hésites à te lancer dans l'aventure ? Lis les témoignages">
-            <i class="material-icons">speaker_notes</i>
-            Témoignages
         </a>
       </div>
       <div *ngIf="auth.currentUser && auth.currentUser.phi > -1">
