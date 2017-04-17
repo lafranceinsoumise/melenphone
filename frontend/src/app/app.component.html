@@ -15,6 +15,10 @@
             <i class="material-icons">info_outline</i>
             À propos
         </a>
+        <a md-button routerLink="temoignages" title="tu hésites à te lancer dans l'aventure ? Lis les témoignages">
+            <i class="material-icons">library_books</i>
+            Témoignages
+        </a>
       </div>
       <div *ngIf="auth.currentUser && auth.currentUser.phi > -1">
         <div class="username">{{ auth.currentUser.agentUsername }}</div>
