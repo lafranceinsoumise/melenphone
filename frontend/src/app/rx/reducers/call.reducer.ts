@@ -1,4 +1,4 @@
-import * as calls from '../actions/call';
+import * as calls from '../actions/call.actions';
 import { WebSocketCallMessage } from '../../shared/_models';
 
 export interface State {

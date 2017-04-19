@@ -1,4 +1,4 @@
-import * as achievements from '../actions/achievements';
+import * as achievements from '../actions/achievements.actions';
 import { Achievement } from '../../shared/_models/achievement';
 
 export interface State {
