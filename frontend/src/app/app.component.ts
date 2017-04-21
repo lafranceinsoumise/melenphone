@@ -125,13 +125,13 @@ export class AppComponent implements OnInit {
   }
 
   chooseCallGoal(callCount) {
-    const sizes = [10, 50, 100, 250, 500, 1000, 2000, 3000, 4000];
+    const sizes = [10, 50, 100, 250, 500, 1000, 2000, 3000, 4000, 5000, 10000, 20000, 30000, 40000, 50000, 100000];
     for (const value of sizes) {
-      if (callCount < 0.95 * value) {
+      if (callCount < value) {
           return value;
       }
     }
-    return (10 ** 10);
+    return (10 ** 6);
   }
 
 }
