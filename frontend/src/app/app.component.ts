@@ -62,10 +62,12 @@ export class AppComponent implements OnInit {
     this.createWebsocket();
     this.auth.getProfile()
       .catch(err => console.error(err.json()));
-    this.scs.room.addEventListener('message', (event) => this.onNotif(event) , false);
     this.basic.getBasicInfo()
-        .then(infos => this.basic.infos = infos)
-        .catch(err => console.trace(err));
+      .then(infos => this.basic.infos = infos)
+      .catch(err => console.trace(err));
+    this.scs.message$.subscribe(message => {
+      this.onNotif(message);
+    });
   }
 
   createWebsocket() {
@@ -119,9 +121,7 @@ export class AppComponent implements OnInit {
     if (! isDevMode()) {
       return;
     }
-    this.http.post('/api/simulate_achievement', {})
-        .toPromise()
-        .then(res => console.log(res.json()));
+    this.http.post('/api/simulate_achievement', {});
   }
 
   chooseCallGoal(callCount) {

@@ -18,7 +18,7 @@ export class CreateNewConnectionAction implements Action {
 export class OpenEventAction implements Action {
     type = ActionTypes.OPEN_EVENT;
 
-    constructor(public payload: any) {}
+    constructor(public payload?: any) {}
 }
 
 export class MessageEventAction implements Action {
@@ -36,7 +36,7 @@ export class ErrorEventAction implements Action {
 export class CloseEventAction implements Action {
     type = ActionTypes.CLOSE_EVENT;
 
-    constructor(public payload: any) {}
+    constructor(public payload?: any) {}
 }
 
 export type Actions = CreateNewConnectionAction
