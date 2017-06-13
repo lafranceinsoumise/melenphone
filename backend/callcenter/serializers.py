@@ -61,5 +61,5 @@ class CallhubCredentialsSerializer(Serializer):
             #Solves the problem 'UserExtend has no attribute password'
             return {'agentUsername': agentUsername, 'password': password}
         except IntegrityError:
-            raise CallerValidationError("Ce compte callhub est déjà associé à un compte du Mélenphone !",
+            raise CallerValidationError("Ce compte callhub est déjà associé à un compte du Fiphone !",
                                           code='already_associated')
