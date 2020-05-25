@@ -36,7 +36,7 @@ asgi_redis = "==1.0.0"
 Automat = "==0.5.0"
 Django = "==1.11.*"
 Twisted = "==17.1.0"
-"zope.interface" = "==4.3.3"
+"zope.interface" = ">=5"
 
 [requires]
 python_version = "3.6"
